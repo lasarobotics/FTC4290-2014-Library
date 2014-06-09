@@ -7,20 +7,17 @@ Controls motors, servos, and encoders.
 
 **********************************************************/
 
-
 ////////////////////////
 // ENCODER OPERATIONS //
 ////////////////////////
 
-/*****************************************************
-Filter Encoder Values
-
-Ignores encoder errors
-
-in  value         : Current encoder value
-in  lastvalue     : Last encoder value, if none set to zero
-out filterencoder : Fixed value
-*****************************************************/
+/**
+ * Ignores encoder errors.
+ *
+ * @param Current encoder value
+ * @param Last encoder value, if none set to zero
+ * @return Fixed value
+ */
 float filterencoder(float value, float lastvalue)
 {
 	if (value == 0) { return lastvalue; }
@@ -31,28 +28,23 @@ float filterencoder(float value, float lastvalue)
 // NORMALIZATION OPERATIONS //
 //////////////////////////////
 
-/*****************************************************
-Normalize Motor from FTC Controller
-
-Converts FTC Controller output (-128 to 128) to
-TETRIX or LEGO motor input (-100 to 100)
-
-in  value : Value to normalize
-out norm  : Normalized Value
-*****************************************************/
+/**
+ * Converts FTC Controller output (-128 to 128) to TETRIX or LEGO motor input (-100 to 100)
+ *
+ * @param Value to normalize
+ * @return Normalized Value
+ */
 float norm_ftc_motor(float value)
 {
 	return value / 127.5 * 100;
 }
-/*****************************************************
-Normalize Servo from FTC Controller
 
-Converts FTC Controller output (-128 to 128) to
-FTC servo input (0 to 255)
-
-in  value : Value to normalize
-out norm  : Normalized Value
-*****************************************************/
+/**
+ * Converts FTC Controller output (-128 to 128) to FTC servo input (0 to 255)
+ *
+ * @param Value to normalize
+ * @return Normalized Value
+ */
 float norm_ftc_servo(float value)
 {
 	return ((value / 127) + 1) / 2 * 255;
