@@ -11,8 +11,6 @@ IO and manipulation functions.
 #include "JoystickDriver.c"  //Joystick and Bluetooth driver
 
 /**
- * deadband
- *
  * Gives a joystick a "deadzone" where any value
  * less than this would return zero.  Useful when joysticks
  * may be calibrated slightly off to prevent unwanted
@@ -34,8 +32,6 @@ float deadband(float deadband, float value)
 	}
 }
 /**
- * coerce
- *
  * Forces a numerical value to be between a min
  * and a max.
  *
