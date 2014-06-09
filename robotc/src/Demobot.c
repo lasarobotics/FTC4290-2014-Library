@@ -8,13 +8,15 @@
 
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-#define _DISABLE_DISPLAY //Uncomment to disable joystick display
+#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/joystick.h" //joystick
 #include "../lib/motor.h" //motor,servo,encoder
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
+#include "../drivers/hitechnic-gyro.h" //gyroscope
 
 /***** STATICS *****/
 static bool debugmode = true;

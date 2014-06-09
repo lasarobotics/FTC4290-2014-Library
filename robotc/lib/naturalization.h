@@ -6,7 +6,8 @@ naturalization.h
 Forces all RobotC environments to use the same settings.
 Include this file at the beginning of every program.
 
-Define _DISABLE_DISPLAY to disable game controller display
+Define _DISABLE_JOYDISPLAY to disable game controller display
+Define _ENABLE_LCDDISPLAY to enable live NXT LCD display
 Define _FORCE_DEBUG to disable full code optimization
 
 **********************************************************/
@@ -33,7 +34,7 @@ Define _FORCE_DEBUG to disable full code optimization
   #error "Not supported on this platform!"
 #endif
 
-#ifndef _DISABLE_DISPLAY
+#ifndef _DISABLE_JOYDISPLAY
 	#pragma DebuggerWindows("Globals")
 	#pragma DebuggerWindows("Locals")
 	#ifdef FTC
@@ -41,4 +42,8 @@ Define _FORCE_DEBUG to disable full code optimization
 	#else
 		#pragma DebuggerWindows("joystickSimple")
 	#endif
+#endif
+
+#ifdef _ENABLE_LCDDISPLAY
+	#pragma DebuggerWindows("nxtLCDscreen")
 #endif
