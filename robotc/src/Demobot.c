@@ -90,7 +90,7 @@ task main()
     PSPV4readButtons(PSPNXV4, controller);
 
     //y-axis is inverted
-    drive_tank(-controller.joystickLeft_y, -controller.joystickRight_y, false, left, right);
+    drive_tank(-controller.joystickLeft_y, -controller.joystickRight_y, left, right);
     motor[drive_left] = left;
     motor[drive_right] = right;
 
