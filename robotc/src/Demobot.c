@@ -10,12 +10,8 @@
 #define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
-#define __cplusplus
-
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
-#include "../lib/joystick.h" //joystick
-#include "../lib/motor.h" //motor,servo,encoder
 #include "../lib/drive.h" //drive trains
 
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
