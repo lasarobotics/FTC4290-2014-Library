@@ -10,10 +10,14 @@
 #define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
+#define __cplusplus
+
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/joystick.h" //joystick
 #include "../lib/motor.h" //motor,servo,encoder
+#include "../lib/drive.h" //drive trains
+
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 #include "../drivers/hitechnic-gyro.h" //gyroscope
 
@@ -30,7 +34,7 @@ void init()
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
 	eraseDisplay();
-	wait1Msec(500);
+	wait1Msec(1000);
 	// Prepare gyro offset
 	HTGYROstartCal(HTGYRO);
 	wait1Msec(50);
@@ -51,15 +55,20 @@ task calibrate()
     // Read the current rotation speed
     rotSpeed = HTGYROreadRot(HTGYRO);
 
+    if (abs(rotSpeed) < 0.9) {rotSpeed = 0;}
+
     // Calculate the new heading by adding the amount of degrees
     // we've turned in the last 20ms
     // If our current rate of rotation is 100 degrees/second,
     // then we will have turned 100 * (20/1000) = 2 degrees since
     // the last time we measured.
     heading += rotSpeed * 0.02;
+    if (heading > 360) { heading -= 360; }
+    if (heading < 0) { heading += 360; }
 
     // Display our current heading on the screen
     nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
+    nxtDisplayCenteredTextLine(5, "%.2f", rotSpeed);
   }
 }
 
@@ -69,6 +78,7 @@ task main()
 
   // This is the struct that holds all the info on all buttons and joypads/sticks
   tPSP controller;
+  float left, right;
 
   StartTask(calibrate, 8);
 
@@ -80,8 +90,9 @@ task main()
     PSPV4readButtons(PSPNXV4, controller);
 
     //y-axis is inverted
-    motor[drive_left] = -controller.joystickLeft_y;
-    motor[drive_right] = -controller.joystickRight_y;
+    drive_tank(-controller.joystickLeft_y, -controller.joystickRight_y, false, left, right);
+    motor[drive_left] = left;
+    motor[drive_right] = right;
 
     while(nNxtButtonPressed == kEnterButton)
     {
