@@ -59,7 +59,7 @@ task calibrate()
     heading += rotSpeed * 0.02;
 
     // Display our current heading on the screen
-    nxtDisplayCenteredBigTextLine(6, "%2.0f", heading);
+    nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
   }
 }
 
@@ -83,7 +83,7 @@ task main()
     motor[drive_left] = -controller.joystickLeft_y;
     motor[drive_right] = -controller.joystickRight_y;
 
-    if(nNxtButtonPressed == kEnterButton)
+    while(nNxtButtonPressed == kEnterButton)
     {
     	//Reset heading to zero
     	heading = 0;
