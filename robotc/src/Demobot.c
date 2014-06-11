@@ -19,6 +19,7 @@
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
+static float k_deadband = 15;
 
 /***** VARIABLES *****/
 float rotSpeed = 0;
@@ -86,7 +87,7 @@ task main()
     PSPV4readButtons(PSPNXV4, controller);
 
     //y-axis is inverted
-    drive_tank(-controller.joystickLeft_y, -controller.joystickRight_y, left, right);
+    drive_tank(deadband(k_deadband,-controller.joystickLeft_y), deadband(k_deadband,-controller.joystickRight_y), left, right);
     motor[drive_left] = left;
     motor[drive_right] = right;
 
