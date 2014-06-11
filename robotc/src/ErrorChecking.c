@@ -1,3 +1,11 @@
+/***** DEFINES *****/
+//#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
+#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
+
+/***** INCLUDES *****/
+#include "../lib/naturalization.h" //naturalize RobotC
+
 //Response size
 const int responsesize = 4;
 const int motorarray[4] =  {50,46,48,32};
