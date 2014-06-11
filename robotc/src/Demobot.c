@@ -51,7 +51,7 @@ task calibrate()
     // Read the current rotation speed
     rotSpeed = HTGYROreadRot(HTGYRO);
 
-    if (abs(rotSpeed) < 0.9) {rotSpeed = 0;}
+    if (abs(rotSpeed) < 1) {rotSpeed = 0;}
 
     // Calculate the new heading by adding the amount of degrees
     // we've turned in the last 20ms
