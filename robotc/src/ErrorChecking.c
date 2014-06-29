@@ -1,4 +1,5 @@
 #pragma config(Sensor, S4,     HTSPB,                sensorI2CCustom9V)
+
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
 #define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
@@ -7,17 +8,18 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../drivers/hitechnic-superpro.h" //SuperPro Prototype Board Driver
-//Response size
-const int responsesize = 4;
+
+/***** CONSTANTS *****/
+const int responsesize = 4; //Response size
 const int motorarray[4] =  {50,46,48,32};
 const int servoarray[4] =  {49,46,52,32};
-//Motor Controler 1
-sbyte I2CmessageM1[4];
-sbyte I2CreplyM1[4];
-//Servo Controler 1
-sbyte I2CmessageS1[4];
-sbyte I2CreplyS1[4];
-//Global Error Check
+sbyte I2CmessageM1[4]; //Motor Controler 1
+sbyte I2CreplyM1[4]; //Motor Controler 1
+sbyte I2CmessageS1[4]; //Servo Controler 1
+sbyte I2CreplyS1[4]; //Servo Controler 1
+
+/***** VARIABLES *****/
+//Global Error Checking
 bool error = false;
 void reset(){
    I2CreplyM1[0] = 0;
@@ -30,6 +32,7 @@ void reset(){
  	 I2CreplyS1[3] = 0;
  	 error = false;
 }
+
 void interpret (sbyte* sensor,string &display, bool servo ){
 	int convArray[responsesize];
 
@@ -71,6 +74,7 @@ void interpret (sbyte* sensor,string &display, bool servo ){
  		}
 	}
 }
+
 task main()
 {
 	 //Setup PrototypeBoard for output on B0 of NXT Port 4 (0x01 represents the pin B0 and Port 4 is defined above in pragma config)
