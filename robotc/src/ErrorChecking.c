@@ -1,3 +1,6 @@
+#pragma config(Sensor, S4,     HTSPB,                sensorI2CCustom9V)
+//SuperPro Prototype Board Driver
+#include "../drivers/hitechnic-superpro.h"
 //Response size
 const int responsesize = 4;
 const int motorarray[4] =  {50,46,48,32};
@@ -8,7 +11,9 @@ sbyte I2CreplyM1[4];
 //Servo Controler 1
 sbyte I2CmessageS1[4];
 sbyte I2CreplyS1[4];
-void clearArrays(){
+//Global Error Check
+bool error = false;
+void reset(){
    I2CreplyM1[0] = 0;
  	 I2CreplyM1[1] = 0;
  	 I2CreplyM1[2] = 0;
@@ -17,6 +22,7 @@ void clearArrays(){
  	 I2CreplyS1[1] = 0;
  	 I2CreplyS1[2] = 0;
  	 I2CreplyS1[3] = 0;
+ 	 error = false;
 }
 void interpret (sbyte* sensor,string &display, bool servo ){
 	int convArray[responsesize];
@@ -51,14 +57,18 @@ void interpret (sbyte* sensor,string &display, bool servo ){
 	else {
  		if (servo){
  			display = "SC error!";
+ 			error = true;
  		}
  		else {
  			display = "MC error!";
+ 			error = true;
  		}
 	}
 }
 task main()
 {
+	 //Setup PrototypeBoard for output on B0 of NXT Port 4 (0x01 represents the pin B0 and Port 4 is defined above in pragma config)
+   HTSPBsetupIO(HTSPB, 0x1);
 	 //Set sensor type to custom I2C so that we are using I2C drivers and not default MotorController
 	 SensorType[S1] = sensorI2CCustom;
  	 wait10Msec(5);
@@ -102,9 +112,17 @@ task main()
 	 interpret(I2CreplyS1,display,true);
 	 wait1Msec(10);
 	 nxtDisplayString(4, "%s", display);
- 	 //Clear arrays
-	 clearArrays();
+	 //LED logic based on "error" global bool"
+	if (error){
+	  //No LED, because we have error
+		HTSPBwriteIO(HTSPB, 0x00);
+	}
+	else {
+ 		//LED, we are good
+ 		HTSPBwriteIO(HTSPB, 0x01);
+	}
+ 	 //Reset for next tick
+	 reset();
 	 wait1Msec(1000);
-
 	}
 }
