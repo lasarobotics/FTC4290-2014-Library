@@ -19,10 +19,12 @@
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
+static float k_deadband = 15;
 
 /***** VARIABLES *****/
 float rotSpeed = 0;
 float heading = 0;
+float firstrot = 0;
 
 void init()
 {
@@ -37,6 +39,7 @@ void init()
   return;
 }
 
+//set motoractive to true if any drive motors have enough power to move robot
 task calibrate()
 {
 	while (true)
@@ -50,8 +53,17 @@ task calibrate()
 
     // Read the current rotation speed
     rotSpeed = HTGYROreadRot(HTGYRO);
+    if ((rotSpeed != 0) && (firstrot == 0) && (abs(rotSpeed) < 1))
+    {
+    	if (sgn(rotSpeed) == 1) {firstrot = rotSpeed;}
+    	if (sgn(rotSpeed) == -1) {firstrot = rotSpeed + 1;}
+  	}
 
-    if (abs(rotSpeed) < 0.9) {rotSpeed = 0;}
+  	if (sgn(rotSpeed) == 1) {rotSpeed = rotSpeed - firstrot;}
+  	if (sgn(rotSpeed) == -1) {rotSpeed = rotSpeed - firstrot + 1;}
+
+    if ((abs(rotSpeed) <= 1) && (firstrot != 0)) { rotSpeed = 0; }
+    if (abs(rotSpeed) < 1) { rotSpeed = 0; }
 
     // Calculate the new heading by adding the amount of degrees
     // we've turned in the last 20ms
@@ -65,6 +77,7 @@ task calibrate()
     // Display our current heading on the screen
     nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
     nxtDisplayCenteredTextLine(5, "%.2f", rotSpeed);
+    nxtDisplayCenteredTextLine(4, "%.2f", firstrot);
   }
 }
 
@@ -86,7 +99,7 @@ task main()
     PSPV4readButtons(PSPNXV4, controller);
 
     //y-axis is inverted
-    drive_tank(-controller.joystickLeft_y, -controller.joystickRight_y, left, right);
+    drive_tank(deadband(k_deadband,-controller.joystickLeft_y), deadband(k_deadband,-controller.joystickRight_y), left, right);
     motor[drive_left] = left;
     motor[drive_right] = right;
 

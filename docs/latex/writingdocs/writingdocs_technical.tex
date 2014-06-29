@@ -1,0 +1,53 @@
+\input{../template_technical}
+
+\begin{document}
+%PART AND CHAPTER DETAILS
+\renewcommand{\currentpart}{LASA Robotics Technical Documentation}
+\renewcommand{\currentchapter}{Writing Technical and Notebook Documentation in LaTeX}
+\createtitle
+
+\section{What is LaTeX?}
+\LaTeX{} (pronounced \emph{\textbf{LAY}-tek} or \emph{\textbf{LAH}-tek}) is a text formatting tool used globally for publication of scientific documents and online articles (including Wikipedia).  \LaTeX{} \emph{.tex} documents output as every format from \emph{PDF} to \emph{HTML}.
+
+\section{Why LaTeX?}
+\LaTeX{} allows for more flexible and consistent typesetting than other processors such as Word or InDesign.  Although \LaTeX{} requires users with some experience, most of \LaTeX{} can be done without much difficulty.  For LASA Robotics, most of the typesetting work has been done for you.  All you have to know are the basics.
+
+\section{Installing LaTeX}
+If \LaTeX{} is already installed on your machine, skip this step.
+\subsection{Windows}
+\subsubsection{1. Installing MikTeX}
+Download the latest version of Mik\TeX{} from \url{http://www.miktex.org/download}.  Select 'Other Downloads' and find a \textbf{Non-basic} installation.  When downloading, select a \textbf{full installation}, which could take several hours but downloads all necessary packages.  When complete, run the wizard again to install downloaded packages.  As this take some time, it is recommended to install Mik\TeX{} on a flash drive and bring it with you.
+\subsubsection{2. Installing TeXstudio}
+Download and install the latest version of TeXstudio \textbf{after MikTex is downloaded and installed} from \url{http://texstudio.sourceforge.net}, which takes several minutes.  After this completes, you're good to go!
+
+\subsection{Linux Debian}
+Run \codefull{sudo apt-get install gedit-latex-plugin texlive-fonts-recommended latex-beamer\\ texpower texlive-pictures texlive-latex-extra texpower-examples imagemagick} to install the GUI and all packages for \LaTeX{}.  Other distributions, including Redhat, may need alternate configurations (note that Debian-based Linux operating systems such as Ubuntu are included in this documentation.)
+
+\subsection{Mac}
+Good luck!
+
+\newpage
+
+\section{Types of Documentation}
+There are two types of documentation written in LASA Robotics: \textbf{Technical} and \textbf{Notebook}. Although similar, there are different templates for each and both are included in the final notebook.\\\\
+Technical documentation is written for \textbf{someone on the team to read}. For example, a coder would write a document describing how a piece of code works and how to use it or explain to the drivers how to set up the autonomous program \emph{in technical documentation} (this is an example of a technical doc).\\\\
+Notebook documentation is written to \textbf{describe a process for a judge to read}.  For example, daily logs, email records, and goofy team photos would fit in \emph{notebook documentation}.\\\\
+Follows is the tutorial for setting up either technical or notebook documentation.  If you have already completed this, scroll down and copy and paste the technical/notebook documentation examples at the bottom.
+
+\subsection{Technical Documentation}
+The first step of any documentation is to create a .tex file.  Create one using your document and save it somewhere safe.\\
+Then, we begin writing.  Import the technical template like so on the first line of your .tex document: \codefull{\sla input\{../template\_technical\}} The location of the file may be different, but make sure you have \code{template\_technical.tex} as the input file.
+
+\subsection{Notebook Documentation}
+As with technical documentation, the first step of any is to create a .tex file and save it somewhere safe.\\
+Then, we import the notebook template like so on the first line of your .tex document: \codefull{\sla input\{../template\_notebook\}} The location of the file may be different, but make sure you have \code{template\_notebook.tex} as the input file.
+
+\section{Setting Up the Document}
+Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \codefull{\sla input\{../template\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}  Notice that all \LaTeX{} commands start with a \code{\sla}.\newpage
+
+In the \code{\sla begin\{document\} ... \sla end\{document\}} section, add the following.
+\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle}
+
+
+
+\end{document}

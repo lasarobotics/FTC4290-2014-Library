@@ -55,14 +55,32 @@ void arcade2tank(float x, float y, float& out_left, float& out_right)
 }
 
 /**
-* Provide exponential rampup and rampdown
+* Converts rectangular to polar coordinates, in radians.
+* To convert to degrees, use degreesToRadians()
+* @param x X-value
+* @param y Y-value
+* @param out_r Magnitude, r
+* @param out_theta Direction, theta in radians
+*/
+void rect2polar(float x, float y, float& out_r, float& out_theta)
+{
+	out_r = sqrt((x*x)+(y*y));
+	out_theta = atan2(y,x);
+}
+
+/**
+* Provide exponential rampup and rampdown.
 * @param value The value of the left stick.
 * @param time Time since zero or value == outvalue
+* @param max Output, is the value at maximum power?  Use this to reset timers.
+* @param min Output, is the value at minimum power?  Use this to reset timers.
+* @return Scaled drive power
 */
-float exp_drive(float value, float time, bool& max)
+float exp_drive(float value, float time, bool& max, bool& min)
 {
 	float a = .01 * (pow(1.031177275, time));
 	if (a >= 1) { a = 1; max=true; } else { max=false; }
+	if (a <= .01) { a = 0; min=true; } else { min=false; }
 	float b = value * a;
 	return b;
 }
