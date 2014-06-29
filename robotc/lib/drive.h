@@ -25,7 +25,24 @@ void drive_tank(float leftValue, float rightValue, float& out_left, float& out_r
 	return;
 }
 
-void
+/**
+* Mecanum 2-joystick arcade drive.
+* Recommended: forward=y1, strafe=x1, spin=x2
+* @param forward Forward/reverse (x) direction power (-1 to 1)
+* @param strafe strafe (y) direction power (-1 to 1)
+* @param spin Clockwise spin (c) rotation power (-1 to 1)
+*/
+void mecanum_arcade(float forward, float strafe, float spin,
+float& Lf, float& Rf, float& Lb, float& Rb)
+{
+	float kx, ky, kc;
+	kx = ky = kc = 1;
+
+	Lf = ky*forward + kx*strafe + kc*spin;
+  Rf = ky*forward + kx*strafe + kc*spin;
+  Lb = ky*forward + kx*strafe + kc*spin;
+  Rb = ky*forward + kx*strafe + kc*spin;
+}
 
 /**
 * Provide tank steering using the stored robot configuration.
