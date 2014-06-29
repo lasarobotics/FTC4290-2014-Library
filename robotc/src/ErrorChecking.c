@@ -1,4 +1,3 @@
-//Prototype Board on Port 4
 #pragma config(Sensor, S4,     HTSPB,                sensorI2CCustom9V)
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
