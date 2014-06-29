@@ -19,11 +19,13 @@ your coding pleasure.
 */
 void drive_tank(float leftValue, float rightValue, float& out_left, float& out_right)
 {
-	// square the inputs (while preserving the sign) to increase fine control while permitting full power
+	// possible to square the inputs (while preserving the sign) to increase fine control while permitting full power
 	out_left = coerce(-100, 100, leftValue);
 	out_right = coerce(-100, 100, rightValue);
 	return;
 }
+
+void
 
 /**
 * Provide tank steering using the stored robot configuration.
