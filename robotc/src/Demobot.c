@@ -21,63 +21,16 @@
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
 static float k_deadband = 15;
 
-/***** VARIABLES *****/
-float rotSpeed = 0;
-float heading = 0;
-float firstrot = 0;
-
 void init()
 {
-	  // Place code here to initialize servos to starting positions.
-	  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
+	// Place code here to initialize servos to starting positions.
+	// Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
     eraseDisplay();
     wait1Msec(1000);
     gyro_init(HTGYRO); // Calibrate gyro offset
     wait1Msec(50);
     return;
-}
-
-//set motoractive to true if any drive motors have enough power to move robot
-task calibrate()
-{
-    while (true)
-    {
-        // Wait until 20ms has passed
-        while (time1[T1] < 20)
-          wait1Msec(1);
-
-        // Reset the timer
-        time1[T1]=0;
-
-        // Read the current rotation speed
-        rotSpeed = HTGYROreadRot(HTGYRO);
-        if ((rotSpeed != 0) && (firstrot == 0) && (abs(rotSpeed) < 1))
-        {
-            if (sgn(rotSpeed) == 1) {firstrot = rotSpeed;}
-            if (sgn(rotSpeed) == -1) {firstrot = rotSpeed + 1;}
-        }
-
-        if (sgn(rotSpeed) == 1) {rotSpeed = rotSpeed - firstrot;}
-        if (sgn(rotSpeed) == -1) {rotSpeed = rotSpeed - firstrot + 1;}
-
-        if ((abs(rotSpeed) <= 1) && (firstrot != 0)) { rotSpeed = 0; }
-        if (abs(rotSpeed) < 1) { rotSpeed = 0; }
-
-        // Calculate the new heading by adding the amount of degrees
-        // we've turned in the last 20ms
-        // If our current rate of rotation is 100 degrees/second,
-        // then we will have turned 100 * (20/1000) = 2 degrees since
-        // the last time we measured.
-        heading += rotSpeed * 0.02;
-        if (heading > 360) { heading -= 360; }
-        if (heading < 0) { heading += 360; }
-
-        // Display our current heading on the screen
-        nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
-        nxtDisplayCenteredTextLine(5, "%.2f", rotSpeed);
-        nxtDisplayCenteredTextLine(4, "%.2f", firstrot);
-    }
 }
 
 task main()
@@ -88,7 +41,7 @@ task main()
     tPSP controller;
     float left, right;
 
-    StartTask(calibrate, 8);
+    StartTask(gyro_calibrate, 8);
 
     if (competitionmode) {waitForStart();}
 
@@ -102,10 +55,14 @@ task main()
         motor[drive_left] = left;
         motor[drive_right] = right;
 
+        nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
+        nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
+        nxtDisplayCenteredTextLine(4, "%.2f", gyro_getfirstrot());
+
         while(nNxtButtonPressed == kEnterButton)
         {
             //Reset heading to zero
-            heading = 0;
+            gyro_reset();
         }
 
     }

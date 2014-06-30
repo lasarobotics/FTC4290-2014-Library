@@ -15,7 +15,7 @@ task main()
     (0x01 represents the pin B0 and Port 4 is defined above in pragma config)*/
     HTSPBsetupIO(HTSPB, 0x1);
     while (true){
-    		eraseDisplay();
+    	eraseDisplay();
         int port = 1; //port of specific device on NXT
         int address = 1; //place in daisy chain. 1st in the chain is 1, 2nd is 2, 3rd is 3, etc.
         string expected = "ServoCon"; //specific to sensor, located in sensor manuals
