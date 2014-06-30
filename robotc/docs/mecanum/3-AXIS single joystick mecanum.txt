@@ -1,0 +1,54 @@
+Rev C
+
+Three-axis joystick mecanum control.
+
+Let y, x, and z be the rev/fwd, strafe left/right, and spin CCW/CW axes, respectively, which each vary from -1 to +1.
+
+
+So:
+
+y= -1 corresponds to full speed reverse, y= +1 corresponds to full speed forward,
+
+x= -1 corresponds to full speed strafe left, x= +1 corresponds to full speed strafe right,
+
+z= -1 corresponds to full speed spin CCW, z= +1 corresponds to full speed spin CW
+
+
+When the joystick is pushed forward, its Y output should be positive. When the joystick is pushed to the right, its X output should be positive.  When the joystick is twisted clockwise, its Z output should be positive.  If not, add code to invert the sign if necessary.
+
+
+Let w1, w2, w3, and w4 be the commands to send to each of the 4 wheels, where w1 is front left, w2 is front right, w3 is rear left, w4 is rear right, as viewed from the top.
+
+
+Let Kf, Ks, and Kt be tuning parameters (0 to +1) for the fwd/rev, strafe, and spin joystick sensitivities, respectively.
+
+
+set the four wheel speed commands as follows:
+
+w1 = Kf*y + Ks*x + Kt*z
+
+w2 = Kf*y - Ks*x - Kt*z
+
+w3 = Kf*y - Ks*x + Kt*z
+
+w4 = Kf*y + Ks*x - Kt*z
+
+
+You're almost done. All that remains is to normalize the above commands so that their range is -1 to +1. Proceed as follows:
+
+- look at the magnitude (absolute value) of each of the four commands, and select the MAXIMUM. for sake of discussion, call this maximum value Wmax
+
+- if Wmax is less than or equal to 1, no scaling is required. Just use the four w commands as-is
+
+- if Wmax is greater than 1, then divide EACH of the four w values by Wmax.
+
+That's all there is to it. Send each w command to the corresponding wheel (where -1 means 100% reverse, and +1 means 100% forward).
+
+
+Set Kf, Ks, and Kt to +1 initially, then adjust each one down (but not less than zero) individually as required to obtain the desired joystick sensitivity to the three motions.
+
+
+One note of caution: make sure the polarity of the motors on each side of the bot is wired correctly (each wheel must be spinning in the "forward" direction when it gets a "+" command).  An easy way to observe this is to elevate the bot and push the joystick forward; all four wheels should be spinning forward.
+
+
+

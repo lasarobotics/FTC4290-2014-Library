@@ -14,7 +14,6 @@ Define _FORCE_DEBUG to disable full code optimization
 
 #ifndef __NATURALIZATION_
 #define __NATURALIZATION_
-#endif
 
 #ifndef _FORCE_DEBUG
 	#ifdef _DEBUG
@@ -47,3 +46,5 @@ Define _FORCE_DEBUG to disable full code optimization
 #ifdef _ENABLE_LCDDISPLAY
 	#pragma DebuggerWindows("nxtLCDscreen")
 #endif
+
+#endif /* __NATURALIZATION_ /*

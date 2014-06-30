@@ -19,10 +19,29 @@ your coding pleasure.
 */
 void drive_tank(float leftValue, float rightValue, float& out_left, float& out_right)
 {
-	// square the inputs (while preserving the sign) to increase fine control while permitting full power
+	// possible to square the inputs (while preserving the sign) to increase fine control while permitting full power
 	out_left = coerce(-100, 100, leftValue);
 	out_right = coerce(-100, 100, rightValue);
 	return;
+}
+
+/**
+* Mecanum 2-joystick arcade drive.
+* Recommended: forward=y1, strafe=x1, spin=x2
+* @param forward Forward/reverse (x) direction power (-1 to 1)
+* @param strafe strafe (y) direction power (-1 to 1)
+* @param spin Clockwise spin (c) rotation power (-1 to 1)
+*/
+void mecanum_arcade(float forward, float strafe, float spin,
+float& Lf, float& Rf, float& Lb, float& Rb)
+{
+	float kx, ky, kc;
+	kx = ky = kc = 1;
+
+	Lf = ky*forward + kx*strafe + kc*spin;
+  Rf = ky*forward + kx*strafe + kc*spin;
+  Lb = ky*forward + kx*strafe + kc*spin;
+  Rb = ky*forward + kx*strafe + kc*spin;
 }
 
 /**

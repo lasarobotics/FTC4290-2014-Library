@@ -1,0 +1,46 @@
+Rev C
+
+Here's a way to program TANK DRIVE on a mecanum bot so that you can tune the joystick sensitivity to all three motions (fwd/rev, turn, stafe) independently:
+
+Let Kf, Kt, and Ks be the tuning parameters (0 to +1) for the forward/reverse, turn, and strafe motions, respectively.
+
+Let X1 and Y1 represent the joystick outputs for the driver's left-hand joystick (-1 to +1);
+
+Let Y2 represent the joystick outputs for the driver's right-hand joystick (-1 to +1).  
+
+When each joystick is pushed forward, its Y output should be positive. When the joystick is pushed to the right, its X output should be positive. If not, add code to invert the sign if necessary.
+
+Let W1, W2, W3, and W4 be the front left, front right, rear left, and rear right wheels, respectively. ("left" and "right" in this context means "port" and "starboard", respectively)
+
+
+
+Calculate the following:
+
+Yf = (Y1 + Y2)/2
+
+Yt = (Y1 - Y2)/2
+
+
+Now calculate the four wheel speed commands:
+
+W1 = Kf*Yf + Kt*Yt + Ks*X1
+
+W2 = Kf*Yf - Kt*Yt - Ks*X1
+
+W3 = Kf*Yf + Kt*Yt - Ks*X1
+
+W4 = Kf*Yf - Kt*Yt + Ks*X1
+
+
+
+Now normalize the wheel speed commands:
+
+Let Wmax be the maximum absolute value of the four wheel speed commands. If Wmax is greater than 1, then divide each of the four wheel speed commands by Wmax.
+
+
+Finally, send each of the four normalized wheel speed commands to the respective wheels (-1 means 100% reverse, +1 means 100% forward).
+
+The Y1 and Y2 axes act like tank drive.  The X1 axis commands strafe left and right.  The X2 axis is not used.
+
+Tune Kf, Kt, and Ks (from 0 to +1) to get the desired joystick sensitivity to each of the three motions.
+
