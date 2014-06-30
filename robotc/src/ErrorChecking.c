@@ -8,7 +8,7 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../drivers/hitechnic-superpro.h" //SuperPro Prototype Board Driver
-
+#include "../lib/i2c.h"
 task main()
 {
 	 //Setup PrototypeBoard for output on B0 of NXT Port 4 (0x01 represents the pin B0 and Port 4 is defined above in pragma config)
