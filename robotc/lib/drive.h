@@ -35,10 +35,6 @@ void drive_tank(float leftValue, float rightValue, float& out_left, float& out_r
 void mecanum_arcade(float forward, float strafe, float spin,
 float& Lf, float& Rf, float& Lb, float& Rb)
 {
-    float kx = 1;
-    float ky = 1;
-    float kc = 1;
-
     Lf = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
     Rf = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
     Lb = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));

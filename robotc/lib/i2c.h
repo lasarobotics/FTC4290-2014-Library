@@ -1,8 +1,8 @@
 /**
 * Checks a robot component for connection.
 * This function allows you to validate that a robot sensor is on and functioning.
-* @param port The expected port of the sensor.
-* @param address The expected address of the sensor.
+* @param port The expected port of the sensor on the NXT brick;
+* @param address The expected address of the sensor in the daisy chain.  1=first, 2=second, etc.
 * @param expected The first 8 characters of the name of the expected sensor.
 */
 bool errorcheck (int port, int address, string &expected)
@@ -26,13 +26,13 @@ bool errorcheck (int port, int address, string &expected)
         SensorType[S1] = sensorI2CCustom;
         break;
     }
-    
+
     wait10Msec(5);
     I2CmessageS1[0] = 0x02; //Request flag
-    I2CmessageS1[1] = address; //Address
+    I2CmessageS1[1] = address * 2; //Address
     //Request starts at byte 10, where sensor name is stored
     I2CmessageS1[2] = 0x10;
-    
+
     switch (port){
     case 1:
         //Send message
