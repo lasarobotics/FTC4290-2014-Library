@@ -7,6 +7,31 @@ Reads sensor ports and finds if devices are missing.
 
 **********************************************************/
 
+typedef enum {
+MOTORCON = 0,
+SERVOCON = 1,
+TOUCH = 3,
+LIGHT = 4
+} device;
+
+/**
+* Translates from int to string identifier of sensor
+* @param int id of the sensor corresponding to enum in constants.h
+*/
+void error_translate(int sensor, string& expected){
+    switch (sensor){
+    case 0:
+        expected = "MotorCon";
+        break;
+    case 1:
+        expected = "ServoCon";
+        break;
+    default:
+        expected = "None";
+        break;
+    }
+}
+
 /**
 * Checks a robot component for connection.
 * This function allows you to validate that a robot sensor is on and functioning.
@@ -15,14 +40,14 @@ Reads sensor ports and finds if devices are missing.
 * @param The first 8 characters of the name of the expected sensor.
 * @return Returns whether the sensor exists or not.  True if no error.
 */
-bool errorcheck (int port, int address, int sensor)
+bool errorcheck(int port, int address, device sensor)
 {
     //Local vars
     const int responsesize = 8;
     sbyte I2Cmessage[4];
     sbyte I2Creply[8];
     string expected = "";
-    translate(sensor, expected);
+    error_translate(sensor, expected);
     //Setup port
     switch (port){
     case 1:
@@ -43,7 +68,7 @@ bool errorcheck (int port, int address, int sensor)
     I2Cmessage[1] = address * 2; //Address
     //Request starts at byte 10, where sensor name is stored
     I2Cmessage[2] = 0x10;
-    switch (port ){
+    switch (port){
     case 1:
         //Send message
         sendI2CMsg(S1, &I2Cmessage[0], responsesize);
@@ -90,22 +115,5 @@ bool errorcheck (int port, int address, int sensor)
     }
     else {
         return false;
-    }
-}
-/**
-* Translates from int to string identifier of sensor
-* @param int id of the sensor corresponding to enum in constants.h
-*/
-void translate (int sensor, string &expected){
-    switch (sensor){
-    case 0:
-        expected = "MotorCon";
-        break;
-    case 1:
-        expected = "ServoCon";
-        break;
-    default:
-        expected = "";
-        break;
     }
 }

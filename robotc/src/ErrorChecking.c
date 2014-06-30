@@ -8,7 +8,6 @@
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../drivers/hitechnic-superpro.h" //SuperPro Prototype Board Driver
 #include "../lib/i2c.h" //I2C errorchecking
-#include "../lib/constants.h"
 task main()
 {
     /*Setup PrototypeBoard for output on B0 of NXT Port 4
@@ -18,7 +17,6 @@ task main()
     	eraseDisplay();
         int port = 1; //port of specific device on NXT
         int address = 1; //place in daisy chain. 1st in the chain is 1, 2nd is 2, 3rd is 3, etc.
-        string expected = "ServoCon"; //specific to sensor, located in sensor manuals
         bool noerror = errorcheck(port,address,MOTORCON);
         if (noerror){
             //LED, we are good

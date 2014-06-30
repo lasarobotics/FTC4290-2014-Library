@@ -1,6 +1,0 @@
-enum {
-MOTORCON = 0,
-SERVOCON = 1,
-TOUCH = 3,
-LIGHT = 4
-};
