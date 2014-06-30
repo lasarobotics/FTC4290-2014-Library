@@ -68,9 +68,15 @@ Feel free to copy and paste, then replace anything in red.
 \sla end\{document\}}\newpage
 
 \section{Syntax Guide}
-\subsection{Basic Syntax}
-
-
+\subsection{Basic Symbols}
+\code{\sla command}: Indicates a command\\
+\code{\sla\sla}: Indicates a new line\\
+\code{\sla\sla\sla\sla}: Indicates a new paragraph\\
+\code{\sla sla}: The \code{\sla} symbol\\
+\code{\%}: Indicates a comment not read by \LaTeX{}\\
+\code{\%\%}: The \code{\%} symbol\\
+\code{\$ ... \$}: Inline math mode (ex: $I^2 C$)\\
+\code{\$\$ ... \$\$}: Paragraph (long) math mode
 \subsection{Document Structure}
 There are five primary document structures LaTeX uses in its formatting, from greatest to smallest.\\\\
 \code{\sla section\{title\}}: Creates a new section\\
@@ -78,27 +84,41 @@ There are five primary document structures LaTeX uses in its formatting, from gr
 \code{\sla subsubsection\{title\}}: Creates a new subsubsection\\
 \code{\sla paragraph\{title\}}: Creates a new paragraph\\
 \code{\sla subparagraph\{title\}}: Creates a new subparagraph
+\subsection{Font Manipulation}
+Surround text and command like this: \code{\{\sla emph Hello world!\}} to only affect small portions of text.\\
+\code{\sla emph}: \emph{Emphasis}\\
+\code{\sla textbf}: \textbf{Boldface}\\
+\code{\sla underline}: \underline{Underline}\\
+\code{\sla texttt}: \texttt{Typewriter}\\
+\code{\sla code}: \code{Codebox}\\
+\code{\sla url}: URL - \url{http://lasarobotics.org}\\
+\code{\sla left}: Left-aligned\\
+\code{\sla right}: Right-aligned\\
+\code{\sla indent}: Indent text like a paragraph\\
+\code{\sla tiny}: {\tiny Tiny text}\\
+\code{\sla small}: {\small Small text}\\
+\code{\sla normalsize}: {\normalsize Normal text}\\
+\code{\sla large}, \code{\sla Large}, \code{\sla LARGE}, \code{\sla HUGE}: Even bigger fonts
 
 \subsection{Environments}
-Environments run \LaTeX{}'s powerful processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
+Environments run \LaTeX{}'s powerfu
+l processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
 \subsubsection{Text Manipulation}
 \code{\sla begin\{center\}}: Centers large amounts of text\\
 \code{\sla begin\{flushright\}}: Right aligns large amounts of text\\
 \code{\sla begin\{flushleft\}}: Left aligns large amounts of text
 \subsubsection{Bulleted Lists}
 \codefull{\sla begin\{itemize\}\\\sla item Hello\\\sla end\{itemize\}}
-\begin{itemize}
-\item Hello
-\end{itemize}
 \subsubsection{Enumerated Lists}
 \codefull{\sla begin\{enumerate\}\\\sla item Hello\\\sla end\{enumerate\}}
-\begin{enumerate}
-\item Hello
-\end{enumerate}
+\subsubsection{Paragraph Codeboxes}
+Paragraph codeboxes may need padding (\code{\sla\sla\sla\sla}) to appear correctly on the page.  They allow for newlines (\code{\sla\sla}) unlike inline \code{\sla code} boxes.
+\\\\\codefull{\sla codefull\{Text\}}
+
+\subsection{Graphics}
 
 
-
-
-
+\section{That's all folks!}
+Once you give the basic syntax a try, you are ready to write new docs!\\Congratulations and enjoy writing beautiful documents!
 
 \end{document}
