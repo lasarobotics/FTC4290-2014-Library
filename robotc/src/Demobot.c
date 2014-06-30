@@ -7,13 +7,13 @@
 
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
-#include "../lib/gyro.h" //drive trains
+#include "../lib/gyro.h" //gyroscope and FOD
 
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 
@@ -57,7 +57,7 @@ task main()
 
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
-        nxtDisplayCenteredTextLine(4, "%.2f", gyro_getfirstrot());
+        nxtDisplayCenteredTextLine(4, "%.2f", gyro_getfirstoffset());
 
         while(nNxtButtonPressed == kEnterButton)
         {

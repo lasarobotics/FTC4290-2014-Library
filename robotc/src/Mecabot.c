@@ -18,6 +18,7 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
+#include "../lib/gyro.h" //gyroscope and FOD
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS

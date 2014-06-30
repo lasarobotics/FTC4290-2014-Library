@@ -10,16 +10,32 @@ full Field Oriented Drive.
 
 #include "../drivers/hitechnic-gyro.h" //gyroscope
 
-/***** VARIABLES *****/
+/***** LOCAL VARIABLES *****/
 static float rotSpeed = 0;
 static float heading = 0;
 static float firstrot = 0;
 static tSensors gyro = 0;
+static bool go = true;
 
+/***** QUICK METHODS *****/
+
+//Get current rotational speed (in deg/s)
 float gyro_getrotspeed() { return rotSpeed; }
+//Get current heading from -360 to 360 degrees
 float gyro_getheading() { return heading; }
-float gyro_getfirstrot() { return firstrot; }
+//Get first derivative offset (in deg)
+float gyro_getfirstoffset() { return firstrot; }
+//Reset gyro heading to zero
+void gyro_reset() { heading = 0; }
+//Stop gyro calibration task
+void gyro_kill() { go = false; }
 
+/***** METHODS *****/
+
+/**
+* Gyro initialization function
+* @param The gyro sensor.
+*/
 float gyro_init(tSensors link)
 {
     //Read gyro offset
@@ -27,11 +43,13 @@ float gyro_init(tSensors link)
     return HTGYROstartCal(link);
 }
 
-void gyro_reset() { heading = 0; }
-
+/**
+* Gyro calibration task
+* Call before your while(true) loop with priority 8
+*/
 task gyro_calibrate()
 {
-    while (true)
+    while (go)
     {
         // Wait until 20ms has passed
         while (time1[T1] < 20)
@@ -61,6 +79,6 @@ task gyro_calibrate()
         // the last time we measured.
         heading += rotSpeed * 0.02;
         if (heading > 360) { heading -= 360; }
-        if (heading < 0) { heading += 360; }
+        if (heading < -360) { heading += 360; }
     }
 }
