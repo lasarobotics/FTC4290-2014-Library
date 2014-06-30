@@ -75,8 +75,8 @@ Feel free to copy and paste, then replace anything in red.
 \code{\sla sla}: The \code{\sla} symbol\\
 \code{\%}: Indicates a comment not read by \LaTeX{}\\
 \code{\%\%}: The \code{\%} symbol\\
-\code{\$ ... \$}: Inline math mode (ex: $I^2 C$)\\
-\code{\$\$ ... \$\$}: Paragraph (long) math mode
+\code{\$ ... \$}: Inline math mode (ex: $I^2 C$)
+
 \subsection{Document Structure}
 There are five primary document structures LaTeX uses in its formatting, from greatest to smallest.\\\\
 \code{\sla section\{title\}}: Creates a new section\\
@@ -116,7 +116,10 @@ Paragraph codeboxes may need padding (\code{\sla\sla\sla\sla}) to appear correct
 \\\\\codefull{\sla codefull\{Text\}}
 
 \subsection{Graphics}
-
+\LaTeX{} can automagically include JPG, PNG, and EPS (vector) graphics.\\
+\code{\sla includegraphics\{relative location\}}\\\\
+If you wish, you can even set the width and height of the graphic like this:\\
+\code{\sla includegraphics[width=1in, height=350px]\{relative location\}}\\\\
 
 \section{That's all folks!}
 Once you give the basic syntax a try, you are ready to write new docs!\\Congratulations and enjoy writing beautiful documents!
