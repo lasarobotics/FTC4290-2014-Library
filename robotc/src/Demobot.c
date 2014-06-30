@@ -7,7 +7,7 @@
 
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/

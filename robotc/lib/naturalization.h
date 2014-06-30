@@ -19,6 +19,10 @@ Define _FORCE_DEBUG to disable full code optimization
 	#ifdef _DEBUG
 		#undef _DEBUG //force full code optimization
 	#endif
+#else
+	#ifndef _DEBUG
+		#define _DEBUG //force no code optimization
+	#endif
 #endif
 
 #if (defined(NXT) || defined(TETRIX)) && defined(_Target_Robot_) && !defined(NaturalLanguage)
