@@ -36,7 +36,7 @@ float filterencoder(float value, float lastvalue)
  */
 float norm_ftc_motor(float value)
 {
-	return value / 127.5 * 100;
+	return value / 127 * 100;
 }
 
 /**
