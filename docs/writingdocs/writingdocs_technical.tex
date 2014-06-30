@@ -44,9 +44,32 @@ Then, we import the notebook template like so on the first line of your .tex doc
 
 \section{Setting Up the Document}
 Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \codefull{\sla input\{../template\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}  Notice that all \LaTeX{} commands start with a \code{\sla}.\newpage
-
 In the \code{\sla begin\{document\} ... \sla end\{document\}} section, add the following.
-\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle}
+\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle\{{\color{red}relative location of assets folder}\}}\\
+You should be done with initialization now.  For future reference, the default templates for technical and notebook documentation are below.
+
+\section{Default Templates}
+Feel free to copy and paste, then replace anything in red.
+\subsection{Technical Documentation}
+\codefull{\sla input\{{\color{red} ../template\_technical}\}\space\space\%relative path to template\_technical.tex\\\\
+\sla begin\{document\}\\
+\sla renewcommand\{\sla currentpart\}\{LASA Robotics Technical Documentation\}\\
+\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
+\sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
+\%-----INSERT CONTENT HERE-----\%\\\\\\
+\sla end\{document\}
+}
+\subsection{Notebook Documentation}
+\codefull{\sla input\{{\color{red} ../template\_notebook}\}\space\space\%relative path to template\_notebook.tex\\\\
+\sla begin\{document\}\\
+\sla renewcommand\{\sla currentpart\}\{LASA Robotics Notebook Documentation\}\\
+\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
+\sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
+\%-----INSERT CONTENT HERE-----\%\\\\\\
+\sla end\{document\}
+}
+\newpage
+
 
 
 
