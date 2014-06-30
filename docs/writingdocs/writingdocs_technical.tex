@@ -21,7 +21,7 @@ Download the latest version of Mik\TeX{} from \url{http://www.miktex.org/downloa
 Download and install the latest version of TeXstudio \textbf{after MikTex is downloaded and installed} from \url{http://texstudio.sourceforge.net}, which takes several minutes.  After this completes, you're good to go!
 
 \subsection{Linux Debian}
-Run \codefull{sudo apt-get install gedit-latex-plugin texlive-fonts-recommended latex-beamer\\ texpower texlive-pictures texlive-latex-extra texpower-examples imagemagick} to install the GUI and all packages for \LaTeX{}.  Other distributions, including Redhat, may need alternate configurations (note that Debian-based Linux operating systems such as Ubuntu are included in this documentation.)
+Run \\\\\codefull{sudo apt-get install gedit-latex-plugin texlive-fonts-recommended latex-beamer\\ texpower texlive-pictures texlive-latex-extra texpower-examples imagemagick}\\ to install the GUI and all packages for \LaTeX{}.  Other distributions, including Redhat, may need alternate configurations (note that Debian-based Linux operating systems such as Ubuntu are included in this documentation.)
 
 \subsection{Mac}
 Good luck!
@@ -36,16 +36,16 @@ Follows is the tutorial for setting up either technical or notebook documentatio
 
 \subsection{Technical Documentation}
 The first step of any documentation is to create a .tex file.  Create one using your document and save it somewhere safe.\\
-Then, we begin writing.  Import the technical template like so on the first line of your .tex document: \codefull{\sla input\{../template\_technical\}} The location of the file may be different, but make sure you have \code{template\_technical.tex} as the input file.
+Then, we begin writing.  Import the technical template like so on the first line of your .tex document: \\\\\codefull{\sla input\{../template\_technical\}}\\ The location of the file may be different, but make sure you have \code{template\_technical.tex} as the input file.
 
 \subsection{Notebook Documentation}
 As with technical documentation, the first step of any is to create a .tex file and save it somewhere safe.\\
-Then, we import the notebook template like so on the first line of your .tex document: \codefull{\sla input\{../template\_notebook\}} The location of the file may be different, but make sure you have \code{template\_notebook.tex} as the input file.
+Then, we import the notebook template like so on the first line of your .tex document:\\\\ \codefull{\sla input\{../template\_notebook\}}\\ The location of the file may be different, but make sure you have \code{template\_notebook.tex} as the input file.
 
 \section{Setting Up the Document}
-Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \codefull{\sla input\{../template\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}  Notice that all \LaTeX{} commands start with a \code{\sla}.\newpage
+Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \\\\\codefull{\sla input\{../template\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}\\\\  Notice that all \LaTeX{} commands start with a \code{\sla}.\newpage
 In the \code{\sla begin\{document\} ... \sla end\{document\}} section, add the following.
-\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle\{{\color{red}relative location of assets folder}\}}\\
+\\\\\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle\{{\color{red}relative location of assets folder}\}}\\\\
 You should be done with initialization now.  For future reference, the default templates for technical and notebook documentation are below.
 
 \section{Default Templates}
@@ -57,8 +57,7 @@ Feel free to copy and paste, then replace anything in red.
 \sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
 \sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
 \%-----INSERT CONTENT HERE-----\%\\\\\\
-\sla end\{document\}
-}
+\sla end\{document\}}
 \subsection{Notebook Documentation}
 \codefull{\sla input\{{\color{red} ../template\_notebook}\}\space\space\%relative path to template\_notebook.tex\\\\
 \sla begin\{document\}\\
@@ -66,9 +65,38 @@ Feel free to copy and paste, then replace anything in red.
 \sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
 \sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
 \%-----INSERT CONTENT HERE-----\%\\\\\\
-\sla end\{document\}
-}
-\newpage
+\sla end\{document\}}\newpage
+
+\section{Syntax Guide}
+\subsection{Basic Syntax}
+
+
+\subsection{Document Structure}
+There are five primary document structures LaTeX uses in its formatting, from greatest to smallest.\\\\
+\code{\sla section\{title\}}: Creates a new section\\
+\code{\sla subsection\{title\}}: Creates a new subsection\\
+\code{\sla subsubsection\{title\}}: Creates a new subsubsection\\
+\code{\sla paragraph\{title\}}: Creates a new paragraph\\
+\code{\sla subparagraph\{title\}}: Creates a new subparagraph
+
+\subsection{Environments}
+Environments run \LaTeX{}'s powerful processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
+\subsubsection{Text Manipulation}
+\code{\sla begin\{center\}}: Centers large amounts of text\\
+\code{\sla begin\{flushright\}}: Right aligns large amounts of text\\
+\code{\sla begin\{flushleft\}}: Left aligns large amounts of text
+\subsubsection{Bulleted Lists}
+\codefull{\sla begin\{itemize\}\\\sla item Hello\\\sla end\{itemize\}}
+\begin{itemize}
+\item Hello
+\end{itemize}
+\subsubsection{Enumerated Lists}
+\codefull{\sla begin\{enumerate\}\\\sla item Hello\\\sla end\{enumerate\}}
+\begin{enumerate}
+\item Hello
+\end{enumerate}
+
+
 
 
 
