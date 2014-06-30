@@ -13,6 +13,7 @@ SERVOCON = 1,
 TOUCH = 3,
 LIGHT = 4
 } device;
+//TODO: Oksisane - Add other devices
 
 /**
 * Translates from int to string identifier of sensor
@@ -20,12 +21,13 @@ LIGHT = 4
 */
 void error_translate(int sensor, string& expected){
     switch (sensor){
-    case 0:
+    case MOTORCON:
         expected = "MotorCon";
         break;
-    case 1:
+    case SERVOCON:
         expected = "ServoCon";
         break;
+    //TODO: Oksisane - Add other devices
     default:
         expected = "None";
         break;
