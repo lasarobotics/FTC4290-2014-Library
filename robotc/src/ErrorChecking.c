@@ -8,6 +8,7 @@
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../drivers/hitechnic-superpro.h" //SuperPro Prototype Board Driver
 #include "../lib/i2c.h" //I2C errorchecking
+
 task main()
 {
     /*Setup PrototypeBoard for output on B0 of NXT Port 4

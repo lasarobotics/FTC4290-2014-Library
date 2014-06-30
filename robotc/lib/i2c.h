@@ -1,9 +1,19 @@
+/**********************************************************
+
+I2C Error Checking
+i2c.h
+
+Reads sensor ports and finds if devices are missing.
+
+**********************************************************/
+
 /**
 * Checks a robot component for connection.
 * This function allows you to validate that a robot sensor is on and functioning.
-* @param port The expected port of the sensor on the NXT brick;
-* @param address The expected address of the sensor in the daisy chain.  1=first, 2=second, etc.
-* @param expected The first 8 characters of the name of the expected sensor.
+* @param The expected port of the sensor on the NXT brick;
+* @param The expected address of the sensor in the daisy chain.  1=first, 2=second, etc.
+* @param The first 8 characters of the name of the expected sensor.
+* @return Returns whether the sensor exists or not.  True if no error.
 */
 bool errorcheck (int port, int address, string &expected)
 {

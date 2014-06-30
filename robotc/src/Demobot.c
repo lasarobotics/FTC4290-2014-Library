@@ -13,9 +13,9 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
+#include "../lib/gyro.h" //drive trains
 
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
-#include "../drivers/hitechnic-gyro.h" //gyroscope
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
@@ -28,13 +28,12 @@ float firstrot = 0;
 
 void init()
 {
-  // Place code here to initialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
+	  // Place code here to initialize servos to starting positions.
+	  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
     eraseDisplay();
     wait1Msec(1000);
-    // Prepare gyro offset
-    HTGYROstartCal(HTGYRO);
+    gyro_init(HTGYRO); // Calibrate gyro offset
     wait1Msec(50);
     return;
 }
