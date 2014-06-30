@@ -1,0 +1,26 @@
+\input{../../../docs/template_technical}
+
+\begin{document}
+%PART AND CHAPTER DETAILS
+\renewcommand{\currentpart}{LASA Robotics Technical Documentation for RobotC}
+\renewcommand{\currentchapter}{Code Normalization using Notepad++}
+\createtitle{../../../assets}
+
+\section{Code Specs}
+When coding, use these settings in your text editor.\\\\
+\indent Indentation: 4 spaces\\
+\indent Max line length: 83 characters wide\\
+\\These settings are automagically set by the Autofix macro when using Notepad++.
+
+\section{What is Notepad++?}
+Notepad++, also known as npp, is a powerful text file editor.
+
+\section{Installing Notepad++}
+If you already have Notepad++, you can skip this step.\\
+Otherwise, download Notepad++ from \url{http://notepad-plus-plus.org}.
+
+\section{Installing Autofix Macro}
+The autofix macro automatically converts any text file's line endings to UNIX format and forces the text file to convert all tabs to spaces, allowing Git to parse without problems.  The macro launches with \code{Ctrl+Alt+Shift+S} and automatically saves the current file.\\\\
+To install, copy the \code{shortcuts.xml} file to \code{C:/Users/USERNAME/AppData/Roaming/Notepad++/shortcuts.xml} and overwrite.  If you have custom macros already, you can edit your \code{shortcuts.xml} to include\\ \code{<Macro name="Autofix" ...} from the LASA Robotics version located in this directory.
+
+\end{document}
