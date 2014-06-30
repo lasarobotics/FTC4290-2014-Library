@@ -33,16 +33,19 @@ void init()
     // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
     eraseDisplay();
-
+    wait1Msec(1000);
+    gyro_init(HTGYRO);
     wait1Msec(50);
     return;
 }
 
 task main()
 {
+    float leftFront, leftBack, rightFront, rightBack; // motors
+
     /***** BEGIN Mecanum Arcade Drive Test *****/
     init();
-    float leftFront, leftBack, rightFront, rightBack; // motors
+    StartTask(gyro_calibrate, 8);
     if (competitionmode) {waitForStart();}
 
     while (true)
@@ -61,5 +64,9 @@ task main()
         nxtDisplayCenteredTextLine(1, "%1.0f", rightFront);
         nxtDisplayCenteredTextLine(2, "%1.0f", leftBack);
         nxtDisplayCenteredTextLine(3, "%1.0f", rightBack);
+        nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
+        nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
+
+        while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     }
 }
