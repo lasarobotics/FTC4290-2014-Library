@@ -11,7 +11,7 @@ bool errorcheck (int port, int address, string &expected)
 	const int responsesize = 8;
 	sbyte I2CmessageS1[4];
 	sbyte I2CreplyS1[8];
-  //Setup port
+        //Setup port
 	switch (port){
   	case 1:
   			SensorType[S1] = sensorI2CCustom;
