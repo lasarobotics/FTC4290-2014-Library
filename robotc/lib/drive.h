@@ -40,9 +40,9 @@ float& Lf, float& Rf, float& Lb, float& Rb)
     float kc = 1;
 
     Lf = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
-  Rf = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
-  Lb = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
-  Rb = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
+    Rf = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
+    Lb = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
+    Rb = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
 }
 
 /**
