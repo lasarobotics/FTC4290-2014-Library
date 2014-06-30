@@ -16,39 +16,39 @@ Define _FORCE_DEBUG to disable full code optimization
 #define __NATURALIZATION_
 
 #ifndef _FORCE_DEBUG
-	#ifdef _DEBUG
-		#undef _DEBUG //force full code optimization
-	#endif
+    #ifdef _DEBUG
+        #undef _DEBUG //force full code optimization
+    #endif
 #else
-	#ifndef _DEBUG
-		#define _DEBUG //force no code optimization
-	#endif
+    #ifndef _DEBUG
+        #define _DEBUG //force no code optimization
+    #endif
 #endif
 
 #if (defined(NXT) || defined(TETRIX)) && defined(_Target_Robot_) && !defined(NaturalLanguage)
-	//A OK
+    //A OK
 #elif (defined(VEX2) || defined(NXT) || defined(TETRIX)) && defined(_Target_VirtWorld_)
-	#error "Not supported with Virtual Worlds!"
+    #error "Not supported with Virtual Worlds!"
 #elif defined(NaturalLanguage)
-	#warning "You are using Natural Language.  Some errors may occur as a result."
+    #warning "You are using Natural Language.  Some errors may occur as a result."
 #elif (defined(NXT) || defined(TETRIX)) && defined(_Target_Emulator_)
-  #warning "You are using an Emulator.  Some errors may occur as a result."
+    #warning "You are using an Emulator.  Some errors may occur as a result."
 #else
-  #error "Not supported on this platform!"
+    #error "Not supported on this platform!"
 #endif
 
 #ifndef _DISABLE_JOYDISPLAY
-	#pragma DebuggerWindows("Globals")
-	#pragma DebuggerWindows("Locals")
-	#ifdef FTC
-		#pragma DebuggerWindows("joystickGame")
-	#else
-		#pragma DebuggerWindows("joystickSimple")
-	#endif
+    #pragma DebuggerWindows("Globals")
+    #pragma DebuggerWindows("Locals")
+    #ifdef FTC
+        #pragma DebuggerWindows("joystickGame")
+    #else
+        #pragma DebuggerWindows("joystickSimple")
+    #endif
 #endif
 
 #ifdef _ENABLE_LCDDISPLAY
-	#pragma DebuggerWindows("nxtLCDscreen")
+    #pragma DebuggerWindows("nxtLCDscreen")
 #endif
 
 #endif /* __NATURALIZATION_ /*

@@ -22,14 +22,14 @@ IO and manipulation functions.
  */
 float deadband(float deadband, float value)
 {
-	if (abs(value) > deadband)
-	{
-		return value;
-	}
-	else
-	{
-		return 0;
-	}
+    if (abs(value) > deadband)
+    {
+        return value;
+    }
+    else
+    {
+        return 0;
+    }
 }
 /**
  * Forces a numerical value to be between a min
@@ -42,7 +42,7 @@ float deadband(float deadband, float value)
  */
 float coerce(float min, float max, float value)
 {
-	if (value > max) { return max; }
-	if (value < min) { return min; }
-	return value;
+    if (value > max) { return max; }
+    if (value < min) { return min; }
+    return value;
 }

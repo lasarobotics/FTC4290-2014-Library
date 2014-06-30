@@ -5,7 +5,7 @@
 * @param address The expected address of the sensor.
 * @param expected The first 8 characters of the name of the expected sensor.
 */
-bool errorCheck (int port, int address, string &expected)
+bool errorcheck (int port, int address, string &expected)
 {
     //Local vars
     const int responsesize = 8;
@@ -26,13 +26,13 @@ bool errorCheck (int port, int address, string &expected)
         SensorType[S1] = sensorI2CCustom;
         break;
     }
+    
     wait10Msec(5);
-    //Request flag
-    I2CmessageS1[0] = 0x02;
-    //Address
-    I2CmessageS1[1] = address;
+    I2CmessageS1[0] = 0x02; //Request flag
+    I2CmessageS1[1] = address; //Address
     //Request starts at byte 10, where sensor name is stored
     I2CmessageS1[2] = 0x10;
+    
     switch (port){
     case 1:
         //Send message
@@ -69,7 +69,7 @@ bool errorCheck (int port, int address, string &expected)
     //get string returned
     string display = "";
     int convArray[responsesize];
-    //Convert array to int array
+    //convert array to int array
     for (int i=0; i<responsesize; ++i){
         convArray[i] = I2CreplyS1[i];
         display = display + (char)convArray[i];

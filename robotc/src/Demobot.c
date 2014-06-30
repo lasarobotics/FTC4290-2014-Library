@@ -31,83 +31,83 @@ void init()
   // Place code here to initialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
-	eraseDisplay();
-	wait1Msec(1000);
-	// Prepare gyro offset
-	HTGYROstartCal(HTGYRO);
-	wait1Msec(50);
-  return;
+    eraseDisplay();
+    wait1Msec(1000);
+    // Prepare gyro offset
+    HTGYROstartCal(HTGYRO);
+    wait1Msec(50);
+    return;
 }
 
 //set motoractive to true if any drive motors have enough power to move robot
 task calibrate()
 {
-	while (true)
-  {
-    // Wait until 20ms has passed
-    while (time1[T1] < 20)
-      wait1Msec(1);
-
-    // Reset the timer
-    time1[T1]=0;
-
-    // Read the current rotation speed
-    rotSpeed = HTGYROreadRot(HTGYRO);
-    if ((rotSpeed != 0) && (firstrot == 0) && (abs(rotSpeed) < 1))
+    while (true)
     {
-    	if (sgn(rotSpeed) == 1) {firstrot = rotSpeed;}
-    	if (sgn(rotSpeed) == -1) {firstrot = rotSpeed + 1;}
-  	}
+        // Wait until 20ms has passed
+        while (time1[T1] < 20)
+          wait1Msec(1);
 
-  	if (sgn(rotSpeed) == 1) {rotSpeed = rotSpeed - firstrot;}
-  	if (sgn(rotSpeed) == -1) {rotSpeed = rotSpeed - firstrot + 1;}
+        // Reset the timer
+        time1[T1]=0;
 
-    if ((abs(rotSpeed) <= 1) && (firstrot != 0)) { rotSpeed = 0; }
-    if (abs(rotSpeed) < 1) { rotSpeed = 0; }
+        // Read the current rotation speed
+        rotSpeed = HTGYROreadRot(HTGYRO);
+        if ((rotSpeed != 0) && (firstrot == 0) && (abs(rotSpeed) < 1))
+        {
+            if (sgn(rotSpeed) == 1) {firstrot = rotSpeed;}
+            if (sgn(rotSpeed) == -1) {firstrot = rotSpeed + 1;}
+        }
 
-    // Calculate the new heading by adding the amount of degrees
-    // we've turned in the last 20ms
-    // If our current rate of rotation is 100 degrees/second,
-    // then we will have turned 100 * (20/1000) = 2 degrees since
-    // the last time we measured.
-    heading += rotSpeed * 0.02;
-    if (heading > 360) { heading -= 360; }
-    if (heading < 0) { heading += 360; }
+        if (sgn(rotSpeed) == 1) {rotSpeed = rotSpeed - firstrot;}
+        if (sgn(rotSpeed) == -1) {rotSpeed = rotSpeed - firstrot + 1;}
 
-    // Display our current heading on the screen
-    nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
-    nxtDisplayCenteredTextLine(5, "%.2f", rotSpeed);
-    nxtDisplayCenteredTextLine(4, "%.2f", firstrot);
-  }
+        if ((abs(rotSpeed) <= 1) && (firstrot != 0)) { rotSpeed = 0; }
+        if (abs(rotSpeed) < 1) { rotSpeed = 0; }
+
+        // Calculate the new heading by adding the amount of degrees
+        // we've turned in the last 20ms
+        // If our current rate of rotation is 100 degrees/second,
+        // then we will have turned 100 * (20/1000) = 2 degrees since
+        // the last time we measured.
+        heading += rotSpeed * 0.02;
+        if (heading > 360) { heading -= 360; }
+        if (heading < 0) { heading += 360; }
+
+        // Display our current heading on the screen
+        nxtDisplayCenteredBigTextLine(6, "%.2f", heading);
+        nxtDisplayCenteredTextLine(5, "%.2f", rotSpeed);
+        nxtDisplayCenteredTextLine(4, "%.2f", firstrot);
+    }
 }
 
 task main()
 {
-  init();
+    init();
 
-  // This is the struct that holds all the info on all buttons and joypads/sticks
-  tPSP controller;
-  float left, right;
+    // This is the struct that holds all the info on all buttons and joypads/sticks
+    tPSP controller;
+    float left, right;
 
-  StartTask(calibrate, 8);
+    StartTask(calibrate, 8);
 
-  if (competitionmode) {waitForStart();}
+    if (competitionmode) {waitForStart();}
 
-  while (true)
-  {
-	  // Read the state of the buttons
-    PSPV4readButtons(PSPNXV4, controller);
-
-    //y-axis is inverted
-    drive_tank(deadband(k_deadband,-controller.joystickLeft_y), deadband(k_deadband,-controller.joystickRight_y), left, right);
-    motor[drive_left] = left;
-    motor[drive_right] = right;
-
-    while(nNxtButtonPressed == kEnterButton)
+    while (true)
     {
-    	//Reset heading to zero
-    	heading = 0;
-    }
+        // Read the state of the buttons
+        PSPV4readButtons(PSPNXV4, controller);
 
-  }
+        //y-axis is inverted
+        drive_tank(deadband(k_deadband,-controller.joystickLeft_y), deadband(k_deadband,-controller.joystickRight_y), left, right);
+        motor[drive_left] = left;
+        motor[drive_right] = right;
+
+        while(nNxtButtonPressed == kEnterButton)
+        {
+            //Reset heading to zero
+            heading = 0;
+        }
+
+    }
 }

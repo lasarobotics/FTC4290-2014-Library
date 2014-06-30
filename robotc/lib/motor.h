@@ -20,8 +20,8 @@ Controls motors, servos, and encoders.
  */
 float filterencoder(float value, float lastvalue)
 {
-	if (value == 0) { return lastvalue; }
-	else { return value; }
+    if (value == 0) { return lastvalue; }
+    else { return value; }
 }
 
 //////////////////////////////
@@ -36,7 +36,7 @@ float filterencoder(float value, float lastvalue)
  */
 float norm_ftc_motor(float value)
 {
-	return value / 127 * 100;
+    return value / 127 * 100;
 }
 
 /**
@@ -47,5 +47,5 @@ float norm_ftc_motor(float value)
  */
 float norm_ftc_servo(float value)
 {
-	return ((value / 127) + 1) / 2 * 255;
+    return ((value / 127) + 1) / 2 * 255;
 }

@@ -28,37 +28,37 @@ static float k_deadband = 15;
 
 void init()
 {
-  // Place code here to initialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
+    // Place code here to initialize servos to starting positions.
+    // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
-	eraseDisplay();
+    eraseDisplay();
 
-	wait1Msec(50);
-  return;
+    wait1Msec(50);
+    return;
 }
 
 task main()
 {
-	/***** BEGIN Mecanum Arcade Drive Test *****/
-  init();
-  float leftFront, leftBack, rightFront, rightBack; // motors
-  if (competitionmode) {waitForStart();}
+    /***** BEGIN Mecanum Arcade Drive Test *****/
+    init();
+    float leftFront, leftBack, rightFront, rightBack; // motors
+    if (competitionmode) {waitForStart();}
 
-  while (true)
-  {
-  	/***** Proportional Motor Control *****/
-  	getJoystickSettings(joystick); //get all joystick statuses
+    while (true)
+    {
+        /***** Proportional Motor Control *****/
+        getJoystickSettings(joystick); //get all joystick statuses
 
-  	mecanum_arcade(deadband(k_deadband,joystick.joy1_y1), deadband(k_deadband,joystick.joy1_x1), deadband(k_deadband,joystick.joy1_x2),
-  	leftFront, rightFront, leftBack, rightBack);
+        mecanum_arcade(deadband(k_deadband,joystick.joy1_y1), deadband(k_deadband,joystick.joy1_x1), deadband(k_deadband,joystick.joy1_x2),
+        leftFront, rightFront, leftBack, rightBack);
 
-  	motor[Lf] = leftFront;
-  	motor[Rf] = rightFront;
-  	motor[Lb] = leftBack;
-  	motor[Rb] = rightBack;
-  	nxtDisplayCenteredTextLine(0, "%1.0f", leftFront);
-  	nxtDisplayCenteredTextLine(1, "%1.0f", rightFront);
-  	nxtDisplayCenteredTextLine(2, "%1.0f", leftBack);
-  	nxtDisplayCenteredTextLine(3, "%1.0f", rightBack);
-  }
+        motor[Lf] = leftFront;
+        motor[Rf] = rightFront;
+        motor[Lb] = leftBack;
+        motor[Rb] = rightBack;
+        nxtDisplayCenteredTextLine(0, "%1.0f", leftFront);
+        nxtDisplayCenteredTextLine(1, "%1.0f", rightFront);
+        nxtDisplayCenteredTextLine(2, "%1.0f", leftBack);
+        nxtDisplayCenteredTextLine(3, "%1.0f", rightBack);
+    }
 }

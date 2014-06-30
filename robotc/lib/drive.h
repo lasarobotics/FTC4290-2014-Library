@@ -19,10 +19,10 @@ your coding pleasure.
 */
 void drive_tank(float leftValue, float rightValue, float& out_left, float& out_right)
 {
-	// possible to square the inputs (while preserving the sign) to increase fine control while permitting full power
-	out_left = coerce(-100, 100, leftValue);
-	out_right = coerce(-100, 100, rightValue);
-	return;
+    // possible to square the inputs (while preserving the sign) to increase fine control while permitting full power
+    out_left = coerce(-100, 100, leftValue);
+    out_right = coerce(-100, 100, rightValue);
+    return;
 }
 
 /**
@@ -35,11 +35,11 @@ void drive_tank(float leftValue, float rightValue, float& out_left, float& out_r
 void mecanum_arcade(float forward, float strafe, float spin,
 float& Lf, float& Rf, float& Lb, float& Rb)
 {
-	float kx = 1;
-	float ky = 1;
-	float kc = 1;
+    float kx = 1;
+    float ky = 1;
+    float kc = 1;
 
-	Lf = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
+    Lf = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
   Rf = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
   Lb = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
   Rb = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
@@ -53,9 +53,9 @@ float& Lf, float& Rf, float& Lb, float& Rb)
 */
 void tank2arcade(float leftValue, float rightValue, float& out_x, float& out_y)
 {
-	out_x = coerce(-100, 100, (leftValue-rightValue)/2);
-	out_y = coerce(-100, 100, (leftValue+rightValue)/2);
-	return;
+    out_x = coerce(-100, 100, (leftValue-rightValue)/2);
+    out_y = coerce(-100, 100, (leftValue+rightValue)/2);
+    return;
 }
 
 /**
@@ -66,12 +66,12 @@ void tank2arcade(float leftValue, float rightValue, float& out_x, float& out_y)
 */
 void arcade2tank(float x, float y, float& out_left, float& out_right)
 {
-	x = -x;
-	float v = (100-abs(x)) * (y/100) + y;
-	float w = (100-abs(y)) * (x/100) + x;
-	out_right = (v+w)/2;
-	out_left = (v-w)/2;
-	return;
+    x = -x;
+    float v = (100-abs(x)) * (y/100) + y;
+    float w = (100-abs(y)) * (x/100) + x;
+    out_right = (v+w)/2;
+    out_left = (v-w)/2;
+    return;
 }
 
 /**
@@ -84,8 +84,8 @@ void arcade2tank(float x, float y, float& out_left, float& out_right)
 */
 void rect2polar(float x, float y, float& out_r, float& out_theta)
 {
-	out_r = sqrt((x*x)+(y*y));
-	out_theta = atan2(y,x);
+    out_r = sqrt((x*x)+(y*y));
+    out_theta = atan2(y,x);
 }
 
 /**
@@ -98,9 +98,9 @@ void rect2polar(float x, float y, float& out_r, float& out_theta)
 */
 float exp_drive(float value, float time, bool& max, bool& min)
 {
-	float a = .01 * (pow(1.031177275, time));
-	if (a >= 1) { a = 1; max=true; } else { max=false; }
-	if (a <= .01) { a = 0; min=true; } else { min=false; }
-	float b = value * a;
-	return b;
+    float a = .01 * (pow(1.031177275, time));
+    if (a >= 1) { a = 1; max=true; } else { max=false; }
+    if (a <= .01) { a = 0; min=true; } else { min=false; }
+    float b = value * a;
+    return b;
 }
