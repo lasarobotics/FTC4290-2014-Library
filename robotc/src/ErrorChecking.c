@@ -1,6 +1,6 @@
 #pragma config(Sensor, S4,     HTSPB,                sensorI2CCustom9V)
 /***** DEFINES *****/
-//#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
+#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
 #define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
@@ -15,7 +15,7 @@ task main()
     HTSPBsetupIO(HTSPB, 0x1);
     while (true){
     	eraseDisplay();
-        int port = 1; //port of specific device on NXT
+        int port = 2; //port of specific device on NXT
         int address = 1; //place in daisy chain. 1st in the chain is 1, 2nd is 2, 3rd is 3, etc.
         bool noerror = errorcheck(port,address,MOTORCON);
         if (noerror){

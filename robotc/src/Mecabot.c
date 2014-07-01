@@ -19,6 +19,7 @@
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
 #include "../lib/gyro.h" //gyroscope and FOD
+#include "../lib/i2c.h" //I2C error checking
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
