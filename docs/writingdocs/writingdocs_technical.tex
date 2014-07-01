@@ -103,7 +103,7 @@ Surround text and command like this: \code{\{\sla emph Hello world!\}} to only a
 \subsection{Environments}
 Environments run \LaTeX{}'s powerfu
 l processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
-\subsubsection{Text Manipulation}
+\subsubsection{Alignment}
 \code{\sla begin\{center\}}: Centers large amounts of text\\
 \code{\sla begin\{flushright\}}: Right aligns large amounts of text\\
 \code{\sla begin\{flushleft\}}: Left aligns large amounts of text
@@ -115,11 +115,19 @@ l processing.  With these, you can create anything from centered text to lists. 
 Paragraph codeboxes may need padding (\code{\sla\sla\sla\sla}) to appear correctly on the page.  They allow for newlines (\code{\sla\sla}) unlike inline \code{\sla code} boxes.
 \\\\\codefull{\sla codefull\{Text\}}
 
+\newpage
 \subsection{Graphics}
 \LaTeX{} can automagically include JPG, PNG, and EPS (vector) graphics.\\
-\code{\sla includegraphics\{relative location\}}\\\\
-If you wish, you can even set the width and height of the graphic like this:\\
-\code{\sla includegraphics[width=1in, height=350px]\{relative location\}}\\\\
+\subsubsection{Not Wrapped}
+These graphics will be placed directly into the document, without word wrap.\\\\
+\code{\sla image\{relative location\}}\\\\
+If you wish, you can even set the width of the graphic like this:\\\\
+\code{\sla image[width (in or px)]\{relative location\}}\\
+\code{\sla image[1in]\{./myimage\}}\\\\
+\subsubsection{Wrapped and Right Aligned}
+Wrapped images will automatically be right aligned on the page.\\\\
+\code{\sla imagewrap\{relative location\}\{width\}\{Text\}}\\
+\code{\sla imagewrap\{./myimage\}\{2in\}\{Lorem ipsum, lorem ipsum...\}}\\\\
 
 \section{That's all folks!}
 Once you give the basic syntax a try, you are ready to write new docs!\\Congratulations and enjoy writing beautiful documents!
