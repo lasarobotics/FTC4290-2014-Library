@@ -56,13 +56,13 @@ bool errorcheck(int port, int address, device sensor)
         SensorType[S1] = sensorI2CCustom;
         break;
     case 2:
-        SensorType[S1] = sensorI2CCustom;
+        SensorType[S2] = sensorI2CCustom;
         break;
     case 3:
-        SensorType[S1] = sensorI2CCustom;
+        SensorType[S3] = sensorI2CCustom;
         break;
     case 4:
-        SensorType[S1] = sensorI2CCustom;
+        SensorType[S4] = sensorI2CCustom;
         break;
     }
     wait10Msec(5);
