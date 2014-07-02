@@ -6,3 +6,6 @@
 *.snm
 *.synctex.gz
 *.toc
+
+#riccreator
+*settings.xml

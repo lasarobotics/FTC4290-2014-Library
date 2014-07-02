@@ -15,6 +15,7 @@
 #include "../lib/drive.h" //drive trains
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
+#include "../lib/display.h" //splash screens
 
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 
@@ -27,28 +28,27 @@ void init()
 	// Place code here to initialize servos to starting positions.
 	// Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 
+    displaySplash("Demo Robot", "");
     eraseDisplay();
-    wait1Msec(1000);
 
     bool ok = false;
     while(!ok)
     {
-        const int testcount = 4;
+        const int testcount = 2;
 	    bool test[testcount] = {
 	        errorcheck(1,1,MOTORCON),
-	        errorcheck(2,1,MOTORCON),
-	        errorcheck(3,1,MOTORCON),
-	        errorcheck(4,1,MOTORCON)};
-	    string desc[testcount] = {"MC1","MC2","MC3","MC4"};
+	        errorcheck(4,1,PSPV4)};
+	    string desc[testcount] = {"MC1","PSPV4"};
 	    ok = error_display(test,desc,testcount);
-	    //if (!ok) { PlayTone(440, 50); }
-	    //else { ClearSounds(); }
+	    if (!ok) { PlayTone(440, 50); }
+	    else { ClearSounds(); }
     }
 
+    eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
+    nxtbarOn();
     return;
-
 }
 
 task main()

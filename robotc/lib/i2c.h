@@ -10,8 +10,9 @@ Reads sensor ports and finds if devices are missing.
 typedef enum {
 MOTORCON = 0,
 SERVOCON = 1,
-TOUCH = 3,
-LIGHT = 4
+TOUCH = 2,
+LIGHT = 3,
+PSPV4 = 4
 } device;
 //TODO: Oksisane - Add other devices
 
@@ -26,6 +27,9 @@ void error_translate(int sensor, string& expected){
         break;
     case SERVOCON:
         expected = "ServoCon";
+        break;
+    case PSPV4:
+        expected = "PSPNxV4";
         break;
     //TODO: Oksisane - Add other devices
     default:
@@ -127,7 +131,7 @@ void error_btos(bool ok, string& isok) {
 
 bool error_display(bool* test, string* desc, int testcount)
 {
-    bool error = true;
+    bool error = false;
     for (int i=0; i<testcount; i++)
     {
         if(test[i]==false){error = true;}
