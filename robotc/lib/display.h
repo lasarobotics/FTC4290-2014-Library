@@ -15,6 +15,11 @@ void diagnosticsOn() { bDisplayDiagnostics = true; }
 void nxtbarOff() { bNxtLCDStatusDisplay = false; }
 //Enable top NXT bar
 void nxtbarOn() { bNxtLCDStatusDisplay = true; }
+//Enable smart diagnostic screen
+bool bSmartDiagnostics = true;
+//Enable competition mode
+bool bCompetitionMode = true;
+
 /**
 * Displays a quick splash screen
 * @param Program title to display on screen
@@ -33,9 +38,51 @@ void displaySplash(const string title, const string statustext, const string ver
     nxtDisplayCenteredTextLine(7, "%s", versiontext);
     wait10Msec(250);
 }
+
 //Displays smart diagnostic screen
-void displaySmartDiags()
+task displaySmartDiags()
 {
     diagnosticsOff();
-    nxtbarOn();
+
+    string sFileName, filename;
+    getUserControlProgram(sFileName);
+    if (sFileName == "") { filename = "TELEOP NOT SET!"; }
+    else { StringFormat(filename, "%s.rxe", sFileName); }
+    while (true)
+    {
+        if (bSmartDiagnostics)
+        {
+            //Update variables with current joystick values
+            getJoystickSettings(joystick);
+
+            if (externalBatteryAvg < 0)
+            {
+                nxtDisplayTextLine(2, "NO BATTERY!");
+            }
+            else
+            {
+                float bat = externalBatteryAvg / (float)1000;
+                nxtDisplayTextLine(2, "Batt:%4.1fV", bat);
+                if (bat >= 10.5) { nxtDisplayStringAt(88, 47, "OK"); }
+                if ((bat >= 8.5) && (bat < 10.5)) { nxtDisplayStringAt(76, 47, "WARN"); }
+                if (bat < 8.5) { nxtDisplayStringAt(76, 47, "CRIT");}
+            }
+            if (bCompetitionMode)
+            {
+                nxtbarOff();
+                nxtDisplayClearTextLine(0);
+                nxtDisplayTextLine(1, "%s", filename);
+                if (joystick.StopPgm)
+                    nxtDisplayCenteredTextLine(0, "--- DISABLED ---");
+                else if (joystick.UserMode)
+                    nxtDisplayCenteredTextLine(0, "=== ENABLED ===");
+                else
+                    nxtDisplayCenteredTextLine(0, "=== AUTO ===");
+            }
+        }
+        else { nxtbarOn(); }
+
+        abortTimeslice();
+        wait1Msec(200);
+    }
 }

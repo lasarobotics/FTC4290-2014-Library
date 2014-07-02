@@ -23,7 +23,6 @@
 #include "../lib/display.h" //splash screens
 
 /***** STATICS *****/
-static bool competitionmode = false; //set to true to wavoid waiting for FCS
 static float k_deadband = 15;
 
 /***** VARIABLES *****/
@@ -31,6 +30,9 @@ static float k_deadband = 15;
 
 void init()
 {
+    bSmartDiagnostics = true; //true to enable smart diagnostic screen
+    bCompetitionMode = true; //true to enable competition mode
+
     displaySplash("Mecanum Bot", "","");
     eraseDisplay();
 
@@ -61,7 +63,8 @@ task main()
     /***** BEGIN Mecanum Arcade Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
-    if (competitionmode) {waitForStart();}
+    StartTask(displaySmartDiags, 255);
+    if (bCompetitionMode) {waitForStart();}
 
     while (true)
     {
@@ -75,10 +78,6 @@ task main()
         motor[Rf] = rightFront;
         motor[Lb] = leftBack;
         motor[Rb] = rightBack;
-        nxtDisplayCenteredTextLine(0, "%1.0f", leftFront);
-        nxtDisplayCenteredTextLine(1, "%1.0f", rightFront);
-        nxtDisplayCenteredTextLine(2, "%1.0f", leftBack);
-        nxtDisplayCenteredTextLine(3, "%1.0f", rightBack);
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
 

@@ -20,11 +20,13 @@
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 
 /***** STATICS *****/
-static bool competitionmode = false; //set to true to wavoid waiting for FCS
 static float k_deadband = 15;
 
 void init()
 {
+    bSmartDiagnostics = true; //true to enable smart diagnostic screen
+    bCompetitionMode = false; //true to enable competition mode
+
     displaySplash("Demo Robot", "","");
     eraseDisplay();
 
@@ -57,8 +59,8 @@ task main()
     float left, right;
 
     StartTask(gyro_calibrate, 8);
-
-    if (competitionmode) {waitForStart();}
+    StartTask(displaySmartDiags, 255);
+    if (bCompetitionMode) {waitForStart();}
 
     while (true)
     {
