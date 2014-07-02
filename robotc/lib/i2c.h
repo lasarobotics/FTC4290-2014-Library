@@ -46,8 +46,8 @@ bool errorcheck(int port, int address, device sensor)
 {
     //Local vars
     const int responsesize = 8;
-    sbyte I2Cmessage[4];
-    sbyte I2Creply[8];
+    sbyte I2Cmessage[4] = { 0x00, 0x00, 0x00, 0x00 };
+    sbyte I2Creply[8] =  { 0x00, 0x00, 0x00, 0x00, 0x00,0x00,0x00,0x00 };
     string expected = "";
     error_translate(sensor, expected);
     //Setup port
