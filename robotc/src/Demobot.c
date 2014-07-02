@@ -25,10 +25,7 @@ static float k_deadband = 15;
 
 void init()
 {
-	// Place code here to initialize servos to starting positions.
-	// Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-
-    displaySplash("Demo Robot", "");
+    displaySplash("Demo Robot", "","");
     eraseDisplay();
 
     bool ok = false;

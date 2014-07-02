@@ -20,6 +20,7 @@
 #include "../lib/drive.h" //drive trains
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
+#include "../lib/display.h" //splash screens
 
 /***** STATICS *****/
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
@@ -30,30 +31,26 @@ static float k_deadband = 15;
 
 void init()
 {
-    // Place code here to initialize servos to starting positions.
-    // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-
+    displaySplash("Mecanum Bot", "","");
     eraseDisplay();
-    wait1Msec(1000);
 
-    bool error = true;
-    while(error)
+    bool ok = false;
+    while(!ok)
     {
-        error = false;
-        if (!errorcheck(1,1,MOTORCON)) { error = true; }
-        if (!errorcheck(2,1,MOTORCON)) { error = true; }
-
-        if (error)
-        {
-            nxtDisplayCenteredBigTextLine(3, "ERROR!");
-            PlayTone(440, 100);
-        }
+        const int testcount = 2;
+	    bool test[testcount] = {
+	        errorcheck(1,1,MOTORCON),
+	        errorcheck(1,2,MOTORCON)};
+	    string desc[testcount] = {"MC1-1","MC1-2"};
+	    ok = error_display(test,desc,testcount);
+	    if (!ok) { PlayTone(440, 50); }
+	    else { ClearSounds(); }
     }
 
-    ClearSounds();
     eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
+    nxtbarOn();
     return;
 }
 

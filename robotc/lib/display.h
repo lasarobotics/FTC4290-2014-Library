@@ -18,9 +18,10 @@ void nxtbarOn() { bNxtLCDStatusDisplay = true; }
 /**
 * Displays a quick splash screen
 * @param Program title to display on screen
+* @param Status string to display, "" if none
 * @param Version string to display, "" if none
 */
-void displaySplash(const string title, const string versiontext)
+void displaySplash(const string title, const string statustext, const string versiontext)
 {
     diagnosticsOff();
     nxtbarOff();
@@ -28,7 +29,8 @@ void displaySplash(const string title, const string versiontext)
     wait10Msec(1);
     nxtDisplayRICFile(0, 5, "lasa.ric");
     nxtDisplayCenteredTextLine(5, "%s", title);
-    nxtDisplayCenteredTextLine(6, "%s", versiontext);
+    nxtDisplayCenteredTextLine(6, "%s", statustext);
+    nxtDisplayCenteredTextLine(7, "%s", versiontext);
     wait10Msec(250);
 }
 //Displays smart diagnostic screen
