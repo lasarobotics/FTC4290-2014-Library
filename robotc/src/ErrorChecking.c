@@ -15,9 +15,7 @@ task main()
     HTSPBsetupIO(HTSPB, 0x1);
     while (true){
     	eraseDisplay();
-        bool noerror = true;
-        if (!errorcheck(1,1,MOTORCON) ||
-            !errorcheck(2,1,MOTORCON)) { noerror = false; }
+        bool noerror = errorcheck(1,1,MOTORCON)l
         if (noerror){
             //LED, we are good
             HTSPBwriteIO(HTSPB, 0x01);
