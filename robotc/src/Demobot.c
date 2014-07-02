@@ -22,11 +22,6 @@
 static bool competitionmode = false; //set to true to wavoid waiting for FCS
 static float k_deadband = 15;
 
-void qconv(bool ok, string& isok) {
-    if (ok) { isok = "OK!"; }
-    else { isok = "ERROR!"; }
-}
-
 void init()
 {
 	// Place code here to initialize servos to starting positions.
@@ -35,45 +30,21 @@ void init()
     eraseDisplay();
     wait1Msec(1000);
 
-    //I2C error checking
-    const int itemcount = 4;
-    bool ok[itemcount];
-    string desc[itemcount];
-    bool error = true;
-    while(error)
+    bool ok = false;
+    while(!ok)
     {
-        //Test and description
-        ok[0] = errorcheck(1,1,MOTORCON);
-        desc[0] = "MC1";
-        ok[1] = errorcheck(2,1,MOTORCON);
-        desc[1] = "MC2";
-        ok[2] = errorcheck(3,1,MOTORCON);
-        desc[2] = "MC3";
-        ok[3] = errorcheck(4,1,MOTORCON);
-        desc[3] = "MC4";
-
-        error = true;
-        for (int i=0; i<itemcount; i++)
-        {
-            if(ok[i]==false){error = true;}
-        }
-
-        if (error)
-        {
-            string isok;
-            for (int j=0; j<itemcount; j++) {
-                qconv(ok[j], isok);
-                nxtDisplayTextLine(j, "%s", desc[j]);
-                int y = 63-(8*j);
-                nxtDisplayStringAt(62, y, "%s", isok);
-            }
-
-            PlayTone(440, 100);
-        }
+        const int testcount = 4;
+	    bool test[testcount] = {
+	        errorcheck(1,1,MOTORCON),
+	        errorcheck(2,1,MOTORCON),
+	        errorcheck(3,1,MOTORCON),
+	        errorcheck(4,1,MOTORCON)};
+	    string desc[testcount] = {"MC1","MC2","MC3","MC4"};
+	    ok = error_display(test,desc,testcount);
+	    //if (!ok) { PlayTone(440, 50); }
+	    //else { ClearSounds(); }
     }
 
-    ClearSounds();
-    eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
     return;

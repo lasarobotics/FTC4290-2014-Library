@@ -119,3 +119,32 @@ bool errorcheck(int port, int address, device sensor)
         return false;
     }
 }
+
+void error_btos(bool ok, string& isok) {
+    if (ok) { isok = "OK!"; }
+    else { isok = "ERROR!"; }
+}
+
+bool error_display(bool* test, string* desc, int testcount)
+{
+    bool error = true;
+    for (int i=0; i<testcount; i++)
+    {
+        if(test[i]==false){error = true;}
+    }
+
+    if (error)
+    {
+        string isok;
+        for (int j=0; j<testcount; j++) {
+            error_btos(test[j], isok);
+            string c = (string)desc[j];
+            nxtDisplayTextLine(j, "%s", c);
+            int y = 63-(8*j);
+            nxtDisplayStringAt(62, y, "%s", isok);
+        }
+
+        return false;
+    }
+    return true;
+}

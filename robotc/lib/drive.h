@@ -33,12 +33,12 @@ void drive_tank(float leftValue, float rightValue, float& out_left, float& out_r
 * @param spin Clockwise spin (c) rotation power (-1 to 1)
 */
 void mecanum_arcade(float forward, float strafe, float spin,
-float& Lf, float& Rf, float& Lb, float& Rb)
+float& leftfront, float& rightfront, float& leftback, float& rightback)
 {
-    Lf = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
-    Rf = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
-    Lb = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
-    Rb = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
+    leftfront = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
+    rightfront = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
+    leftback = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
+    rightback = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
 }
 
 /**
