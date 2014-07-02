@@ -10,9 +10,8 @@ Reads sensor ports and finds if devices are missing.
 typedef enum {
 MOTORCON = 0,
 SERVOCON = 1,
-TOUCH = 2,
-LIGHT = 3,
-PSPV4 = 4
+TOUCH = 3,
+LIGHT = 4
 } device;
 //TODO: Oksisane - Add other devices
 
@@ -28,17 +27,12 @@ void error_translate(int sensor, string& expected){
     case SERVOCON:
         expected = "ServoCon";
         break;
-    case PSPV4:
-        expected = "PSPNxV4";
-        break;
     //TODO: Oksisane - Add other devices
     default:
         expected = "None";
         break;
     }
 }
-
-
 
 /**
 * Checks a robot component for connection.
@@ -56,32 +50,59 @@ bool errorcheck(int port, int address, device sensor)
     sbyte I2Creply[8];
     string expected = "";
     error_translate(sensor, expected);
-
     //Setup port
-    tSensors id;
     switch (port){
-    case 1: id = S1; break;
-    case 2: id = S2; break;
-    case 3: id = S3; break;
-    case 4: id = S4; break;
+    case 1:
+        SensorType[S1] = sensorI2CCustom;
+        break;
+    case 2:
+        SensorType[S2] = sensorI2CCustom;
+        break;
+    case 3:
+        SensorType[S3] = sensorI2CCustom;
+        break;
+    case 4:
+        SensorType[S4] = sensorI2CCustom;
+        break;
     }
-
-    SensorType[id] = sensorI2CCustom9V;
     wait10Msec(5);
     I2Cmessage[0] = 0x02; //Request flag
     I2Cmessage[1] = address * 2; //Address
     //Request starts at byte 10, where sensor name is stored
     I2Cmessage[2] = 0x10;
-
-    //Send message
-    sendI2CMsg(id, &I2Cmessage[0], responsesize);
-    //Wait while message processed
-    while (nI2CStatus[id] == STAT_COMM_PENDING){
-        wait1Msec(2);
+    switch (port){
+    case 1:
+        //Send message
+        sendI2CMsg(S1, &I2Cmessage[0], responsesize);
+        //Wait while message processed
+        while (nI2CStatus[S1] == STAT_COMM_PENDING){
+            wait1Msec(2);
+        }
+        //Read reply
+        readI2CReply(S1, &I2Creply[0], responsesize);
+        break;
+    case 2:
+        sendI2CMsg(S2, &I2Cmessage[0], responsesize);
+        while (nI2CStatus[S2] == STAT_COMM_PENDING){
+            wait1Msec(2);
+        }
+        readI2CReply(S2, &I2Creply[0], responsesize);
+        break;
+    case 3:
+        sendI2CMsg(S3, &I2Cmessage[0], responsesize);
+        while (nI2CStatus[S3] == STAT_COMM_PENDING){
+            wait1Msec(2);
+        }
+        readI2CReply(S3, &I2Creply[0], responsesize);
+        break;
+    case 4:
+        sendI2CMsg(S4, &I2Cmessage[0], responsesize);
+        while (nI2CStatus[S4] == STAT_COMM_PENDING){
+            wait1Msec(2);
+        }
+        readI2CReply(S4, &I2Creply[0], responsesize);
+        break;
     }
-    //Read reply
-    readI2CReply(id, &I2Creply[0], responsesize);
-
     //get string returned
     string display = "";
     int convArray[responsesize];

@@ -35,6 +35,23 @@ void init()
 
     eraseDisplay();
     wait1Msec(1000);
+
+    bool error = true;
+    while(error)
+    {
+        error = false;
+        if (!errorcheck(1,1,MOTORCON)) { error = true; }
+        if (!errorcheck(2,1,MOTORCON)) { error = true; }
+
+        if (error)
+        {
+            nxtDisplayCenteredBigTextLine(3, "ERROR!");
+            PlayTone(440, 100);
+        }
+    }
+
+    ClearSounds();
+    eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
     return;
