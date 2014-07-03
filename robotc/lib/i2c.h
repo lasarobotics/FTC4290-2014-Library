@@ -148,11 +148,20 @@ bool errorcheck(int port, int address, device sensor)
     }
 }
 
+/**
+* Converts boolean to "OK!" or "ERROR!"
+* @param Is OK?  True for "OK!""
+*/
 void error_btos(bool ok, string& isok) {
     if (ok) { isok = "OK!"; }
     else { isok = "ERROR!"; }
 }
 
+/**
+* Displays results of error check test
+* @param Boolean array of test results (ex. errorcheck(1,1,MOTORCON))
+* @param String array of test description, 11 chars max (ex. "MotorCon 1")
+*/
 bool error_display(bool* test, string* desc, int testcount)
 {
     bool error = false;
