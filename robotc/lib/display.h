@@ -69,7 +69,7 @@ task displaySmartDiags()
                 float bat = externalBatteryAvg / (float)1000;
                 nxtDisplayTextLine(2, "Batt:%4.1fV", bat);
                 if (bat >= fWarnVolt) { nxtDisplayStringAt(88, 47, "OK"); }
-                if ((bat >= fCritVolt) && (fWarnVolt < 10.5)) { nxtDisplayStringAt(76, 47, "WARN"); }
+                if ((bat >= fCritVolt) && (bat < fWarnVolt)) { nxtDisplayStringAt(76, 47, "WARN"); }
                 if (bat < fCritVolt) { nxtDisplayStringAt(76, 47, "CRIT");}
             }
             if (bCompetitionMode)
