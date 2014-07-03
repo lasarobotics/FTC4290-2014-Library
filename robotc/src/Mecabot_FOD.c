@@ -59,6 +59,7 @@ void init()
 task main()
 {
     float leftFront, leftBack, rightFront, rightBack; // motors
+    float y, x, c;
 
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
@@ -71,16 +72,22 @@ task main()
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 
-        mecanum_arcade(deadband(k_deadband,joystick.joy1_y1), deadband(k_deadband,joystick.joy1_x1), deadband(k_deadband,joystick.joy1_x2),
+        y = deadband(k_deadband,joystick.joy1_y1); //strafe
+        x = deadband(k_deadband,joystick.joy1_x1); //forward/rev
+        c = deadband(k_deadband,joystick.joy1_x2); //spin
+
+        mecanum_arcadeFOD(y, x, c, gyro_getheading(),
         leftFront, rightFront, leftBack, rightBack);
 
         motor[Lf] = leftFront;
         motor[Rf] = rightFront;
         motor[Lb] = leftBack;
         motor[Rb] = rightBack;
+
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
 
+        if(joy1Btn(4) == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     }
 }

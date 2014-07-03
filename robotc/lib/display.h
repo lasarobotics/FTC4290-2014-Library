@@ -20,6 +20,11 @@ bool bSmartDiagnostics = true;
 //Enable competition mode
 bool bCompetitionMode = true;
 
+//Warning external voltage level
+float fWarnVolt = 10.5;
+//Critical external voltage level
+float fCritVolt = 8.8;
+
 /**
 * Displays a quick splash screen
 * @param Program title to display on screen
@@ -63,9 +68,9 @@ task displaySmartDiags()
             {
                 float bat = externalBatteryAvg / (float)1000;
                 nxtDisplayTextLine(2, "Batt:%4.1fV", bat);
-                if (bat >= 10.5) { nxtDisplayStringAt(88, 47, "OK"); }
-                if ((bat >= 8.5) && (bat < 10.5)) { nxtDisplayStringAt(76, 47, "WARN"); }
-                if (bat < 8.5) { nxtDisplayStringAt(76, 47, "CRIT");}
+                if (bat >= fWarnVolt) { nxtDisplayStringAt(88, 47, "OK"); }
+                if ((bat >= fCritVolt) && (fWarnVolt < 10.5)) { nxtDisplayStringAt(76, 47, "WARN"); }
+                if (bat < fCritVolt) { nxtDisplayStringAt(76, 47, "CRIT");}
             }
             if (bCompetitionMode)
             {
@@ -80,7 +85,6 @@ task displaySmartDiags()
                     nxtDisplayCenteredTextLine(0, "=== AUTO ===");
             }
         }
-        else { nxtbarOn(); }
 
         abortTimeslice();
         wait1Msec(200);

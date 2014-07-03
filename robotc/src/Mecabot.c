@@ -78,9 +78,11 @@ task main()
         motor[Rf] = rightFront;
         motor[Lb] = leftBack;
         motor[Rb] = rightBack;
+
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
 
+        if(joy1Btn(4) == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     }
 }

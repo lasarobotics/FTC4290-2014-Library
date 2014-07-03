@@ -1,10 +1,9 @@
 /**********************************************************
 
-Gyroscopic and Field Oriented Drive
+Gyroscopic Drive
 gyro.h
 
-Uses HiTechnic Gyroscope and implements
-full Field Oriented Drive.
+Implements the HiTechnic Gyroscope.
 
 **********************************************************/
 
