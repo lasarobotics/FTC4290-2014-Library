@@ -33,58 +33,25 @@ float fCritVolt = 8.8;
 */
 void getVersion(string &versionnumber)
 {
-    nxtDisplayRICFile(0, 0, "version.ric"); //Forces RobotC to load the file
+    nxtDisplayRICFile(0, 5, "version.ric"); //Forces RobotC to load the file
     TFileHandle hFileHandle; // will keep track of our file
     TFileIOResult nIOResult; // will store our IO results
     string sFileName = "version.ric"; // the name of our file
     int nFileSize = 100; // will store our file size
-    char CR = (char)13; // define CR (carriage return)
-    char LF = (char)10; // define LF (line feed)
-    char SPACE = (char)32; // define SPACE (space)
+    byte CR = 0x13; // define CR (carriage return)
+    byte LF = 0x10; // define LF (line feed)
     char incommingChar; // this will store each char as we read back in from the file
     OpenRead(hFileHandle, nIOResult, sFileName, nFileSize); // open our file 'sFileName' for reading
-    string astring = "git-"; // String to hold results
-
-    int i = 0;
-    int m = 0;
-    //read first 8 chars of SHA
-    for(i = 0; i < 6; i++) // iterate through the file until we've hit the end:
+    string astring = "Git Commit: "; // String to hold results
+    for(int i = 0; i < nFileSize; i++) // iterate through the file until we've hit the end:
     {
         ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
-        if(incommingChar == CR || incommingChar == LF) { }
-            // do nothing
+        if(incommingChar == CR || incommingChar == LF || incommingChar == ' ')  {} // if the incomming byte is a carriage return or a line feed do nothing
         else
         {
-            astring = astring + incommingChar; //append char
+            astring = astring + incommingChar; // append that byte (char) to the end of our final string, at the right index
         }
     }
-    //finish reading SHA
-    bool cont = true;
-    while(cont)
-    {
-        ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
-        i++;
-        if(incommingChar == CR || incommingChar == LF) { cont = false; }
-    }
-
-    astring = astring + (char)'(';
-
-    //Read revision ID
-    for(m = i; m < nFileSize; m++) // iterate through the file until we've hit the end:
-    {
-        ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
-        if(incommingChar == CR || incommingChar == LF || incommingChar == SPACE)
-        {
-            // if the incomming byte is a carriage return or a line feed (or space) do nothing
-        }
-        else
-        {
-            astring = astring + incommingChar;
-            // append that byte (char) to the end of our final string, at the right index
-        }
-    }
-    astring = astring + (char)')';
-
     Close(hFileHandle, nIOResult); // close our file
     versionnumber = astring; //set output
 }
@@ -107,7 +74,7 @@ void displaySplash(const string title, const string statustext, bool displayvers
     {
         string versiontext;
         getVersion(versiontext);
-        nxtDisplayCenteredTextLine(7, "%s", versiontext);
+        nxtDisplayTextLine(7, "%s", versiontext);
     }
 
     wait10Msec(250);
