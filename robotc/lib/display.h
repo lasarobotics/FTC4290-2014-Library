@@ -7,6 +7,10 @@ Displays splash screen and enables custom diagnostics.
 
 **********************************************************/
 
+#ifndef bDisplayDiagnostics
+#include "JoystickDriver.c"  //Joystick and Bluetooth driver
+#endif
+
 //Disables RobotC diagnostic screen
 void diagnosticsOff() { bDisplayDiagnostics = false; }
 //Enables RobotC diagnostic screen
@@ -44,7 +48,7 @@ void getVersion(string &versionnumber)
     int i = 0;
     int m = 0;
     //read first 8 chars of SHA
-    for(i = 0; i < 8; i++) // iterate through the file until we've hit the end:
+    for(i = 0; i < 6; i++) // iterate through the file until we've hit the end:
     {
         ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
         if(incommingChar == CR || incommingChar == LF) { }
@@ -107,6 +111,7 @@ void displaySplash(const string title, const string statustext, bool displayvers
     }
 
     wait10Msec(250);
+    eraseDisplay();
 }
 
 //Displays smart diagnostic screen
