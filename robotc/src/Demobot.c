@@ -27,10 +27,12 @@ void init()
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = false; //true to enable competition mode
 
-    displaySplash("Demo Robot", "","");
+    string ver;
+    getVersion(ver);
+    displaySplash("Demo Robot", "", true);
     eraseDisplay();
 
-    bool ok = false;
+    bool ok = true;
     while(!ok)
     {
         const int testcount = 2;

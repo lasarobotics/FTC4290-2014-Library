@@ -34,8 +34,8 @@ void getVersion(string &versionnumber)
     TFileIOResult nIOResult; // will store our IO results
     string sFileName = "version.ric"; // the name of our file
     int nFileSize = 100; // will store our file size
-    byte CR = 0x13; // define CR (carriage return)
-    byte LF = 0x10; // define LF (line feed)
+    char CR = 0x13; // define CR (carriage return)
+    char LF = 0x10; // define LF (line feed)
     char incommingChar; // this will store each char as we read back in from the file
     OpenRead(hFileHandle, nIOResult, sFileName, nFileSize); // open our file 'sFileName' for reading
     string astring = "Version: "; // String to hold results
@@ -59,7 +59,7 @@ void getVersion(string &versionnumber)
 * @param Status string to display, "" if none
 * @param Version string to display, "" if none
 */
-void displaySplash(const string title, const string statustext, const string versiontext)
+void displaySplash(const string title, const string statustext, bool displayversion)
 {
     diagnosticsOff();
     nxtbarOff();
@@ -68,7 +68,13 @@ void displaySplash(const string title, const string statustext, const string ver
     nxtDisplayRICFile(0, 5, "lasa.ric");
     nxtDisplayCenteredTextLine(5, "%s", title);
     nxtDisplayCenteredTextLine(6, "%s", statustext);
-    nxtDisplayCenteredTextLine(7, "%s", versiontext);
+    if (displayversion)
+    {
+        string versiontext;
+        getVersion(versiontext);
+        nxtDisplayCenteredTextLine(7, "%s", versiontext);
+    }
+
     wait10Msec(250);
 }
 
@@ -77,7 +83,7 @@ task displaySmartDiags()
 {
     diagnosticsOff();
 
-    string sFileName, filename,versionnumber;
+    string sFileName, filename;
     getUserControlProgram(sFileName);
     if (sFileName == "") { filename = "TELEOP NOT SET!"; }
     else { StringFormat(filename, "%s.rxe", sFileName); }
@@ -111,8 +117,6 @@ task displaySmartDiags()
                 nxtDisplayCenteredTextLine(0, "=== ENABLED ===");
                 else
                 nxtDisplayCenteredTextLine(0, "=== AUTO ===");
-                getVersion(versionnumber);
-                nxtDisplayCenteredTextLine(6, versionnumber);
             }
         }
 
