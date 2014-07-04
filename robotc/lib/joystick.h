@@ -8,7 +8,9 @@ IO and manipulation functions.
 
 **********************************************************/
 
+#ifndef bDisplayDiagnostics
 #include "JoystickDriver.c"  //Joystick and Bluetooth driver
+#endif
 
 /**
 * Gives a joystick a "deadzone" where any value

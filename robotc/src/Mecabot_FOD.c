@@ -33,8 +33,7 @@ void init()
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
 
-    displaySplash("Mecanum Bot", "FOD Test","");
-    eraseDisplay();
+    displaySplash("Mecanum Bot", "FOD Test", true);
 
     bool ok = false;
     while(!ok)

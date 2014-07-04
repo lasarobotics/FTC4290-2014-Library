@@ -8,8 +8,15 @@
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../drivers/hitechnic-superpro.h" //SuperPro Prototype Board Driver
 #include "../lib/i2c.h" //I2C errorchecking
+#include "../lib/display.h" //splash screens
+
 task main()
 {
+    bSmartDiagnostics = false; //true to enable smart diagnostic screen
+    bCompetitionMode = false; //true to enable competition mode
+
+    displaySplash("Error Checking", "LED Test", true);
+
     /*Setup PrototypeBoard for output on B0 of NXT Port 4
     (0x01 represents the pin B0 and Port 4 is defined above in pragma config)*/
     HTSPBsetupIO(HTSPB, 0x1);
