@@ -29,7 +29,7 @@ void init()
 
     displaySplash("Demo Robot", "", true);
 
-    bool ok = true;
+    bool ok = false;
     while(!ok)
     {
         const int testcount = 2;
