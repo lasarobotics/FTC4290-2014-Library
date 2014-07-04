@@ -26,9 +26,7 @@ void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = false; //true to enable competition mode
-
-    string ver;
-    getVersion(ver);
+;
     displaySplash("Demo Robot", "", true);
     eraseDisplay();
 
