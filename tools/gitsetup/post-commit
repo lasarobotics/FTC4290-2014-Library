@@ -4,7 +4,7 @@ if [ -a .commit ]
     then
     rm .commit
 	$COMSPEC \/c update.bat\"
-    git add version.txt
+    git add version.ric
     git commit --amend -C HEAD --no-verify
 fi
 exit
