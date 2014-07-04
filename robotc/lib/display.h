@@ -24,7 +24,35 @@ bool bCompetitionMode = true;
 float fWarnVolt = 10.5;
 //Critical external voltage level
 float fCritVolt = 8.8;
-
+/**
+* Loads current version number (from git)
+*/
+void getVersion(string &versionnumber)
+{
+    nxtDisplayRICFile(0, 5, "version.ric"); //Forces RobotC to load the file
+    TFileHandle hFileHandle; // will keep track of our file
+    TFileIOResult nIOResult; // will store our IO results
+    string sFileName = "version.ric"; // the name of our file
+    int nFileSize = 100; // will store our file size
+    byte CR = 0x13; // define CR (carriage return)
+    byte LF = 0x10; // define LF (line feed)
+    char incommingChar; // this will store each char as we read back in from the file
+    OpenRead(hFileHandle, nIOResult, sFileName, nFileSize); // open our file 'sFileName' for reading
+    string astring = "Version: "; // String to hold results
+    for(int i = 0; i < nFileSize; i++) // iterate through the file until we've hit the end:
+    {
+        ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
+        if(incommingChar == CR || incommingChar == LF) // if the incomming byte is a carriage return or a line feed do nothing
+        {
+        }
+        else
+        {
+            astring = astring + incommingChar; // append that byte (char) to the end of our final string, at the right index
+        }
+    }
+    Close(hFileHandle, nIOResult); // close our file
+    versionnumber = astring; //set output
+}
 /**
 * Displays a quick splash screen
 * @param Program title to display on screen
@@ -49,7 +77,7 @@ task displaySmartDiags()
 {
     diagnosticsOff();
 
-    string sFileName, filename;
+    string sFileName, filename,versionnumber;
     getUserControlProgram(sFileName);
     if (sFileName == "") { filename = "TELEOP NOT SET!"; }
     else { StringFormat(filename, "%s.rxe", sFileName); }
@@ -78,11 +106,13 @@ task displaySmartDiags()
                 nxtDisplayClearTextLine(0);
                 nxtDisplayTextLine(1, "%s", filename);
                 if (joystick.StopPgm)
-                    nxtDisplayCenteredTextLine(0, "--- DISABLED ---");
+                nxtDisplayCenteredTextLine(0, "--- DISABLED ---");
                 else if (joystick.UserMode)
-                    nxtDisplayCenteredTextLine(0, "=== ENABLED ===");
+                nxtDisplayCenteredTextLine(0, "=== ENABLED ===");
                 else
-                    nxtDisplayCenteredTextLine(0, "=== AUTO ===");
+                nxtDisplayCenteredTextLine(0, "=== AUTO ===");
+                getVersion(versionnumber);
+                nxtDisplayCenteredTextLine(6, versionnumber);
             }
         }
 
