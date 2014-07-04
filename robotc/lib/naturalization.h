@@ -15,6 +15,11 @@ Define _FORCE_DEBUG to disable full code optimization
 #ifndef __NATURALIZATION_
 #define __NATURALIZATION_
 
+#include "firmwareVersion.h"
+#if (kRobotCVersionNumeric < 359)
+    #error "This library only supported on RobotC version 3.59 or higher!"
+#endif
+
 #ifndef _FORCE_DEBUG
     #ifdef _DEBUG
         #undef _DEBUG //force full code optimization
