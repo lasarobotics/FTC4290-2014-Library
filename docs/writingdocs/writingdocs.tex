@@ -1,10 +1,11 @@
-\input{../template_technical}
+\def \librarypath {../} %path to library
+\input{\librarypath library_technical}
 
 \begin{document}
 %PART AND CHAPTER DETAILS
 \renewcommand{\currentpart}{LASA Robotics Technical Documentation}
 \renewcommand{\currentchapter}{Writing Technical and Notebook Documentation in LaTeX}
-\createtitle{../../assets}
+\createtitle{\librarypath}
 
 \section{What is LaTeX?}
 \LaTeX{} (pronounced \emph{\textbf{LAY}-tek} or \emph{\textbf{LAH}-tek}) is a text formatting tool used globally for publication of scientific documents and online articles (including Wikipedia).  \LaTeX{} \emph{.tex} documents output as every format from \emph{PDF} to \emph{HTML}.
@@ -36,35 +37,35 @@ Follows is the tutorial for setting up either technical or notebook documentatio
 
 \subsection{Technical Documentation}
 The first step of any documentation is to create a .tex file.  Create one using your document and save it somewhere safe.\\
-Then, we begin writing.  Import the technical template like so on the first line of your .tex document: \\\\\codefull{\sla input\{../template\_technical\}}\\ The location of the file may be different, but make sure you have \code{template\_technical.tex} as the input file.
+Then, we begin writing.  Import the technical library like so on the first line of your .tex document: \\\\\codefull{\sla input\{../library\_technical\}}\\ The location of the file may be different, but make sure you have \code{library\_technical.tex} as input file.
 
 \subsection{Notebook Documentation}
 As with technical documentation, the first step of any is to create a .tex file and save it somewhere safe.\\
-Then, we import the notebook template like so on the first line of your .tex document:\\\\ \codefull{\sla input\{../template\_notebook\}}\\ The location of the file may be different, but make sure you have \code{template\_notebook.tex} as the input file.
+Then, we import the notebook library like so on the first line of your .tex document:\\\\ \codefull{\sla input\{../library\_notebook\}}\\ The location of the file may be different, but make sure you have \code{library\_notebook.tex} as input file.
 
 \section{Setting Up the Document}
-Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \\\\\codefull{\sla input\{../template\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}\\\\  Notice that all \LaTeX{} commands start with a \code{\sla}.\newpage
-In the \code{\sla begin\{document\} ... \sla end\{document\}} section, add the following.
-\\\\\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle\{{\color{red}relative location of assets folder}\}}\\\\
-You should be done with initialization now.  For future reference, the default templates for technical and notebook documentation are below.
+Setting up a \LaTeX{} document is easy.  Add the following line of code so your document looks like this: \\\\\codefull{\sla input\{../library\_******\}\\\sla begin\{document\}\\\\\sla end\{document\}}\\\\  Notice that all \LaTeX{} commands start with a \code{\sla}.\pagebreak
+\\In the \code{\sla begin\{document\} ... \sla end\{document\}} section, add the following.
+\\\\\codefull{\color{red}{\%PART AND CHAPTER DETAILS - REPLACE HIGHLIGHTED!!!}\color{black}\\\sla renewcommand\{\sla currentpart\}\{LASA Robotics {\color{red}Technical} Documentation\}\\\sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic, ex.Writing Documentation in LaTeX}\}\\\sla createtitle\{{\color{red}relative path to library folder}\}}\\\\
+You should be done with initialization now.  For future reference, examples are below.
 
-\section{Default Templates}
-Feel free to copy and paste, then replace anything in red.
+\section{Examples}
+To create a new document, copy then  \textbf{template.tex} from the same directory as the libraries.  Below are a few basic example files, but you should use \textbf{template.tex} as your template.
 \subsection{Technical Documentation}
-\codefull{\sla input\{{\color{red} ../template\_technical}\}\space\space\%relative path to template\_technical.tex\\\\
+\codefull{\sla def \sla librarypath \{{\color{red}../}\}\space\space\%relative path to library\\\sla input\{\sla librarypath library\_technical\}\\\\
 \sla begin\{document\}\\
 \sla renewcommand\{\sla currentpart\}\{LASA Robotics Technical Documentation\}\\
 \sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
-\sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
-\%-----INSERT CONTENT HERE-----\%\\\\\\
+\sla createtitle\{\sla librarypath\}\space\space\%relative path to library\\\\
+\%-----INSERT CONTENT HERE-----\%\\\\
 \sla end\{document\}}
 \subsection{Notebook Documentation}
-\codefull{\sla input\{{\color{red} ../template\_notebook}\}\space\space\%relative path to template\_notebook.tex\\\\
+\codefull{\sla def \sla librarypath \{{\color{red}../}\}\space\space\%relative path to library\\\sla input\{\sla librarypath library\_notebook\}\\\\
 \sla begin\{document\}\\
 \sla renewcommand\{\sla currentpart\}\{LASA Robotics Notebook Documentation\}\\
 \sla renewcommand\{\sla currentchapter\}\{{\color{red}Topic}\}\\
-\sla createtitle\{{\color{red}../../assets}\}\space\space\%relative path to assets folder\\\\
-\%-----INSERT CONTENT HERE-----\%\\\\\\
+\sla createtitle\{\sla librarypath\}\space\space\%relative path to library\\\\
+\%-----INSERT CONTENT HERE-----\%\\\\
 \sla end\{document\}}\newpage
 
 \section{Syntax Guide}
@@ -101,8 +102,7 @@ Surround text and command like this: \code{\{\sla emph Hello world!\}} to only a
 \code{\sla large}, \code{\sla Large}, \code{\sla LARGE}, \code{\sla HUGE}: Even bigger fonts
 
 \subsection{Environments}
-Environments run \LaTeX{}'s powerfu
-l processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
+Environments run \LaTeX{}'s powerful processing.  With these, you can create anything from centered text to lists.  Remember that wherever there is a \code{\sla begin}, there must be an \code{\sla end}.
 \subsubsection{Alignment}
 \code{\sla begin\{center\}}: Centers large amounts of text\\
 \code{\sla begin\{flushright\}}: Right aligns large amounts of text\\

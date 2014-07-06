@@ -74,7 +74,7 @@
 {
 	\afterpage{
 	\begin{textblock*}{8.5in}[0.5,0.5](5.9in,4in)
-		\includegraphics[height=1.25in]{#1/LASAlogo_white}
+		\includegraphics[height=1.25in]{#1LASAlogo_white}
 	\end{textblock*}
 	\begin{textblock*}{7.5in}[0,0](0.5in,5.5in)
 		\centering
@@ -106,15 +106,15 @@
 	%spacing
 	%\newpage
 	
-	\setupheaders
+	\setupheaders{#1}
 }
 
 %setup headers
-\newcommand{\setupheaders}
+\newcommand{\setupheaders}[1]
 {
 	\fancyfoot{\color{black}}
 	\fancyfoot[LO]{
-		\includegraphics[height=0.5in]{../../assets/LASAlogo}
+		\includegraphics[height=0.5in]{#1LASAlogo}
 	}
 	\fancyfoot[RE]{
 		\today
