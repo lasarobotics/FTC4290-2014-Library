@@ -5,6 +5,7 @@ if [ -a .commit ]
     rm .commit
     $COMSPEC \/c update.bat\"
     git add robotc/lib/version.ric
+    git add tools/update/version.ric
     git commit --amend -C HEAD --no-verify
 fi
 exit
