@@ -23,4 +23,22 @@ Welcome to the Liberal Arts and Science Team Purple Haze`s shared FTC library.
 -----
 Licensed under **MIT License**
 
+<<<<<<< HEAD
 Copyright (c) 2014 LASA Robotics
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+
+=======
+>>>>>>> 2fff80a... Update README.md
+=======
+test
+>>>>>>> c507046... Update README.md
+=======
+>>>>>>> 6f42a73... Update README.md
+=======
+>>>>>>> 29d207d... Bot test
+=======
+Copyright (c) 2014 LASA Robotics
+>>>>>>> 90ad1ca... Bad commit
