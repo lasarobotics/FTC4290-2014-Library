@@ -12,4 +12,3 @@
 @start UpdateGUI update
 @echo Done!
 @echo -------------------------------
-@pause
