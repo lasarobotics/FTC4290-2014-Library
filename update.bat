@@ -1,5 +1,7 @@
+@call .\tools\buildgit.bat
 @echo -------------------------------
 @echo Updating version information...
+@echo -------------------------------
 @del .\robotc\lib\version.ric
 @del .\tools\update\version.ric
 @git rev-parse HEAD >> version.ric
