@@ -38,7 +38,12 @@ void init()
 	        errorcheck(4,1,PSPV4)};
 	    string desc[testcount] = {"MC1","PSPV4"};
 	    ok = error_display(test,desc,testcount);
-	    if (!ok) { PlayTone(440, 50); }
+	    if (!ok) {
+	        PlayTone(440, 50);
+	        if (test[0] == false && test[1] == true){
+	            nxtDisplayCenteredTextLine(5, "Reboot MC");
+	        }
+	    }
 	    else { ClearSounds(); }
     }
 
