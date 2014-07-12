@@ -46,6 +46,8 @@ void init()
 	    ok = error_display(test,desc,testcount);
 	    if (!ok) { PlayTone(440, 50); }
 	    else { ClearSounds(); }
+	    //reset if there is a problem reading MCs
+	    if(nNxtButtonPressed == kEnterButton) { ok = true; }
     }
 
     eraseDisplay();
