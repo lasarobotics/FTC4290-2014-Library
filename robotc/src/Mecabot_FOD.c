@@ -44,7 +44,12 @@ void init()
 	        errorcheck(1,2,MOTORCON)};
 	    string desc[testcount] = {"MC1-1","MC1-2"};
 	    ok = error_display(test,desc,testcount);
-	    if (!ok) { PlayTone(440, 50); }
+	    if (!ok) {
+	        PlayTone(440, 50);
+	        if (test[0] == false && test[1] == false){
+	            nxtDisplayCenteredTextLine(7, "Reboot MC!");
+	        }
+	    }
 	    else { ClearSounds(); }
     }
 
