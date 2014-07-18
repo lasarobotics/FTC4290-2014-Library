@@ -75,7 +75,9 @@ task main()
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 
-        mecanum_arcade(deadband(k_deadband,joystick.joy1_y1), deadband(k_deadband,joystick.joy1_x1), deadband(k_deadband,joystick.joy1_x2),
+        mecanum_arcade(deadband(k_deadband,joystick.joy1_y1), 
+        deadband(k_deadband,joystick.joy1_x1), 
+        deadband(k_deadband,joystick.joy1_x2),
         leftFront, rightFront, leftBack, rightBack);
 
         motor[Lf] = leftFront;
