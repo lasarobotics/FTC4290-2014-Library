@@ -74,24 +74,8 @@ bool errorcheck(int port, int muxport, int address, device sensor)
     error_translate(sensor, expected);
     //Setup port
     if (port < 5) {
-        switch (port){
-            case 1:
-                prevtype = SensorType[S1];
-                SensorType[S1] = sensorI2CCustom;
-                break;
-             case 2:
-                prevtype = SensorType[S2];
-                SensorType[S2] = sensorI2CCustom;
-                break;
-            case 3:
-                prevtype = SensorType[S3];
-                SensorType[S3] = sensorI2CCustom;
-                break;
-            case 4:
-                prevtype = SensorType[S4];
-                SensorType[S4] = sensorI2CCustom;
-                break;
-        }
+        prevtype = SensorType[(port-1)];
+        SensorType[(port-1)] = sensorI2CCustom;
     }
     wait10Msec(5);
     I2Cmessage[0] = 0x02; //Size of message
@@ -110,39 +94,14 @@ bool errorcheck(int port, int muxport, int address, device sensor)
     }
     else {
         I2Cmessage[2] = 0x10;
-        switch (port){
-        case 1:
-            //Send message
-            sendI2CMsg(S1, &I2Cmessage[0], responsesize);
-            //Wait while message processed
-            while (nI2CStatus[S1] == STAT_COMM_PENDING){
-                wait1Msec(2);
-            }
-            //Read reply
-            readI2CReply(S1, &I2Creply[0], responsesize);
-            break;
-        case 2:
-            sendI2CMsg(S2, &I2Cmessage[0], responsesize);
-            while (nI2CStatus[S2] == STAT_COMM_PENDING){
-                wait1Msec(2);
-            }
-            readI2CReply(S2, &I2Creply[0], responsesize);
-            break;
-        case 3:
-            sendI2CMsg(S3, &I2Cmessage[0], responsesize);
-            while (nI2CStatus[S3] == STAT_COMM_PENDING){
-                wait1Msec(2);
-            }
-            readI2CReply(S3, &I2Creply[0], responsesize);
-            break;
-        case 4:
-            sendI2CMsg(S4, &I2Cmessage[0], responsesize);
-            while (nI2CStatus[S4] == STAT_COMM_PENDING){
-                wait1Msec(2);
-            }
-            readI2CReply(S4, &I2Creply[0], responsesize);
-            break;
+        //Send message
+        sendI2CMsg((port-1), &I2Cmessage[0], responsesize);
+        //Wait while message processed
+        while (nI2CStatus[(port-1)] == STAT_COMM_PENDING){
+            wait1Msec(2);
         }
+        //Read reply
+        readI2CReply((port-1), &I2Creply[0], responsesize);
     }
     //get string returned
     string display = "";
@@ -153,21 +112,8 @@ bool errorcheck(int port, int muxport, int address, device sensor)
         display = display + (char)convArray[i];
     }
     if (port < 5){
-    //reset sensor settings
-        switch (port){
-        case 1:
-            SensorType[S1] = prevtype;
-            break;
-        case 2:
-            SensorType[S2] = prevtype;
-            break;
-        case 3:
-            SensorType[S3] = prevtype;
-            break;
-        case 4:
-            SensorType[S4] = prevtype;
-            break;
-        }
+        //reset sensor settings
+        SensorType[(port-1)] = prevtype;
     }
 
     //compare result to expected
