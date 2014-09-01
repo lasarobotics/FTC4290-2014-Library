@@ -40,8 +40,8 @@ void init()
     {
         const int testcount = 2;
 	    bool test[testcount] = {
-	        errorcheck(1,1,MOTORCON),
-	        errorcheck(1,2,MOTORCON)};
+	        errorcheck(1,0,1,MOTORCON),
+	        errorcheck(1,0,2,MOTORCON)};
 	    string desc[testcount] = {"MC1-1","MC1-2"};
 	    ok = error_display(test,desc,testcount);
 	    if (!ok) {

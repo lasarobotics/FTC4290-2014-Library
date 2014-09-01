@@ -34,8 +34,8 @@ void init()
     {
         const int testcount = 2;
 	    bool test[testcount] = {
-	        errorcheck(1,1,MOTORCON),
-	        errorcheck(4,1,PSPV4)};
+	        errorcheck(1,0,1,MOTORCON),
+	        errorcheck(4,0,1,PSPV4)};
 	    string desc[testcount] = {"MC1","PSPV4"};
 	    ok = error_display(test,desc,testcount);
 	    if (!ok) {

@@ -22,7 +22,7 @@ task main()
     HTSPBsetupIO(HTSPB, 0x1);
     while (true){
     	eraseDisplay();
-        bool noerror = errorcheck(1,1,MOTORCON);
+        bool noerror = errorcheck(1,0,1,MOTORCON);
         if (noerror){
             //LED, we are good
             HTSPBwriteIO(HTSPB, 0x01);
