@@ -94,11 +94,12 @@ bool errorcheck(int port, int muxport, int address, device sensor)
     }
     else {
         I2Cmessage[2] = 0x10;
+        wait1Msec(100);
         //Send message
         sendI2CMsg((port-1), &I2Cmessage[0], responsesize);
         //Wait while message processed
         while (nI2CStatus[(port-1)] == STAT_COMM_PENDING){
-            wait1Msec(2);
+            wait1Msec(10);
         }
         //Read reply
         readI2CReply((port-1), &I2Creply[0], responsesize);
