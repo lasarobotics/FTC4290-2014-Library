@@ -9,3 +9,7 @@
 
 #riccreator
 *settings.xml
+
+#NXTLib
+tools/update/vault/*
+tools/update/tmp/*
