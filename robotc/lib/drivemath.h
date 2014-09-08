@@ -83,3 +83,9 @@ float exp_drive(float value, float time, bool& max, bool& min)
     float b = value * a;
     return b;
 }
+float concGyro(float gyro){
+   if (gyro < 0){
+    	return 360 - abs(gyro)
+ 	 }
+ 	 return gyro;
+}
