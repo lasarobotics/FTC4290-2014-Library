@@ -68,46 +68,46 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
 * @param Speed to turn at.
 */
 void turnToDeg_Mecanum(float deg,float speed){
-				float leftFront, leftBack, rightFront, rightBack;
-				//Get position from 0-360
-				float absposition = concGyro(gyro_getheading());
-			  float clockwise = 0;
-			  float counterclockwise = 0;
-			  float goclockwise = false;
-			  //Logic for if target deg is greater or less than current deg
-			  if (deg < absposition){
-					clockwise = (360+deg) - absposition;
-					counterclockwise = absposition - deg;
-			  }
-			  else {
-			  	 clockwise = deg - absposition;
-			  	 counterclockwise = absposition + (360 - deg);
-				}
-				//If clockwise direction to destination is closer than counterclockwise, go clockwise
-			  if (clockwise < counterclockwise )
-			  {
-					goclockwise = true;
-			  }
-			  nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
-			  nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
-			  nxtDisplayCenteredTextLine(5, "%.2f", deg);
-			  nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading());
-			  //While we are greater than within 5 degs, drive
-        while (abs(concGyro(gyro_getheading())- deg) > 2 ){
-          if (goclockwise ){
-        		  mecanum_arcadeFOD(0, 0, speed, gyro_getheading(),
-        				leftFront, rightFront, leftBack, rightBack);
-          }
-					else {
-        		  mecanum_arcadeFOD(0, 0, -speed, gyro_getheading(),
-        				leftFront, rightFront, leftBack, rightBack);
-					}
-					nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());
-        	motor[Lf] = leftFront;
-        	motor[Rf] = rightFront;
-        	motor[Lb] = leftBack;
-        	motor[Rb] = rightBack;
-       	}
+    float leftFront, leftBack, rightFront, rightBack;
+    //Get position from 0-360
+    float absposition = concGyro(gyro_getheading());
+    float clockwise = 0;
+    float counterclockwise = 0;
+    float goclockwise = false;
+    //Logic for if target deg is greater or less than current deg
+    if (deg < absposition){
+        clockwise = (360+deg) - absposition;
+        counterclockwise = absposition - deg;
+    }
+    else {
+        clockwise = deg - absposition;
+        counterclockwise = absposition + (360 - deg);
+    }
+    //If clockwise direction to destination is closer than counterclockwise, go clockwise
+    if (clockwise < counterclockwise )
+    {
+        goclockwise = true;
+    }
+    nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
+    nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
+    nxtDisplayCenteredTextLine(5, "%.2f", deg);
+    nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading());
+    //While we are greater than within 5 degs, drive
+    while (abs(concGyro(gyro_getheading())- deg) > 2 ){
+        if (goclockwise ){
+            mecanum_arcadeFOD(0, 0, speed, gyro_getheading(),
+            leftFront, rightFront, leftBack, rightBack);
+        }
+        else {
+            mecanum_arcadeFOD(0, 0, -speed, gyro_getheading(),
+            leftFront, rightFront, leftBack, rightBack);
+        }
+        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());
+        motor[Lf] = leftFront;
+        motor[Rf] = rightFront;
+        motor[Lb] = leftBack;
+        motor[Rb] = rightBack;
+    }
 }
 /**
 * Autonomous go forward for a certain time.
@@ -115,7 +115,7 @@ void turnToDeg_Mecanum(float deg,float speed){
 * @param Speed to go foward at.
 */
 void forward_Mecanum(float millis, float speed){
-				float leftFront, leftBack, rightFront, rightBack;
+        float leftFront, leftBack, rightFront, rightBack;
         mecanum_arcade(speed, 0, 0,
         leftFront, rightFront, leftBack, rightBack);
         motor[Lf] = leftFront;

@@ -33,7 +33,7 @@ void init()
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
 
-    displaySplash("Mecanum Bot", "FOD Test", true);
+    displaySplash("NoStep", "Auto Test", true);
 
     bool ok = false;
     while(!ok)
@@ -71,8 +71,8 @@ task main()
     StartTask(displaySmartDiags, 255);
     forward_Mecanum(1700,100);
     turnToDeg_Mecanum(270,100);
-		forward_Mecanum(3500,100);
-		turnToDeg_Mecanum(270,100);
-		forward_Mecanum(2000,100);
-		turnToDeg_Mecanum(180,100);
+    forward_Mecanum(3500,100);
+    turnToDeg_Mecanum(270,100);
+    forward_Mecanum(2000,100);
+    turnToDeg_Mecanum(180,100);
 }
