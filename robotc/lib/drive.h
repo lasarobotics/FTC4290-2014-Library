@@ -61,7 +61,8 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     mecanum_arcade(y, x, spin,
     leftfront, rightfront, leftback, rightback);
 }
-
+//Range of values turnToDeg considers the target starting from deg-mechanum_tolerance and going till deg+mechanum_tolerance
+static const float mechanum_tolerance = 10;
 /**
 * Autonomous turn to a specific degree based on gyro.
 * @param Degree to turn to.
@@ -92,8 +93,8 @@ void turnToDeg_Mecanum(float deg,float speed){
     nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
     nxtDisplayCenteredTextLine(5, "%.2f", deg);
     nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading());
-    //While we are greater than within 5 degs, drive
-    while (abs(concGyro(gyro_getheading())- deg) > 2 ){
+    //While we are greater than within mechanum_tolerance, drive
+    while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
         if (goclockwise ){
             mecanum_arcadeFOD(0, 0, speed, gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
