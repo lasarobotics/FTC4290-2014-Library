@@ -12,14 +12,12 @@ task main()
 {
 	while ( true )
 	{
-		getJoystickSettings(joystick); //YO JOYSTICK WORK
+		getJoystickSettings(joystick); //read joysticks
 		motor[left] = joystick.joy1_y1; //make robot move left
-		motor[right] = joystick.joy1_y2; //make robot move anti left
-		motor[intake] = joy1Btn(6)*100; //button six is intake y'all
-		if (joy1Btn(4) == 1){motor[lift] = 100;}
-		else if (joy1Btn(6) == 1) {motor[lift] = -100;}
+		motor[right] = joystick.joy1_y2; //make robot move right
+		motor[intake] = joy1Btn(6)*100; //button six is intake
+		if (joy1Btn(5) == 1){motor[lift] = 100;} //button 5 and 7 is lifter
+		else if (joy1Btn(7) == 1) {motor[lift] = -100;}
 		else {motor[lift] = 0}
 	}
-
-
 }
