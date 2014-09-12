@@ -51,14 +51,15 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
 void mecanum_arcadeFOD(float forward, float strafe, float spin, float gyroheading,
 float& leftfront, float& rightfront, float& leftback, float& rightback)
 {
-    float x, y, r, theta, theta2;
+    float x, y;
+    y = forward;
+    x = strafe;
+	double cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
+	double sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
+	double xOut = x * cosA - y * sinA;
+	double yOut = x * sinA + y * cosA;
 
-    rect2polar(strafe,forward,r,theta);
-    theta = radiansToDegrees(theta);
-    theta2 = degreesToRadians(theta + gyroheading);
-    polar2rect(r,theta2,x,y);
-
-    mecanum_arcade(y, x, spin,
+    mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
 }
 //Range of values turnToDeg considers the target starting from deg-mechanum_tolerance and going till deg+mechanum_tolerance
