@@ -76,17 +76,17 @@ task main()
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 
-        y = deadband(k_deadband,joystick.joy1_y1); //strafe
-        x = deadband(k_deadband,joystick.joy1_x1); //forward/rev
-        c = deadband(k_deadband,joystick.joy1_x2); //spin
+        y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
+        x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
+        c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
 
         mecanum_arcadeFOD(y, x, c, gyro_getheading(),
         leftFront, rightFront, leftBack, rightBack);
 
-        motor[Lf] = leftFront;
-        motor[Rf] = rightFront;
-        motor[Lb] = leftBack;
-        motor[Rb] = rightBack;
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
 
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());

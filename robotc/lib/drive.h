@@ -34,10 +34,11 @@ void drive_tank(float leftValue, float rightValue, float& out_left, float& out_r
 void mecanum_arcade(float forward, float strafe, float spin,
 float& leftfront, float& rightfront, float& leftback, float& rightback)
 {
-    leftfront = coerce(-100,100,norm_ftc_motor(forward + strafe + spin));
-    rightfront = coerce(-100,100,norm_ftc_motor(forward - strafe - spin));
-    leftback = coerce(-100,100,norm_ftc_motor(forward - strafe + spin));
-    rightback = coerce(-100,100,norm_ftc_motor(forward + strafe - spin));
+    leftfront = forward + strafe + spin;
+    rightfront = forward - strafe - spin;
+    leftback = forward - strafe + spin;
+    rightback = forward + strafe - spin;
+    norm_mecanum(leftfront,rightfront,leftback,rightback);
 }
 
 /**
