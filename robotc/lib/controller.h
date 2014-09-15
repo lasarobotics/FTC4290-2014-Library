@@ -14,8 +14,9 @@ Standardize controller joystick inputs.
 void ftcController(float& input)
 {
     if (input < 0)
-        return input/128;
-    return input/127;
+        input = input/128;
+    else
+        input =  input/127;
 }
 /**
 * Convert from PSP-nx Controller value (0 to 255)
@@ -24,6 +25,15 @@ void ftcController(float& input)
 void pspnxController(float& input)
 {   input = input - 128;
     if (input < 0)
-        return input/128;
-    return input/127;
+        input = input/128;
+    else 
+        input = input/127;
+}
+/**
+* Convert from Speed value (-100 to 1oo)
+* @param Joystick input value
+*/
+void speedController(float& input)
+{
+    input = input/100;
 }
