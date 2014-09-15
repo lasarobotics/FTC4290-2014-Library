@@ -10,6 +10,7 @@ your coding pleasure.
 
 #include "drivemath.h"
 #include "gyro.h"
+#include "controller.h"
 /**
 * Provide tank steering using the stored robot configuration.
 * This function lets you directly provide joystick values from any source.
@@ -98,18 +99,18 @@ void turnToDeg_Mecanum(float deg,float speed){
     //While we are greater than within mechanum_tolerance, drive
     while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
         if (goclockwise ){
-            mecanum_arcadeFOD(0, 0, speed, gyro_getheading(),
+            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
         else {
-            mecanum_arcadeFOD(0, 0, -speed, gyro_getheading(),
+            mecanum_arcadeFOD(0, 0, speedController(-speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
         nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());
-        motor[Lf] = leftFront;
-        motor[Rf] = rightFront;
-        motor[Lb] = leftBack;
-        motor[Rb] = rightBack;
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
     }
 }
 /**
@@ -119,12 +120,12 @@ void turnToDeg_Mecanum(float deg,float speed){
 */
 void forward_Mecanum(float millis, float speed){
         float leftFront, leftBack, rightFront, rightBack;
-        mecanum_arcade(speed, 0, 0,
+        mecanum_arcade(speedController(speed), 0, 0,
         leftFront, rightFront, leftBack, rightBack);
-        motor[Lf] = leftFront;
-        motor[Rf] = rightFront;
-        motor[Lb] = leftBack;
-        motor[Rb] = rightBack;
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
         wait1Msec(millis);
         //Stop
         motor[Lf] = 0;
