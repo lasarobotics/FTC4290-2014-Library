@@ -30,7 +30,7 @@ void pspnxController(float& input)
         input = input/127;
 }
 /**
-* Convert from Speed value (-100 to 1oo)
+* Convert from speed value (-100 to 100)
 * @param Joystick input value
 */
 void speedController(float& input)
