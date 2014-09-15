@@ -56,10 +56,10 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     float x, y;
     y = forward;
     x = strafe;
-	double cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
-	double sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
-	double xOut = x * cosA - y * sinA;
-	double yOut = x * sinA + y * cosA;
+		double cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
+		double sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
+		double xOut = x * cosA - y * sinA;
+		double yOut = x * sinA + y * cosA;
 
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
@@ -103,7 +103,8 @@ void turnToDeg_Mecanum(float deg,float speed){
             leftFront, rightFront, leftBack, rightBack);
         }
         else {
-            mecanum_arcadeFOD(0, 0, speedController(-speed), gyro_getheading(),
+        	 speed = -speed;
+            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
         nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());

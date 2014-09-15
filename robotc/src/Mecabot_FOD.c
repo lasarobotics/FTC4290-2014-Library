@@ -76,6 +76,7 @@ task main()
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 
+        //scale to -1 to 1
         y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
         x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
         c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
