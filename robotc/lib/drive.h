@@ -56,10 +56,10 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     float x, y;
     y = forward;
     x = strafe;
-		double cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
-		double sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
-		double xOut = x * cosA - y * sinA;
-		double yOut = x * sinA + y * cosA;
+		float cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
+		float sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
+		float xOut = x * cosA - y * sinA;
+		float yOut = x * sinA + y * cosA;
 
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
@@ -95,7 +95,7 @@ void turnToDeg_Mecanum(float deg,float speed){
     nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
     nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
     nxtDisplayCenteredTextLine(5, "%.2f", deg);
-    nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading());
+    nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading()));
     //While we are greater than within mechanum_tolerance, drive
     while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
         if (goclockwise ){
@@ -107,7 +107,7 @@ void turnToDeg_Mecanum(float deg,float speed){
             mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
-        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());
+        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
         motor[Lf] = leftFront*100;
         motor[Rf] = rightFront*100;
         motor[Lb] = leftBack*100;
