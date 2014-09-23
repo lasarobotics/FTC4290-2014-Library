@@ -73,8 +73,8 @@ task main()
 
         //y-axis is inverted
         drive_tank(deadband(k_deadband,-controller.joystickLeft_y), deadband(k_deadband,-controller.joystickRight_y), left, right);
-        motor[drive_left] = left;
-        motor[drive_right] = right;
+        motor[drive_left] = left*.75;
+        motor[drive_right] = right* .75;
 
         nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
         nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());

@@ -71,7 +71,7 @@ static const float mechanum_tolerance = 10;
 * @param Degree to turn to.
 * @param Speed to turn at.
 */
-void turnToDeg_Mecanum(float deg,float speed){
+void turnToDeg_Mecanum(float deg,float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
     float leftFront, leftBack, rightFront, rightBack;
     //Get position from 0-360
     float absposition = concGyro(gyro_getheading());
@@ -119,7 +119,7 @@ void turnToDeg_Mecanum(float deg,float speed){
 * @param Milliseconds to go forward for.
 * @param Speed to go foward at.
 */
-void forward_Mecanum(float millis, float speed){
+void forward_Mecanum(float millis, float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
         float leftFront, leftBack, rightFront, rightBack;
         mecanum_arcade(speedController(speed), 0, 0,
         leftFront, rightFront, leftBack, rightBack);
