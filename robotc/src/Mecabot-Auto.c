@@ -12,7 +12,7 @@
 
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
@@ -62,17 +62,18 @@ void init()
 
 task main()
 {
-    float leftFront, leftBack, rightFront, rightBack; // motors
-    float y, x, c;
 
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
-    forward_Mecanum(1700,100);
-    turnToDeg_Mecanum(270,100);
-    forward_Mecanum(3500,100);
-    turnToDeg_Mecanum(270,100);
-    forward_Mecanum(2000,100);
-    turnToDeg_Mecanum(180,100);
+
+    //Movement Sequence
+    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(270,100, Lf, Lb, Rf, Rb);
+    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
+    //turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
+    //forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
+    //turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
+
 }

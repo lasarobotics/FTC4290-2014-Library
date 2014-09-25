@@ -71,7 +71,7 @@ static const float mechanum_tolerance = 10;
 * @param Degree to turn to.
 * @param Speed to turn at.
 */
-void turnToDeg_Mecanum(float deg,float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
     float leftFront, leftBack, rightFront, rightBack;
     //Get position from 0-360
     float absposition = concGyro(gyro_getheading());
@@ -94,19 +94,18 @@ void turnToDeg_Mecanum(float deg,float speed, tMotor Lf, tMotor Lb, tMotor Rf, t
     }
     nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
     nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
-    nxtDisplayCenteredTextLine(5, "%.2f", deg);
+    if (goclockwise) { nxtDisplayCenteredTextLine(5, "clockwise"); }
+
     nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading()));
     //While we are greater than within mechanum_tolerance, drive
+    /** MOVE MOTORS HERE! **/
     while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
-        if (goclockwise ){
-            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
-            leftFront, rightFront, leftBack, rightBack);
+    		float curspeed = -speed;
+        if (goclockwise){
+            curspeed = speed;
         }
-        else {
-        	 speed = -speed;
-            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
+        mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
-        }
         nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
         motor[Lf] = leftFront*100;
         motor[Rf] = rightFront*100;
