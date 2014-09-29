@@ -69,11 +69,11 @@ task main()
     StartTask(displaySmartDiags, 255);
 
     //Movement Sequence
-    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(270,100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
+    forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
+   	turnToDeg_Mecanum(180,100, Lf, Lb, Rf, Rb);
+    forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
+    forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
 
 }
