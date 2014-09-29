@@ -12,10 +12,12 @@
 
 task main()
 {
-    bSmartDiagnostics = false; //true to enable smart diagnostic screen
-    bCompetitionMode = false; //true to enable competition mode
+    bSmartDiagnostics = true; //true to enable smart diagnostic screen
+    bCompetitionMode = true; //true to enable competition mode
 
     displaySplash("Error Checking", "Multi Test", true);
+
+    StartTask(displaySmartDiags, 255);
 
     /*Setup PrototypeBoard for output on B0 of NXT Port 4
     (0x01 represents the pin B0 and Port 4 is defined above in pragma config)*/

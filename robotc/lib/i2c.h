@@ -12,10 +12,10 @@ Reads sensor ports and finds if devices are missing.
 typedef enum {
 MOTORCON = 0,
 SERVOCON = 1,
-TOUCH = 2,
-LIGHT = 3,
-PSPV4 = 4,
-MUX = 5,
+LIGHT = 2,
+PSPV4 = 3,
+SONAR = 4,
+MUX = 9,
 MUXAnalogue = 10,
 MUXLegoUS = 11,
 MUXCompass = 12,
@@ -41,6 +41,9 @@ void error_translate(int sensor, string& expected){
     case SERVOCON:
         expected = "ServoCon";
         break;
+    case SONAR:
+    		expected = "Sonar\xFF\xFF";
+    		break;
     case PSPV4:
         expected = "PSPNxV4";
         break;
