@@ -10,6 +10,7 @@ your coding pleasure.
 
 #include "drivemath.h"
 #include "gyro.h"
+#include "controller.h"
 /**
 * Provide tank steering using the stored robot configuration.
 * This function lets you directly provide joystick values from any source.
@@ -55,10 +56,10 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     float x, y;
     y = forward;
     x = strafe;
-	double cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
-	double sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
-	double xOut = x * cosA - y * sinA;
-	double yOut = x * sinA + y * cosA;
+		float cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
+		float sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
+		float xOut = x * cosA - y * sinA;
+		float yOut = x * sinA + y * cosA;
 
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
@@ -70,7 +71,7 @@ static const float mechanum_tolerance = 10;
 * @param Degree to turn to.
 * @param Speed to turn at.
 */
-void turnToDeg_Mecanum(float deg,float speed){
+void turnToDeg_Mecanum(float deg,float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
     float leftFront, leftBack, rightFront, rightBack;
     //Get position from 0-360
     float absposition = concGyro(gyro_getheading());
@@ -94,22 +95,23 @@ void turnToDeg_Mecanum(float deg,float speed){
     nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
     nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
     nxtDisplayCenteredTextLine(5, "%.2f", deg);
-    nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading());
+    nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading()));
     //While we are greater than within mechanum_tolerance, drive
     while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
         if (goclockwise ){
-            mecanum_arcadeFOD(0, 0, speed, gyro_getheading(),
+            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
         else {
-            mecanum_arcadeFOD(0, 0, -speed, gyro_getheading(),
+        	 speed = -speed;
+            mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
         }
-        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading());
-        motor[Lf] = leftFront;
-        motor[Rf] = rightFront;
-        motor[Lb] = leftBack;
-        motor[Rb] = rightBack;
+        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
     }
 }
 /**
@@ -117,14 +119,14 @@ void turnToDeg_Mecanum(float deg,float speed){
 * @param Milliseconds to go forward for.
 * @param Speed to go foward at.
 */
-void forward_Mecanum(float millis, float speed){
+void forward_Mecanum(float millis, float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
         float leftFront, leftBack, rightFront, rightBack;
-        mecanum_arcade(speed, 0, 0,
+        mecanum_arcade(speedController(speed), 0, 0,
         leftFront, rightFront, leftBack, rightBack);
-        motor[Lf] = leftFront;
-        motor[Rf] = rightFront;
-        motor[Lb] = leftBack;
-        motor[Rb] = rightBack;
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
         wait1Msec(millis);
         //Stop
         motor[Lf] = 0;

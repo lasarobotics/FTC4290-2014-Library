@@ -34,25 +34,6 @@ void init()
     bCompetitionMode = true; //true to enable competition mode
 
     displaySplash("Mecanum Bot", "FOD Test", true);
-
-    bool ok = false;
-    while(!ok)
-    {
-        const int testcount = 2;
-	    bool test[testcount] = {
-	        errorcheck(1,0,1,MOTORCON),
-	        errorcheck(1,0,2,MOTORCON)};
-	    string desc[testcount] = {"MC1-1","MC1-2"};
-	    ok = error_display(test,desc,testcount);
-	    if (!ok) {
-	        PlayTone(440, 50);
-	        if (test[0] == false && test[1] == false){
-	            nxtDisplayCenteredTextLine(7, "Reboot MC!");
-	        }
-	    }
-	    else { ClearSounds(); }
-    }
-
     eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
@@ -76,6 +57,7 @@ task main()
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 
+        //scale to -1 to 1
         y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
         x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
         c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin

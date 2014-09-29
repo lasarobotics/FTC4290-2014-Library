@@ -43,17 +43,17 @@ float norm_ftc_motor(float value)
 */
 void norm_mecanum(float& leftfront, float& rightfront, float& leftback, float& rightback)
 {
-	float max = abs(leftfront);
+		float max = abs(leftfront);
     if (abs(rightfront)>max) max = abs(rightfront);
     if (abs(leftback)>max) max = abs(leftback);
-    if (abs(rightback)>max) max = abs(rightback);
-	if (max > 1.0)
-	{
-	    leftfront/=max;
-	    rightfront/=max;
-	    leftback/=max;
-	    rightback/=max;
-	}
+  	if (abs(rightback)>max) max = abs(rightback);
+		if (max > 1.0)
+		{
+	  	  leftfront/=max;
+	    	rightfront/=max;
+	    	leftback/=max;
+	    	rightback/=max;
+		}
 }
 
 /**
