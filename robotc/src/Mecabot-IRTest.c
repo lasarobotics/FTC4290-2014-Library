@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S4,     IR,             sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -21,21 +21,59 @@
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/display.h" //splash screens
-
+#include "../drivers/hitechnic-irseeker-v2.h" //IR diver
 /***** STATICS *****/
 static float k_deadband = 15;
 
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
+float rotatlast = 0.0; //last rotation values where
+bool contsearch = true;
+task getIR()
+{
+	rotatlast = 0.0;
+	while (contsearch) {
+		int irnum = HTIRS2readDCDir(IR);
+		nxtDisplayString(3, "%i", irnum);
+		if (irnum != 5)
+		{
+			rotatlast = gyro_getheading();
+			return;
+		}
+	}
+}
 
+void executeMidpoint(){
+
+	 int turnspeed = 100;
+	 contsearch = true;
+	 StartTask(getIR, 7);
+	 turntoDeg_Mecanum(90,turnspeed, Lf,Lb,Rf,Rb);
+	 contsearch = false;
+
+	 float rotright = rotatlast;
+	 turntoDeg_Mecanum(0,turnspeed, Lf,Lb,Rf,Rb);
+
+	 contsearch = true;
+	 StartTask(getIR, 7);
+	 turntoDeg_Mecanum(270,turnspeed, Lf,Lb,Rf,Rb);
+	 contsearch = false;
+
+	 float rotleft = rotatlast;
+	 float midpoint = (rotright + rotleft) / 2;
+
+	 turntoDeg_Mecanum(concGyro(midpoint),turnspeed, Lf,Lb,Rf,Rb);
+	 nxtDisplayString(3, "%f %f", rotleft, rotright);
+	 while (true){}
+}
 void init()
 {
-    bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = true; //true to enable competition mode
+    bSmartDiagnostics = false; //true to enable smart diagnostic screen
+    bCompetitionMode = false; //true to enable competition mode
 
     displaySplash("NoStep", "Auto IR Test", true);
 
-    bool ok = false;
+    bool ok = true;
     while(!ok)
     {
         const int testcount = 2;
@@ -66,14 +104,27 @@ task main()
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
-    StartTask(displaySmartDiags, 255);
+//    StartTask(displaySmartDiags, 255);
 
-    //Movement Sequence
-    forward_Mecanum(1700, 100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(270,100, Lf, Lb, Rf, Rb);
-    forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
-    forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
+    /***** Movement Sequence FROM PARKING! *****/
 
+    // 1. Start robot in center of parking zone touching wall
+    // 2. Check if IR is straight ahead (position 1)
+
+    // 2.1. If true, Move forward and PLACE
+    // 3. Move to position such that the robot is same distance from goal at and facing position 2
+    // 4. If 5, check that you are at a resonable gyro angle then perform midpoint method
+    // 5. Calculate midpoint between angle found at 3/4 and 6/7 and confirm with gyro angle.
+    // 6. If fails, continue to next position and repeat
+
+    forward_Mecanum(1500, 100, Lf, Lb, Rf, Rb);
+    executeMidpoint();
+
+
+
+    //turnToDeg_Mecanum(270,100, Lf, Lb, Rf, Rb);
+    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
+    //turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
+    //forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
+    //turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
 }

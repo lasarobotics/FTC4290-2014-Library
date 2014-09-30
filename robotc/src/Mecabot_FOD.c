@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
-#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S4,     IR,             sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -21,7 +21,7 @@
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/display.h" //splash screens
-
+#include "../drivers/hitechnic-irseeker-v2.h"
 /***** STATICS *****/
 static float k_deadband = 15;
 
@@ -54,6 +54,8 @@ task main()
 
     while (true)
     {
+    		int irdir = HTIRS2readDCDir(IR);
+				nxtDisplayCenteredBigTextLine(3, "%i", irdir);
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 				if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
@@ -78,8 +80,6 @@ task main()
 	        motor[Lb] = leftBack*100;
 	        motor[Rb] = rightBack*100;
 	      }
-        nxtDisplayCenteredBigTextLine(6, "%.2f", gyro_getheading());
-        nxtDisplayCenteredTextLine(5, "%.2f", gyro_getrotspeed());
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
