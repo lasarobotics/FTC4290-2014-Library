@@ -42,35 +42,11 @@ task getIR()
 		}
 	}
 }
-void writeIRToFile(float millis,TFileHandle hFileHandle,TFileIOResult nIOResult){
-	float ir = HTIRS2readDCDir(IR);
-	nxtDisplayString(7, "%f", ir);
-	string s;
-	StringFormat(s,"%f,%f\r\n",millis,ir);
-	WriteText(hFileHandle, nIOResult, s);         // write 'sMessageToWrite' to the file
-}
-void executeMidpoint(){
-
-	 int turnspeed = 100;
-	 contsearch = true;
-	 StartTask(getIR, 7);
-	 turnToDeg_Mecanum(90,turnspeed, Lf,Lb,Rf,Rb);
-	 contsearch = false;
-
-	 float rotright = rotatlast;
-	 turnToDeg_Mecanum(0,turnspeed, Lf,Lb,Rf,Rb);
-
-	 contsearch = true;
-	 StartTask(getIR, 7);
-	 turnToDeg_Mecanum(270,turnspeed, Lf,Lb,Rf,Rb);
-	 contsearch = false;
-
-	 float rotleft = rotatlast;
-	 float midpoint = (rotright + rotleft) / 2;
-
-	 turnToDeg_Mecanum(concGyro(midpoint),turnspeed, Lf,Lb,Rf,Rb);
-	 nxtDisplayString(3, "%f %f", rotleft, rotright);
-	 while (true){}
+void writeIRToFile(float first,float second, TFileHandle hFileHandle,TFileIOResult nIOResult){
+	string s = "";
+	StringFormat(s,"%f,%f\r\n",first,second);
+	WriteText(hFileHandle, nIOResult, s);         // write 's' to the file
+	wait1Msec(100);
 }
 void init()
 {
@@ -108,7 +84,7 @@ task main()
 {
   	TFileHandle   hFileHandle;              // will keep track of our file
   	TFileIOResult nIOResult;                // will store our IO results
-  	string        sFileName = "data.txt";   // the name of our file
+  	string        sFileName = "test.txt";   // the name of our file
   	int           nFileSize = 3000;          // will store our file size
   	byte CR = 0x13;   // define CR (carriage return)
   	byte LF = 0x10;   // define LF (line feed)
@@ -118,37 +94,14 @@ task main()
 //    StartTask(displaySmartDiags, 255);
 		//Write to file
     OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);    // open the file for writing (creates the file if it does not exist)
-    WriteText(hFileHandle, nIOResult, "Time,IR\r\n");         			// write 'sMessageToWrite' to the file
-    /***** Movement Sequence FROM PARKING! *****/
-
-    // 1. Start robot in center of parking zone touching wall
-    // 2. Check if IR is straight ahead (position 1)
-
-    // 2.1. If true, Move forward and PLACE
-    // 3. Move to position such that the robot is same distance from goal at and facing position 2
-    // 4. If 5, check that you are at a resonable gyro angle then perform midpoint method
-    // 5. Calculate midpoint between angle found at 3/4 and 6/7 and confirm with gyro angle.
-    // 6. If fails, continue to next position and repeat
-		turnToDeg_Mecanum(320,100,Lf,Lb,Rf,Rb);
-		ClearTimer(T3);
-    while(time1[T3] < 5000){
-    		float leftFront,leftBack,rightFront,rightBack;
-    		mecanum_arcade(0,1,0,leftFront,rightFront,leftBack,rightBack);
-    		motor[Lf] = leftFront*100;
-    		motor[Lb] = leftBack*100;
-    		motor[Rf] = rightFront*100;
-    		motor[Rb] = rightBack*100;
-    		writeIRToFile(time1[T3],hFileHandle,nIoResult);
-				wait1Msec(100);
-    		nxtDisplayCenteredBigTextLine(3,"%f" , time1[T3]);
-
+    WriteText(hFileHandle, nIOResult, "Time,IR\r\n");
+		float array[50][3] ;
+    for (int i = 0; i < 50; i++){
+    		array[i][0] = i;
+    		array[i][1] = i*2;
    	}
-  	Close(hFileHandle, nIOResult);                              // close the file (DON'T FORGET THIS STEP!)
-
-
-    //turnToDeg_Mecanum(270,100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
+   	for (int j = 0; j < 50; j++){
+   		writeIRToFile(array[j][0],array[j][1],hFileHandle,nIoResult);
+  	}
+  	Close(hFileHandle, nIOResult);
 }

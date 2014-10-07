@@ -121,8 +121,8 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
 */
 void forward_Mecanum(float millis, float speed, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
         float leftFront, leftBack, rightFront, rightBack;
-
-        mecanum_arcade(speedController(speed), 0, 0,
+				speed = speedController(speed);
+        mecanum_arcade(speed, 0, 0,
         	leftFront, rightFront, leftBack, rightBack);
 
         motor[Lf] = leftFront*100;
