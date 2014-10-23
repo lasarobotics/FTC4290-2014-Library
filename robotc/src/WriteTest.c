@@ -46,7 +46,7 @@ void writeIRToFile(float first,float second, TFileHandle hFileHandle,TFileIOResu
 	string s = "";
 	StringFormat(s,"%f,%f\r\n",first,second);
 	WriteText(hFileHandle, nIOResult, s);         // write 's' to the file
-	wait1Msec(100);
+	wait1Msec(10);
 }
 void init()
 {

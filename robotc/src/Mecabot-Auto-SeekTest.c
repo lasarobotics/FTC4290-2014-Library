@@ -28,7 +28,18 @@ static float k_deadband = 15;
 
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
-
+void writeIRToFile(float num,bool last, TFileHandle hFileHandle,TFileIOResult nIOResult){
+	string s = "";
+	if (last){
+		StringFormat(s,"%f",num);
+		WriteText(hFileHandle, nIOResult, s);         // write 's' to the file
+	}
+	else{
+		StringFormat(s,",%f\r\n",num);
+		WriteText(hFileHandle, nIOResult, s);         // write 's' to the file
+	}
+	wait1Msec(10);
+}
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -52,54 +63,186 @@ void init()
     gyro_init(HTGYRO);
     wait1Msec(50);
     nxtbarOn();
+
     return;
 }
 
+const int samples = 10;
+int indexavg = 0;
+int IR3avg[samples];
+int IR4avg[samples];
+float ir3avg = 0;
+float ir4avg = 0;
+
+void initlists()
+{
+	for (int i=0; i<samples; i++)
+	{
+		IR3avg[i] = 0;
+		IR4avg[i] = 0;
+	}
+}
+
+void makeavg(int last3, int last4, float& avg3, float& avg4)
+{
+	if (indexavg == 10){
+		indexavg = 0;
+	}
+	IR3avg[indexavg] = last3;
+	IR4avg[indexavg] = last4;
+	avg3 = 0;
+	avg4 = 0;
+	for (int i=0; i<samples; i++)
+	{
+		avg3 += (float)IR3avg[i];
+		avg4 += (float)IR4avg[i];
+	}
+	avg3 = avg3/samples;
+	avg4 = avg4/samples;
+	indexavg++;
+	return;
+}
 
 task main()
 {
-
+		TFileHandle   hFileHandle;              // will keep track of our file
+  	TFileIOResult nIOResult;                // will store our IO results
+  	string        sFileName = "logir.txt";   // the name of our file
+  	int           nFileSize = 5000;          // will store our file size
+  	byte CR = 0x13;   // define CR (carriage return)
+  	byte LF = 0x10;   // define LF (line feed)
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
+    initlists();
     StartTask(gyro_calibrate, 8);
-    StartTask(displaySmartDiags, 255);
-
+    Delete(sFileName,nIoResult);
+    OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);    // open the file for writing (creates the file if it does not exist)
+    WriteText(hFileHandle, nIOResult, "IR3,IR4\r\n");
     forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
     //forward_Mecanum(1200, 0, -100, Lf, Lb, Rf, Rb);
 
     float leftFront, leftBack, rightFront, rightBack;
 
-    static float ir_tolerance = 15;
+    static float ir_tolerance = 12;
+		int irS1,irS2,irS3,irS4,irS5;
+		float avgS3,avgS4;
+    for (int i = 0; i < 50; i++){
+    	HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+    	makeavg(irS3,irS4,avgS3,avgS4);
+   		writeIRToFile(irS3,false,hFileHandle,nIoResult);
+   		writeIRToFile(irS4,true,hFileHandle,nIoResult);
+   	}
+   	int zone = 0;
+   	if (avgS3 > 50){
+  		nxtDisplayCenteredTextLine(3, "3");
+   		zone = 3;
+  	}
+  	else if (avgS3 > 5 && avgS3 < 50){
+  		nxtDisplayCenteredTextLine(3, "2");
+  		zone = 2;
+  	}
+  	else{
+  		nxtDisplayCenteredTextLine(3, "1");
+  		zone = 1;
+  	}
+  	wait10Msec(100);
 
-    //move until ir
-    mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
-    motor[Lf] = leftFront*100;
-    motor[Rf] = rightFront*100;
-    motor[Lb] = leftBack*100;
-   	motor[Rb] = rightBack*100;
-		int irS1, irS2,irS3,irS4, irS5 = 0;
-    while ((abs(irS3 - irS4) > ir_tolerance) || (irS3 < 70) || (irS4 < 70)) {
-   		HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-    	nxtDisplayCenteredTextLine(6, "IR3: %i", irS3);
-    	nxtDisplayCenteredTextLine(7, "IR4: %i", irS4);
-   	} //goal: the difference between sensors < a tolerance
     //while (!((irS3 >= 100) && (irS4 >= 100))) { } //goal: 3&4 > 100
-    motor[Lf] = 0;
-    motor[Rf] = 0;
-    motor[Lb] = 0;
-   	motor[Rb] = 0;
-    wait1Msec(20);
-   	forward_Mecanum(500, 100, 0, Lf, Lb, Rf, Rb);
+    //while ((abs(avgS3 - avgS4) > ir_tolerance) || (avgS3 < 70) || (avgS4 < 70)) {
+		if (zone == 1){
+			//Nav to zone 2
+			forward_Mecanum(3500, 0, -100, Lf, Lb, Rf, Rb);
+			wait10Msec(100);
+			turnToDeg_Mecanum(90,100,Lf,Lb,Rf,Rb);
+			wait1Msec(100);
 
-    //Movement Sequence
-    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-   	//turnToDeg_Mecanum(180,100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(3500, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(270, 100, Lf, Lb, Rf, Rb);
-    //forward_Mecanum(2000, 100, Lf, Lb, Rf, Rb);
-    //turnToDeg_Mecanum(180, 100, Lf, Lb, Rf, Rb);
+			//move until ir
+    	mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    	motor[Lf] = leftFront*50;
+    	motor[Rf] = rightFront*50;
+    	motor[Lb] = leftBack*50;
+   		motor[Rb] = rightBack*50;
+			int count = 0;
+	   	while (avgS4 < 50){
+			//while(false){
+			  HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+	    	makeavg(irS3,irS4,avgS3,avgS4);
+	   		writeIRToFile(irS3,false,hFileHandle,nIoResult);
+	   		writeIRToFile(irS4,true,hFileHandle,nIoResult);
+	   		nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
+	    	nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
+	   		nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
+	    	nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+	    	count++;
+	   	} //goal: the difference between sensors < a tolerance
+	    motor[Lf] = 0;
+	    motor[Rf] = 0;
+	    motor[Lb] = 0;
+	   	motor[Rb] = 0;
+	    wait1Msec(20);
+	   	forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
+		}
+  	if (zone == 2){
+			//Nav to zone 2
+			forward_Mecanum(2600, 0, -100, Lf, Lb, Rf, Rb);
+			wait10Msec(100);
+			turnToDeg_Mecanum(40,100,Lf,Lb,Rf,Rb);
+			wait1Msec(100);
 
+			//move until ir
+    	mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    	motor[Lf] = leftFront*50;
+    	motor[Rf] = rightFront*50;
+    	motor[Lb] = leftBack*50;
+   		motor[Rb] = rightBack*50;
+			int count = 0;
+	   	while (avgS4 < 50){
+			//while(false){
+			  HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+	    	makeavg(irS3,irS4,avgS3,avgS4);
+	   		writeIRToFile(irS3,false,hFileHandle,nIoResult);
+	   		writeIRToFile(irS4,true,hFileHandle,nIoResult);
+	   		nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
+	    	nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
+	   		nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
+	    	nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+	    	count++;
+	   	} //goal: the difference between sensors < a tolerance
+	    motor[Lf] = 0;
+	    motor[Rf] = 0;
+	    motor[Lb] = 0;
+	   	motor[Rb] = 0;
+	    wait1Msec(20);
+	   	forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
+		}
+  	else if (zone == 3){
+			//move until ir
+    	mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    	motor[Lf] = leftFront*50;
+    	motor[Rf] = rightFront*50;
+    	motor[Lb] = leftBack*50;
+   		motor[Rb] = rightBack*50;
+			int count = 0;
+	   	while (avgS4 < 50){
+			//while(false){
+			  HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+	    	makeavg(irS3,irS4,avgS3,avgS4);
+	   		writeIRToFile(irS3,false,hFileHandle,nIoResult);
+	   		writeIRToFile(irS4,true,hFileHandle,nIoResult);
+	   		nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
+	    	nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
+	   		nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
+	    	nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+	    	count++;
+	   	} //goal: the difference between sensors < a tolerance
+	    motor[Lf] = 0;
+	    motor[Rf] = 0;
+	    motor[Lb] = 0;
+	   	motor[Rb] = 0;
+	    wait1Msec(20);
+	   	forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
+		}
     //kill everything
 		StopAllTasks();
-
+  	Close(hFileHandle, nIOResult);
 }
