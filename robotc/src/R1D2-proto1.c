@@ -18,6 +18,6 @@ task main()
 		motor[intake] = joy1Btn(6)*100; //button six is intake
 		if (joy1Btn(5) == 1){motor[lift] = 100;} //button 5 and 7 is lifter
 		else if (joy1Btn(7) == 1) {motor[lift] = -100;}
-		else {motor[lift] = 0}
+		else { motor[lift] = 0; }
 	}
 }

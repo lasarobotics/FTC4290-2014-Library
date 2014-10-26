@@ -18,12 +18,8 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
-#include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/display.h" //splash screens
-
-/***** STATICS *****/
-static float k_deadband = 15;
 
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--

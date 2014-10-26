@@ -57,10 +57,10 @@ void displayInstructions();
 // main task
 task main ()
 {
-  float leftFront, leftBack, rightFront, rightBack; // motors
-  float y, x, c;
-  int _dirDC = 0;
-  int _dirAC = 0;
+    float leftFront, leftBack, rightFront, rightBack; // motors
+    float y, x, c;
+    int _dirDC = 0;
+    int _dirAC = 0;
 	int dcS1, dcS2, dcS3, dcS4, dcS5 = 0;
 	int acS1, acS2, acS3, acS4, acS5 = 0;
 

@@ -56,10 +56,10 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     float x, y;
     y = forward;
     x = strafe;
-		float cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
-		float sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
-		float xOut = x * cosA - y * sinA;
-		float yOut = x * sinA + y * cosA;
+    float cosA = cos(concGyro(gyroheading) * (3.14159 / 180.0));
+    float sinA = sin(concGyro(gyroheading) * (3.14159 / 180.0));
+    float xOut = x * cosA - y * sinA;
+    float yOut = x * sinA + y * cosA;
 
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
@@ -117,7 +117,8 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
 /**
 * Autonomous go forward for a certain time.
 * @param Milliseconds to go forward for.
-* @param Speed to go foward at.
+* @param Forward speed to go foward at.
+* @param Directional (strafe) speed to go foward at.
 */
 void forward_Mecanum(float millis, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
         float leftFront, leftBack, rightFront, rightBack;
@@ -126,15 +127,26 @@ void forward_Mecanum(float millis, float forward, float strafe, tMotor Lf, tMoto
         mecanum_arcade(forward, strafe, 0,
         	leftFront, rightFront, leftBack, rightBack);
 
+        //Move
         motor[Lf] = leftFront*100;
         motor[Rf] = rightFront*100;
         motor[Lb] = leftBack*100;
         motor[Rb] = rightBack*100;
 
+        //Pause
         wait1Msec(millis);
+
         //Stop
         motor[Lf] = 0;
         motor[Rf] = 0;
         motor[Lb] = 0;
         motor[Rb] = 0;
+}
+/**
+* Autonomous go forward for a certain time.
+* @param Milliseconds to go forward for.
+* @param Forward speed to go foward at.
+*/
+void forward_Mecanum(float millis, float forward, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+    forward_Mecanum(millis, forward, 0, Lf, Lb, Rf, Rb);
 }

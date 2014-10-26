@@ -13,7 +13,6 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
-#include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/display.h" //splash screens
 

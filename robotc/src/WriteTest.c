@@ -22,14 +22,13 @@
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/display.h" //splash screens
 #include "../drivers/hitechnic-irseeker-v2.h" //IR diver
-/***** STATICS *****/
-static float k_deadband = 15;
 
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
-float rotatlast = 0.0; //last rotation values where
-bool contsearch = true;
-task getIR()
+TFileHandle   hFileHandle;
+TFileIOResult nIOResult;
+
+/*task getIR()
 {
 	rotatlast = 0.0;
 	while (contsearch) {
@@ -41,13 +40,15 @@ task getIR()
 			return;
 		}
 	}
-}
+}*/
+
 void writeIRToFile(float first,float second, TFileHandle hFileHandle,TFileIOResult nIOResult){
 	string s = "";
 	StringFormat(s,"%f,%f\r\n",first,second);
 	WriteText(hFileHandle, nIOResult, s);         // write 's' to the file
 	wait1Msec(10);
 }
+
 void init()
 {
     bSmartDiagnostics = false; //true to enable smart diagnostic screen
@@ -82,17 +83,14 @@ void init()
 
 task main()
 {
-  	TFileHandle   hFileHandle;              // will keep track of our file
-  	TFileIOResult nIOResult;                // will store our IO results
   	string        sFileName = "test.txt";   // the name of our file
   	int           nFileSize = 3000;          // will store our file size
-  	byte CR = 0x13;   // define CR (carriage return)
-  	byte LF = 0x10;   // define LF (line feed)
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
-//    StartTask(displaySmartDiags, 255);
-		//Write to file
+    //StartTask(displaySmartDiags, 255);
+
+	//Write to file
     OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);    // open the file for writing (creates the file if it does not exist)
     WriteText(hFileHandle, nIOResult, "Time,IR\r\n");
 		float array[50][3] ;
@@ -101,7 +99,7 @@ task main()
     		array[i][1] = i*2;
    	}
    	for (int j = 0; j < 50; j++){
-   		writeIRToFile(array[j][0],array[j][1],hFileHandle,nIoResult);
+   		writeIRToFile(array[j][0],array[j][1],hFileHandle,nIOResult);
   	}
   	Close(hFileHandle, nIOResult);
 }
