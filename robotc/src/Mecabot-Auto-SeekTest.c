@@ -120,7 +120,7 @@ void initlists()
  * Center IR
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIR(){
+void centerIR(int zone){
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
@@ -134,23 +134,27 @@ void centerIR(){
     while (avgS4 < 50)
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-	    makeavg(irS3,irS4,avgS3,avgS4);
-	   	writeIRToFile(irS3,false,hFileHandle,nIOResult);
-	   	writeIRToFile(irS4,true,hFileHandle,nIOResult);
+		    makeavg(irS3,irS4,avgS3,avgS4);
+		   	writeIRToFile(irS3,false,hFileHandle,nIOResult);
+		   	writeIRToFile(irS4,true,hFileHandle,nIOResult);
         nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
         nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
         nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
         nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
         count++;
-	}
-	motor[Lf] = 0;
-	motor[Rf] = 0;
-	motor[Lb] = 0;
-	motor[Rb] = 0;
-	wait1Msec(20);
+		}
+		if (zone == 2) { wait1Msec(150); } //move for a little bit more
+		motor[Lf] = 0;
+		motor[Rf] = 0;
+		motor[Lb] = 0;
+		motor[Rb] = 0;
+		wait1Msec(20);
 
-	//Place ball sequence
-    forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
+		//Place ball sequence
+    if (zone != 1 ) { forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb); }
+    if (zone == 1 ) {
+    	forward_Mecanum(200, 0, 100, Lf, Lb, Rf, Rb);
+    	forward_Mecanum(300, 100, 0, Lf, Lb, Rf, Rb); }
 }
 
 task main()
@@ -159,7 +163,7 @@ task main()
     init();
     initlists();
     StartTask(gyro_calibrate, 8);
-    //StartTask(displaySmartDiags, 255);
+    StartTask(displaySmartDiags, 255);
 
     //prepare text file
     Delete(sFileName,nIOResult);
@@ -168,8 +172,8 @@ task main()
     forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
     //forward_Mecanum(1200, 0, -100, Lf, Lb, Rf, Rb);
 
-	int irS1,irS2,irS3,irS4,irS5;
-	float avgS3,avgS4;
+		int irS1,irS2,irS3,irS4,irS5;
+		float avgS3,avgS4;
     for (int i = 0; i < 50; i++){
     	HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
     	makeavg(irS3,irS4,avgS3,avgS4);
@@ -197,25 +201,36 @@ task main()
 
     //while (!((irS3 >= 100) && (irS4 >= 100))) { } //goal: 3&4 > 100
     //while ((abs(avgS3 - avgS4) > ir_tolerance) || (avgS3 < 70) || (avgS4 < 70)) {
-    if (zone == 1){
-		//Nav to zone 1 (farthest)
-		forward_Mecanum(3500, 0, -100, Lf, Lb, Rf, Rb);
-		wait10Msec(100);
-		turnToDeg_Mecanum(90, 100, Lf, Lb, Rf, Rb);
-		wait1Msec(100);
-		centerIR();
-	}
-  	else if (zone == 2){
-        //Nav to zone 2
-        forward_Mecanum(2600, 0, -100, Lf, Lb, Rf, Rb);
-        wait10Msec(100);
-        turnToDeg_Mecanum(40, 100, Lf, Lb, Rf, Rb);
-        wait1Msec(100);
-        centerIR();
-	}
-  	else if (zone == 3){
-	    centerIR();
-	}
+    if (zone == 3){
+	    centerIR(zone);
+		}
+  	if (zone <= 2){
+    	//Nav to zone 2
+      forward_Mecanum(2800, 0, -100, Lf, Lb, Rf, Rb);
+      wait10Msec(100);
+      turnToDeg_Mecanum(32, 100, Lf, Lb, Rf, Rb);
+      wait1Msec(100);
+      if (zone == 2) { centerIR(zone); }
+		}
+  	if (zone == 1){
+      //Nav to zone 1 (farthest)
+      forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+      wait10Msec(100);
+      turnToDeg_Mecanum(90, 100, Lf, Lb, Rf, Rb);
+      wait1Msec(100);
+      forward_Mecanum(1400, 0, -100, Lf, Lb, Rf, Rb);
+      centerIR(zone);
+		}
+
+		//hook the goal
+		wait1Msec(250);
+		forward_Mecanum(1300, 0, 100, Lf, Lb, Rf, Rb);
+		wait1Msec(250);
+		forward_Mecanum(600, 100, 0, Lf, Lb, Rf, Rb);
+		wait1Msec(250);
+		forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb); //hit the goal
+		wait1Msec(250);
+		forward_Mecanum(2200, 100, 0, Lf, Lb, Rf, Rb); //continue moving
 
     //kill everything
     StopAllTasks();
