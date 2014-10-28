@@ -33,11 +33,7 @@ const int ir_threshold = 50; //IR threshold between positions 2 and 3
 
 void auto_init()
 {
-  for (int i=0; i<samples; i++)
-  {
-    IR3avg[i] = 0;
-    IR4avg[i] = 0;
-  }
+
 }
 
 /**
@@ -48,7 +44,7 @@ void centerIR(int zone){
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
-    //move until ir
+    //move until IR
     mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
     motor[Lf] = leftFront*50;
     motor[Rf] = rightFront*50;
@@ -58,7 +54,8 @@ void centerIR(int zone){
     while (avgS4 < ir_threshold)
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-        moveavg(irS3,irS4,avgS3,avgS4);
+        ir_moveavg(3,irS3,avgS3);
+        ir_moveavg(4,irS4,avgS4);
         nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
         nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
         nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
@@ -93,7 +90,8 @@ int auto_placeCenterGoal()
     float avgS3,avgS4;
     for (int i = 0; i < 50; i++){
       HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-      moveavg(irS3,irS4,avgS3,avgS4);
+      ir_moveavg(3,irS3,avgS3);
+      ir_moveavg(4,irS4,avgS4);
     }
 
     //Let things settle down
