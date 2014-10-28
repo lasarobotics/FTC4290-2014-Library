@@ -85,8 +85,8 @@ float exp_drive(float value, float time, bool& max, bool& min)
 }
 
 /**
-*
-*
+* Gyro Absolution
+* Force Gyro from -360 to 360 into 0 to 360
 */
 float concGyro(float gyro){
    if (gyro < 0){
