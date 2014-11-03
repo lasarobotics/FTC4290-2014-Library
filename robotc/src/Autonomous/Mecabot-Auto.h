@@ -35,7 +35,35 @@ void auto_init()
 {
 
 }
+float getZone(float avgS3,float avgS4,bool newIR){
+  //Change based on sensor
+  float zone = 1;
+  if(newIR){
+	    //Preliminary Zone Decision
+      //If both sensor 3/4 are greater than 45 and less than 65
+	    if (avgS3 > 45 && avgS3 < 65 && avgS4 > 45 && avgS4 < 65){
+	      zone = 2;
+	    }
+	    //If sensor 4 greater than 65
+	    else if (avgS4 > 60){
+	      zone = 3;
+	    }
 
+	}
+	else{
+	  	//Old Preliminary Zone Decision
+      //If both sensor 3/4 are greater than 30 and less than 60
+	    if (avgS3 > 30 && avgS4 > 30){
+	      zone = 2;
+	    }
+	    //If sensor 4 greater than 30
+	    else if (avgS4 > 50){
+	      zone = 3;
+	    }
+  }
+  nxtDisplayCenteredTextLine(3, "%i", zone);
+	return zone;
+}
 /**
  * Center IR
  * Move until the robot's gyro sensor is aligned to the goal.
@@ -51,7 +79,7 @@ void centerIR(int zone){
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS4 < ir_threshold)
+    while (avgS3 < ir_threshold)
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
         ir_moveavg(3,irS3,avgS3);
@@ -82,9 +110,9 @@ void centerIR(int zone){
 
 /***** PLACE IN CENTER GOAL *****/
 // returns current zone (1,2,3)
-int auto_placeCenterGoal()
+float auto_placeCenterGoal(bool newIR)
 {
-    forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
+    //forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
 
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
@@ -92,28 +120,15 @@ int auto_placeCenterGoal()
       HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
       ir_moveavg(3,irS3,avgS3);
       ir_moveavg(4,irS4,avgS4);
+      wait1Msec(10);
     }
 
     //Let things settle down
     wait10Msec(10);
-
-    //Preliminary Zone Decision
-    int zone = 1;
-    if (avgS3 > 5 && avgS3 < ir_threshold){
-      zone = 2;
-    }
-    if (avgS3 > ir_threshold){
-      zone = 3;
-    }
-    nxtDisplayCenteredTextLine(3, "%i", zone);
-
+    float zone = getZone(irS3,irS4,newIR);
     //Wait for a little bit
     wait10Msec(100);
-
-    //Move to zone
-
-    //while (!((irS3 >= 100) && (irS4 >= 100))) { } //goal: 3&4 > 100
-    //while ((abs(avgS3 - avgS4) > ir_tolerance) || (avgS3 < 70) || (avgS4 < 70)) {
+    /*
     if (zone == 3){
       centerIR(zone);
     }
@@ -133,7 +148,7 @@ int auto_placeCenterGoal()
       wait1Msec(100);
       forward_Mecanum(1400, 0, -100, Lf, Lb, Rf, Rb);
       centerIR(zone);
-    }
+    }*/
 
     return zone;
 }
