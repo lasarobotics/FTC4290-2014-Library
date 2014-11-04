@@ -29,7 +29,7 @@
 #include "../../lib/ir.h" //other math
 
 /***** CONSTANTS *****/
-const int ir_threshold = 50; //IR threshold between positions 2 and 3
+const int ir_threshold = 100; //IR threshold between positions 2 and 3
 
 void auto_init()
 {
@@ -38,29 +38,11 @@ void auto_init()
 float getZone(float avgS3,float avgS4,bool newIR){
   //Change based on sensor
   float zone = 1;
-  if(newIR){
-	    //Preliminary Zone Decision
-      //If both sensor 3/4 are greater than 45 and less than 65
-	    if (avgS3 > 45 && avgS3 < 65 && avgS4 > 45 && avgS4 < 65){
-	      zone = 2;
-	    }
-	    //If sensor 4 greater than 65
-	    else if (avgS4 > 60){
-	      zone = 3;
-	    }
-
+	if ((avgS3 > 40) && (avgS4 > 40)) {
+	   zone = 2;
+	} else if ((avgS3 < 10) && (avgS4 > 50)) {
+	   zone = 3;
 	}
-	else{
-	  	//Old Preliminary Zone Decision
-      //If both sensor 3/4 are greater than 30 and less than 60
-	    if (avgS3 > 30 && avgS4 > 30){
-	      zone = 2;
-	    }
-	    //If sensor 4 greater than 30
-	    else if (avgS4 > 50){
-	      zone = 3;
-	    }
-  }
   nxtDisplayCenteredTextLine(3, "%i", zone);
 	return zone;
 }
@@ -68,18 +50,20 @@ float getZone(float avgS3,float avgS4,bool newIR){
  * Center IR
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIR(int zone){
+void centerIR(int zone,bool scanright){
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
     //move until IR
-    mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    float xdir = -1;
+    if(scanright){xdir = 1;}
+    mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
     motor[Lf] = leftFront*50;
     motor[Rf] = rightFront*50;
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS3 < ir_threshold)
+    while (avgS4 < ir_threshold)
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
         ir_moveavg(3,irS3,avgS3);
@@ -98,10 +82,7 @@ void centerIR(int zone){
     wait1Msec(20);
 
     //Place ball sequence
-    if (zone != 1 ) { forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb); }
-    if (zone == 1 ) {
-      forward_Mecanum(200, 0, 100, Lf, Lb, Rf, Rb);
-      forward_Mecanum(300, 100, 0, Lf, Lb, Rf, Rb); }
+    forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
 }
 
 //TODO enum irAction
@@ -112,8 +93,9 @@ void centerIR(int zone){
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-    //forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
-
+    forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
+    wait10Msec(30);
+    forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
     for (int i = 0; i < 50; i++){
@@ -128,27 +110,27 @@ float auto_placeCenterGoal(bool newIR)
     float zone = getZone(irS3,irS4,newIR);
     //Wait for a little bit
     wait10Msec(100);
-    /*
+
     if (zone == 3){
-      centerIR(zone);
+      centerIR(zone,true);
     }
     if (zone <= 2){
       //Nav to zone 2
-      forward_Mecanum(2800, 0, -100, Lf, Lb, Rf, Rb);
+      forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
       wait10Msec(100);
       turnToDeg_Mecanum(32, 100, Lf, Lb, Rf, Rb);
       wait1Msec(100);
-      if (zone == 2) { centerIR(zone); }
+      if (zone == 2) { centerIR(zone,false); }
     }
     if (zone == 1){
       //Nav to zone 1 (farthest)
       forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
       wait10Msec(100);
-      turnToDeg_Mecanum(90, 100, Lf, Lb, Rf, Rb);
+      turnToDeg_Mecanum(85, 70, Lf, Lb, Rf, Rb);
       wait1Msec(100);
-      forward_Mecanum(1400, 0, -100, Lf, Lb, Rf, Rb);
-      centerIR(zone);
-    }*/
+      forward_Mecanum(2100, 0, -100, Lf, Lb, Rf, Rb);
+      centerIR(zone,false);
+    }
 
     return zone;
 }
