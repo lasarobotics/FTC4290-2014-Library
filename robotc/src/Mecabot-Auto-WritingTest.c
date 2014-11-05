@@ -24,7 +24,7 @@
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker
 
 /***** STATICS *****/
-const int samples = 10;
+const int samples = 5;
 string sFileName = "logir.txt";   // the name of our file
 int nFileSize = 5000;             // maximum file size
 
@@ -125,18 +125,18 @@ void centerIR(int zone){
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
     //move until ir
-    mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    mecanum_arcade(0, 1, 0, leftFront, leftBack, rightFront, rightBack);
     motor[Lf] = leftFront*50;
     motor[Rf] = rightFront*50;
     motor[Lb] = leftBack*50;
    	motor[Rb] = rightBack*50;
    	int count = 0;
-    while (avgS4 < 50)
+    while (avgS3 < 30)
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
 		    makeavg(irS3,irS4,avgS3,avgS4);
-		   	writeIRToFile(irS3,false,hFileHandle,nIOResult);
-		   	writeIRToFile(irS4,true,hFileHandle,nIOResult);
+		   	writeIRToFile(avgS3,false,hFileHandle,nIOResult);
+		   	writeIRToFile(avgS4,true,hFileHandle,nIOResult);
         nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
         nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
         nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
@@ -144,17 +144,18 @@ void centerIR(int zone){
         count++;
 		}
 		if (zone == 2) { wait1Msec(150); } //move for a little bit more
-		motor[Lf] = 0;
+		//2.5in delay
+    forward_Mecanum(250, 0, 100, Lf, Lb, Rf, Rb);
+    motor[Lf] = 0;
 		motor[Rf] = 0;
 		motor[Lb] = 0;
 		motor[Rb] = 0;
 		wait1Msec(20);
-
 		//Place ball sequence
-    if (zone != 1 ) { forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb); }
+    /*if (zone != 1 ) { forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb); }
     if (zone == 1 ) {
     	forward_Mecanum(200, 0, 100, Lf, Lb, Rf, Rb);
-    	forward_Mecanum(300, 100, 0, Lf, Lb, Rf, Rb); }
+    	forward_Mecanum(300, 100, 0, Lf, Lb, Rf, Rb); }*/
 }
 
 task main()
@@ -177,8 +178,8 @@ task main()
     for (int i = 0; i < 50; i++){
     	HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
     	makeavg(irS3,irS4,avgS3,avgS4);
-   		writeIRToFile(irS3,false,hFileHandle,nIOResult);
-   		writeIRToFile(irS4,true,hFileHandle,nIOResult);
+   		writeIRToFile(avgS3,false,hFileHandle,nIOResult);
+   		writeIRToFile(avgS4,true,hFileHandle,nIOResult);
    	}
 
    	//Let things settle down
@@ -186,12 +187,11 @@ task main()
 
    	//Preliminary Zone Decision
   	int zone = 1;
-  	if (avgS3 > 5 && avgS3 < 50){
-  		zone = 2;
-  	}
-  	if (avgS3 > 50){
-   		zone = 3;
-  	}
+		if ((avgS3 > 40) && (avgS4 > 40)) {
+			   zone = 2;
+		} else if ((avgS3 < 10) && (avgS4 > 50)) {
+			   zone = 3;
+		}
   	nxtDisplayCenteredTextLine(3, "%i", zone);
 
   	//Wait for a little bit
@@ -202,7 +202,7 @@ task main()
     //while (!((irS3 >= 100) && (irS4 >= 100))) { } //goal: 3&4 > 100
     //while ((abs(avgS3 - avgS4) > ir_tolerance) || (avgS3 < 70) || (avgS4 < 70)) {
     if (zone == 3){
-	    centerIR(zone);
+       centerIR(zone);
 		}
   	if (zone <= 2){
     	//Nav to zone 2
@@ -222,7 +222,7 @@ task main()
       centerIR(zone);
 		}
 
-		//hook the goal
+	/*	//hook the goal
 		wait1Msec(250);
 		forward_Mecanum(1300, 0, 100, Lf, Lb, Rf, Rb);
 		wait1Msec(250);
@@ -231,7 +231,7 @@ task main()
 		forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb); //hit the goal
 		wait1Msec(250);
 		forward_Mecanum(2200, 100, 0, Lf, Lb, Rf, Rb); //continue moving
-
+*/
     //kill everything
     StopAllTasks();
   	Close(hFileHandle, nIOResult);

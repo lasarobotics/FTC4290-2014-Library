@@ -47,23 +47,25 @@ float getZone(float avgS3,float avgS4,bool newIR){
 	return zone;
 }
 /**
- * Center IR
+ * Center IR Right
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIR(int zone,bool scanright){
+void centerIRRight(int zone){
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
+    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+    ir_moveavg(3,irS3,avgS3);
+    ir_moveavg(4,irS4,avgS4);
     //move until IR
-    float xdir = -1;
-    if(scanright){xdir = 1;}
+    float xdir = 1;
     mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
     motor[Lf] = leftFront*50;
     motor[Rf] = rightFront*50;
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS4 < ir_threshold)
+    while (avgS3 < 30 )
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
         ir_moveavg(3,irS3,avgS3);
@@ -74,17 +76,61 @@ void centerIR(int zone,bool scanright){
         nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
         count++;
     }
-    wait1Msec(100); //move for a little bit more
+		//2.5in delay
+    forward_Mecanum(250, 0, 100, Lf, Lb, Rf, Rb);
     motor[Lf] = 0;
-    motor[Rf] = 0;
-    motor[Lb] = 0;
-    motor[Rb] = 0;
-    wait1Msec(20);
-
+		motor[Rf] = 0;
+		motor[Lb] = 0;
+		motor[Rb] = 0;
+		wait1Msec(20);
+    //Place ball sequence
+    forward_Mecanum(800, xdir*100, 0, Lf, Lb, Rf, Rb);
+}
+/**
+ * Center IR
+ * Move until the robot's gyro sensor is aligned to the goal.
+ */
+void centerIRLeft(int zone){
+    float leftFront, leftBack, rightFront, rightBack;
+    int irS1,irS2,irS3,irS4,irS5;
+    float avgS3,avgS4;
+    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+    ir_moveavg(3,irS3,avgS3);
+    ir_moveavg(4,irS4,avgS4);
+    //move until IR
+    float xdir = -1;
+    mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
+    motor[Lf] = leftFront*50;
+    motor[Rf] = rightFront*50;
+    motor[Lb] = leftBack*50;
+    motor[Rb] = rightBack*50;
+    int count = 0;
+    while (avgS4 < 30 )
+    {
+        HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+        ir_moveavg(3,irS3,avgS3);
+        ir_moveavg(4,irS4,avgS4);
+        nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
+        nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
+        nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
+        nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+        count++;
+    }
+		//2.5in delay,zone 1 a little less
+    if(zone == 1){
+     forward_Mecanum(125, 0, xdir*100, Lf, Lb, Rf, Rb);
+    }
+    else {
+      forward_Mecanum(250, 0, xdir*100, Lf, Lb, Rf, Rb);
+    }
+    motor[Lf] = 0;
+		motor[Rf] = 0;
+		motor[Lb] = 0;
+		motor[Rb] = 0;
+		wait1Msec(20);
     //Place ball sequence
     forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
 }
-
 //TODO enum irAction
 
 //TODO task readIR() in ir.h
@@ -94,8 +140,8 @@ void centerIR(int zone,bool scanright){
 float auto_placeCenterGoal(bool newIR)
 {
     forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
-    wait10Msec(30);
-    forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
+    //wait10Msec(30);
+    //forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
     for (int i = 0; i < 50; i++){
@@ -112,7 +158,7 @@ float auto_placeCenterGoal(bool newIR)
     wait10Msec(100);
 
     if (zone == 3){
-      centerIR(zone,true);
+      centerIRRight(zone);
     }
     if (zone <= 2){
       //Nav to zone 2
@@ -120,16 +166,16 @@ float auto_placeCenterGoal(bool newIR)
       wait10Msec(100);
       turnToDeg_Mecanum(32, 100, Lf, Lb, Rf, Rb);
       wait1Msec(100);
-      if (zone == 2) { centerIR(zone,false); }
+      if (zone == 2) { centerIRLeft(zone); }
     }
     if (zone == 1){
       //Nav to zone 1 (farthest)
       forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
       wait10Msec(100);
-      turnToDeg_Mecanum(85, 70, Lf, Lb, Rf, Rb);
+      turnToDeg_Mecanum(90, 70, Lf, Lb, Rf, Rb);
       wait1Msec(100);
       forward_Mecanum(2100, 0, -100, Lf, Lb, Rf, Rb);
-      centerIR(zone,false);
+      centerIRLeft(zone);
     }
 
     return zone;
