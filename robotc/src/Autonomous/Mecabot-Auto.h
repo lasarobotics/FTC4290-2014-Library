@@ -46,6 +46,23 @@ float getZone(float avgS3,float avgS4,bool newIR){
   nxtDisplayCenteredTextLine(3, "%i", zone);
 	return zone;
 }
+
+/**
+ * Move down ramp
+ * Move the robot down the ramp
+ */
+void auto_moveDownRamp(){
+  forward_Mecanum(3000, 100, 0, Lf, Lb, Rf, Rb);
+}
+
+/**
+ * Move from bottom of ramp to parking zone
+ */
+void auto_rampToParking(){
+  forward_Mecanum(3000, 0, -100, Lf, Lb, Rf, Rb);
+  forward_Mecanum(4250, -100, 0, Lf, Lb, Rf, Rb);
+  forward_Mecanum(2500, 0, -100, Lf, Lb, Rf, Rb);
+}
 /**
  * Center IR Right
  * Move until the robot's gyro sensor is aligned to the goal.
