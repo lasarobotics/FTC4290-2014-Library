@@ -54,8 +54,8 @@ task main()
 
     while (true)
     {
-    		int irdir = HTIRS2readDCDir(IR);
-				nxtDisplayCenteredBigTextLine(3, "%i", irdir);
+
+				nxtDisplayCenteredBigTextLine(3, "%i", gyro_getheading());
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
 				if (deadband(k_deadband,joystick.joy1_y1) == 0 &&

@@ -35,7 +35,6 @@
 #include "../drivers/hitechnic-irseeker-v2.h"
 /***** STATICS *****/
 static float k_deadband = 15;
-
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
 
@@ -54,10 +53,11 @@ void init()
 
 task main()
 {
+
     float leftFront, leftBack, rightFront, rightBack; // motors
     float y, x, c;
     bool blowerenabled = false;
-
+    int joy2Btn4last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
@@ -92,9 +92,10 @@ task main()
 	      }
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
-        if(joy2Btn(4)== 1){
+
+        if(joy2Btn(4)== 1 && joy2Btn4last != 1){
             if (blowerenabled){
-                motor[BlowerA] = 0;
+              motor[BlowerA] = 0;
 	            motor[BlowerB] = 0;
 	            motor[BlowerC] = 0;
 	            blowerenabled = false;
@@ -105,13 +106,17 @@ task main()
 	            motor[BlowerC] = 100;
 	            blowerenabled = true;
             }
+
         }
+        joy2Btn4last = joy2Btn(4);
+        //bFloatDuringInactiveMotorPWM = false;
         if (joy2Btn(1)==1){
             motor[Intake] = 100;
         }
         else{
             motor[Intake] = 0;
         }
+       // bFloatDuringInactiveMotorPWM = true;
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     }
 }
