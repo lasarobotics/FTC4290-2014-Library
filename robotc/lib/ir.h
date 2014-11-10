@@ -17,7 +17,7 @@ static int ir_thresholds[10]; //min, max
 static bool ir_read = true;
 
 /**** MOVING AVERAGE VARS ****/
-const int samples = 10; // moving average sample size
+const int samples = 5; // moving average sample size
 int indexavg = 0;       // current index
 int IRavg[5][samples];  // sample list to contain ir averages
 

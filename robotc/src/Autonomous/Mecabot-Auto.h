@@ -29,29 +29,60 @@
 #include "../../lib/ir.h" //other math
 
 /***** CONSTANTS *****/
-const int ir_threshold = 50; //IR threshold between positions 2 and 3
+const int ir_threshold = 100; //IR threshold between positions 2 and 3
 
 void auto_init()
 {
 
 }
+float getZone(float avgS3,float avgS4,bool newIR){
+  //Change based on sensor
+  float zone = 1;
+	if ((avgS3 > 40) && (avgS4 > 40)) {
+	   zone = 2;
+	} else if ((avgS3 < 10) && (avgS4 > 50)) {
+	   zone = 3;
+	}
+  nxtDisplayCenteredTextLine(3, "%i", zone);
+	return zone;
+}
 
 /**
- * Center IR
+ * Move down ramp
+ * Move the robot down the ramp
+ */
+void auto_moveDownRamp(){
+  forward_Mecanum(3000, 100, 0, Lf, Lb, Rf, Rb);
+}
+
+/**
+ * Move from bottom of ramp to parking zone
+ */
+void auto_rampToParking(){
+  forward_Mecanum(3000, 0, -100, Lf, Lb, Rf, Rb);
+  forward_Mecanum(4250, -100, 0, Lf, Lb, Rf, Rb);
+  forward_Mecanum(2500, 0, -100, Lf, Lb, Rf, Rb);
+}
+/**
+ * Center IR Right
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIR(int zone){
+void centerIRRight(int zone){
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
+    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+    ir_moveavg(3,irS3,avgS3);
+    ir_moveavg(4,irS4,avgS4);
     //move until IR
-    mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
+    float xdir = 1;
+    mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
     motor[Lf] = leftFront*50;
     motor[Rf] = rightFront*50;
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS4 < ir_threshold)
+    while (avgS3 < 30 )
     {
         HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
         ir_moveavg(3,irS3,avgS3);
@@ -62,77 +93,106 @@ void centerIR(int zone){
         nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
         count++;
     }
-    wait1Msec(100); //move for a little bit more
+		//2.5in delay
+    forward_Mecanum(250, 0, 100, Lf, Lb, Rf, Rb);
     motor[Lf] = 0;
-    motor[Rf] = 0;
-    motor[Lb] = 0;
-    motor[Rb] = 0;
-    wait1Msec(20);
-
+		motor[Rf] = 0;
+		motor[Lb] = 0;
+		motor[Rb] = 0;
+		wait1Msec(20);
     //Place ball sequence
-    if (zone != 1 ) { forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb); }
-    if (zone == 1 ) {
-      forward_Mecanum(200, 0, 100, Lf, Lb, Rf, Rb);
-      forward_Mecanum(300, 100, 0, Lf, Lb, Rf, Rb); }
+    forward_Mecanum(800, xdir*100, 0, Lf, Lb, Rf, Rb);
 }
-
+/**
+ * Center IR
+ * Move until the robot's gyro sensor is aligned to the goal.
+ */
+void centerIRLeft(int zone){
+    float leftFront, leftBack, rightFront, rightBack;
+    int irS1,irS2,irS3,irS4,irS5;
+    float avgS3,avgS4;
+    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+    ir_moveavg(3,irS3,avgS3);
+    ir_moveavg(4,irS4,avgS4);
+    //move until IR
+    float xdir = -1;
+    mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
+    motor[Lf] = leftFront*50;
+    motor[Rf] = rightFront*50;
+    motor[Lb] = leftBack*50;
+    motor[Rb] = rightBack*50;
+    int count = 0;
+    while (avgS4 < 30 )
+    {
+        HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
+        ir_moveavg(3,irS3,avgS3);
+        ir_moveavg(4,irS4,avgS4);
+        nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
+        nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
+        nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
+        nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+        count++;
+    }
+		//2.5in delay,zone 1 a little less
+    if(zone == 1){
+     forward_Mecanum(125, 0, xdir*100, Lf, Lb, Rf, Rb);
+    }
+    else {
+      forward_Mecanum(250, 0, xdir*100, Lf, Lb, Rf, Rb);
+    }
+    motor[Lf] = 0;
+		motor[Rf] = 0;
+		motor[Lb] = 0;
+		motor[Rb] = 0;
+		wait1Msec(20);
+    //Place ball sequence
+    forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
+}
 //TODO enum irAction
 
 //TODO task readIR() in ir.h
 
 /***** PLACE IN CENTER GOAL *****/
 // returns current zone (1,2,3)
-int auto_placeCenterGoal()
+float auto_placeCenterGoal(bool newIR)
 {
     forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
-
+    //wait10Msec(30);
+    //forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
     for (int i = 0; i < 50; i++){
       HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
       ir_moveavg(3,irS3,avgS3);
       ir_moveavg(4,irS4,avgS4);
+      wait1Msec(10);
     }
 
     //Let things settle down
     wait10Msec(10);
-
-    //Preliminary Zone Decision
-    int zone = 1;
-    if (avgS3 > 5 && avgS3 < ir_threshold){
-      zone = 2;
-    }
-    if (avgS3 > ir_threshold){
-      zone = 3;
-    }
-    nxtDisplayCenteredTextLine(3, "%i", zone);
-
+    float zone = getZone(irS3,irS4,newIR);
     //Wait for a little bit
     wait10Msec(100);
 
-    //Move to zone
-
-    //while (!((irS3 >= 100) && (irS4 >= 100))) { } //goal: 3&4 > 100
-    //while ((abs(avgS3 - avgS4) > ir_tolerance) || (avgS3 < 70) || (avgS4 < 70)) {
     if (zone == 3){
-      centerIR(zone);
+      centerIRRight(zone);
     }
     if (zone <= 2){
       //Nav to zone 2
-      forward_Mecanum(2800, 0, -100, Lf, Lb, Rf, Rb);
+      forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
       wait10Msec(100);
       turnToDeg_Mecanum(32, 100, Lf, Lb, Rf, Rb);
       wait1Msec(100);
-      if (zone == 2) { centerIR(zone); }
+      if (zone == 2) { centerIRLeft(zone); }
     }
     if (zone == 1){
       //Nav to zone 1 (farthest)
       forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
       wait10Msec(100);
-      turnToDeg_Mecanum(90, 100, Lf, Lb, Rf, Rb);
+      turnToDeg_Mecanum(90, 70, Lf, Lb, Rf, Rb);
       wait1Msec(100);
-      forward_Mecanum(1400, 0, -100, Lf, Lb, Rf, Rb);
-      centerIR(zone);
+      forward_Mecanum(2100, 0, -100, Lf, Lb, Rf, Rb);
+      centerIRLeft(zone);
     }
 
     return zone;

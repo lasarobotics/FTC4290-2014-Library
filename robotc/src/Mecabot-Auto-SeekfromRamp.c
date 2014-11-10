@@ -53,8 +53,10 @@ task main()
     auto_init();
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
-
-    int zone = auto_placeCenterGoal();
+    auto_moveDownRamp();
+    auto_rampToParking();
+    //True for new IR, false for old
+    float zone = auto_placeCenterGoal(false);
     //auto_kickstandFromCenterGoal(zone);
 
     //kill everything
