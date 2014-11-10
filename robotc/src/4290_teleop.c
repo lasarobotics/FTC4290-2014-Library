@@ -93,17 +93,17 @@ task main()
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
         if(joy2Btn(4)== 1){
-            if (blowerenabled{
+            if (blowerenabled){
                 motor[BlowerA] = 0;
 	            motor[BlowerB] = 0;
 	            motor[BlowerC] = 0;
-	            blowerenabled = false
+	            blowerenabled = false;
             }
             else{
 	            motor[BlowerA] = 100;
 	            motor[BlowerB] = 100;
 	            motor[BlowerC] = 100;
-	            blowerenabled = true
+	            blowerenabled = true;
             }
         }
         if (joy2Btn(1)==1){
