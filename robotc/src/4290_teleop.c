@@ -92,12 +92,11 @@ task main()
 	      }
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
-
         if(joy2Btn(4)== 1 && joy2Btn4last != 1){
             if (blowerenabled){
-              motor[BlowerA] = 0;
-	            motor[BlowerB] = 0;
-	            motor[BlowerC] = 0;
+                motor[BlowerA] = 1;
+	            motor[BlowerB] = 1;
+	            motor[BlowerC] = 1;
 	            blowerenabled = false;
             }
             else{
@@ -106,17 +105,14 @@ task main()
 	            motor[BlowerC] = 100;
 	            blowerenabled = true;
             }
-
         }
         joy2Btn4last = joy2Btn(4);
-        //bFloatDuringInactiveMotorPWM = false;
         if (joy2Btn(1)==1){
             motor[Intake] = 100;
         }
         else{
             motor[Intake] = 0;
         }
-       // bFloatDuringInactiveMotorPWM = true;
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     }
 }
