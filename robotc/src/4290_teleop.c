@@ -29,7 +29,7 @@
 #include "../lib/drive.h" //drive trains
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
-#include "../lib/display.h" //splash screens
+#include "../lib/options.h" //splash screens and display options
 #include "../drivers/hitechnic-irseeker-v2.h"
 /***** STATICS *****/
 static float k_deadband = 15;
