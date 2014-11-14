@@ -52,7 +52,21 @@ void init()
     nxtbarOn();
     return;
 }
+/*Control Layout:
+Controller 1:
+Left Joystick x/y - Strafe and forward for robot
+Right Joystick x - Turn
+Controller 2:
+Button 1: Intake
+Button 2: Goal Hook
+Button 3: Kickstand
+Button 4: Blower
+Button 8: Ball storage
+Button 9: Lift release
+Button 10: Intake backwards
 
+
+*/
 task main()
 {
     float leftFront, leftBack, rightFront, rightBack; // motors
@@ -75,9 +89,10 @@ task main()
     {
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
+        //Drive Code
         if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
-                deadband(k_deadband,joystick.joy1_x1) == 0 &&
-                deadband(k_deadband,joystick.joy1_x2) == 0 ) {
+            deadband(k_deadband,joystick.joy1_x1) == 0 &&
+            deadband(k_deadband,joystick.joy1_x2) == 0 ) {
             motor[Lf] = 0;
             motor[Rf] = 0;
             motor[Lb] = 0;
@@ -97,7 +112,10 @@ task main()
             motor[Lb] = leftBack*100;
             motor[Rb] = rightBack*100;
         }
+        //Gyro Reset Code
         if(joy1Btn(4) == 1) { gyro_reset(); }
+        if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+        //Blower Toggle
         if(joy2Btn(4)== 1 && joy2Btn4last != 1){
             if (blowerenabled){
                 motor[BlowerA] = 1;
@@ -112,6 +130,7 @@ task main()
                 blowerenabled = true;
             }
         }
+        //Kickstand Toggle
         if(joy2Btn(3)== 1 && joy2Btn3last != 1){
             if (kickstandenabled){
                 servo[Kickstand] = 135;
@@ -122,6 +141,7 @@ task main()
                 kickstandenabled = true;
             }
         }
+        //Goal Latch Toggle
         if(joy2Btn(2)== 1 && joy2Btn2last != 1){
             if (goalreatainenabled){
                 servo[GoalRetainer] = 255;
@@ -132,6 +152,7 @@ task main()
                 goalreatainenabled = true;
             }
         }
+        //Storage Toggle
         if(joy2Btn(8)== 1 && joy2Btn8last != 1){
             if (storageclosed){
                 servo[BallStorage] = 180;
@@ -142,16 +163,22 @@ task main()
                 storageclosed = true;
             }
         }
-        joy2Btn4last = joy2Btn(4);
-        joy2Btn3last = joy2Btn(3);
-        joy2Btn2last = joy2Btn(2);
-        joy2Btn8last = joy2Btn(8);
+        //Intake Forwards, back, slow forwards
         if (joy2Btn(1) == 1){
             motor[Intake] = 100;
+        }
+        else if (joy2Btn(9) == 1){
+            motor[Intake] = 40;
+        }
+        else if (joy2Btn(10) == 1){
+            motor[Intake] = -100;
         }
         else{
             motor[Intake] = 0;
         }
-        while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+        joy2Btn4last = joy2Btn(4);
+        joy2Btn3last = joy2Btn(3);
+        joy2Btn2last = joy2Btn(2);
+        joy2Btn8last = joy2Btn(8);
     }
 }
