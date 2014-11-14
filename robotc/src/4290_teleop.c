@@ -75,71 +75,71 @@ task main()
     {
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
-		if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
-			deadband(k_deadband,joystick.joy1_x1) == 0 &&
-        	deadband(k_deadband,joystick.joy1_x2) == 0 ) {
-          motor[Lf] = 0;
-        	motor[Rf] = 0;
-        	motor[Lb] = 0;
-        	motor[Rb] = 0;
+        if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
+                deadband(k_deadband,joystick.joy1_x1) == 0 &&
+                deadband(k_deadband,joystick.joy1_x2) == 0 ) {
+            motor[Lf] = 0;
+            motor[Rf] = 0;
+            motor[Lb] = 0;
+            motor[Rb] = 0;
         }
         else {
-		    //scale to -1 to 1
-	        y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
-	        x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
-	        c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
+            //scale to -1 to 1
+            y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
+            x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
+            c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
 
-	        mecanum_arcadeFOD(y, x, c, gyro_getheading(),
-	        leftFront, rightFront, leftBack, rightBack);
+            mecanum_arcadeFOD(y, x, c, gyro_getheading(),
+            leftFront, rightFront, leftBack, rightBack);
 
-	        motor[Lf] = leftFront*100;
-	        motor[Rf] = rightFront*100;
-	        motor[Lb] = leftBack*100;
-	        motor[Rb] = rightBack*100;
-	      }
+            motor[Lf] = leftFront*100;
+            motor[Rf] = rightFront*100;
+            motor[Lb] = leftBack*100;
+            motor[Rb] = rightBack*100;
+        }
         if(joy1Btn(4) == 1) { gyro_reset(); }
         if(joy2Btn(4)== 1 && joy2Btn4last != 1){
             if (blowerenabled){
-              motor[BlowerA] = 1;
-	            motor[BlowerB] = 1;
-	            motor[BlowerC] = 1;
-	            blowerenabled = false;
+                motor[BlowerA] = 1;
+                motor[BlowerB] = 1;
+                motor[BlowerC] = 1;
+                blowerenabled = false;
             }
             else{
-	            motor[BlowerA] = 100;
-	            motor[BlowerB] = 100;
-	            motor[BlowerC] = 100;
-	            blowerenabled = true;
+                motor[BlowerA] = 100;
+                motor[BlowerB] = 100;
+                motor[BlowerC] = 100;
+                blowerenabled = true;
             }
         }
         if(joy2Btn(3)== 1 && joy2Btn3last != 1){
             if (kickstandenabled){
-              servo[Kickstand] = 135;
-              kickstandenabled = false;
+                servo[Kickstand] = 135;
+                kickstandenabled = false;
             }
             else{
-              servo[Kickstand] = 0;
-              kickstandenabled = true;
+                servo[Kickstand] = 0;
+                kickstandenabled = true;
             }
         }
         if(joy2Btn(2)== 1 && joy2Btn2last != 1){
             if (goalreatainenabled){
-              servo[GoalRetainer] = 255;
-              goalreatainenabled = false;
+                servo[GoalRetainer] = 255;
+                goalreatainenabled = false;
             }
             else{
-              servo[GoalRetainer] = 0;
-              goalreatainenabled = true;
+                servo[GoalRetainer] = 0;
+                goalreatainenabled = true;
             }
         }
         if(joy2Btn(8)== 1 && joy2Btn8last != 1){
             if (storageclosed){
-              servo[BallStorage] = 180;
-              storageclosed = false;
+                servo[BallStorage] = 180;
+                storageclosed = false;
             }
             else{
-              servo[BallStorage] = 100;
-              storageclosed = true;
+                servo[BallStorage] = 100;
+                storageclosed = true;
             }
         }
         joy2Btn4last = joy2Btn(4);
