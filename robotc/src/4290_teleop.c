@@ -61,9 +61,9 @@ Button 1: Intake
 Button 2: Goal Hook
 Button 3: Kickstand
 Button 4: Blower
+Button 5: Lift release
+Button 6: Intake backwards
 Button 8: Ball storage
-Button 9: Lift release
-Button 10: Intake backwards
 
 
 */
@@ -167,10 +167,10 @@ task main()
         if (joy2Btn(1) == 1){
             motor[Intake] = 100;
         }
-        else if (joy2Btn(9) == 1){
+        else if (joy2Btn(5) == 1){
             motor[Intake] = 40;
         }
-        else if (joy2Btn(10) == 1){
+        else if (joy2Btn(6) == 1){
             motor[Intake] = -100;
         }
         else{
