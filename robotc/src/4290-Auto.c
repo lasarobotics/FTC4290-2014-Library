@@ -50,7 +50,7 @@ task main()
 {
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    auto_init();
+    //auto_init();
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     auto_moveDownRamp();

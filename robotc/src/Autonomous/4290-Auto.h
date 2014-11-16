@@ -25,17 +25,14 @@
 #include "../../lib/naturalization.h" //naturalize RobotC
 #include "../../lib/drive.h" //drive trains
 #include "../../lib/i2c.h" //I2C error checking
-#include "../../lib/display.h" //splash screens
+#include "../../lib/options.h" //splash screens
 #include "../../lib/ir.h" //other math
 
 /***** CONSTANTS *****/
-const int ir_threshold = 100; //IR threshold between positions 2 and 3
+//const int ir_threshold = 100; //IR threshold between positions 2 and 3
 
-void auto_init()
+float getZone(float avgS3,float avgS4,bool newIR)
 {
-
-}
-float getZone(float avgS3,float avgS4,bool newIR){
   //Change based on sensor
   float zone = 1;
 	if ((avgS3 > 40) && (avgS4 > 40)) {
@@ -51,23 +48,27 @@ float getZone(float avgS3,float avgS4,bool newIR){
  * Move down ramp
  * Move the robot down the ramp
  */
-void auto_moveDownRamp(){
+void auto_moveDownRamp()
+{
   forward_Mecanum(3000, 100, 0, Lf, Lb, Rf, Rb);
 }
 
 /**
  * Move from bottom of ramp to parking zone
  */
-void auto_rampToParking(){
+void auto_rampToParking()
+{
   forward_Mecanum(3000, 0, -100, Lf, Lb, Rf, Rb);
   forward_Mecanum(4250, -100, 0, Lf, Lb, Rf, Rb);
   forward_Mecanum(2500, 0, -100, Lf, Lb, Rf, Rb);
 }
+
 /**
  * Center IR Right
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIRRight(int zone){
+void centerIRRight(int zone)
+{
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
@@ -103,11 +104,13 @@ void centerIRRight(int zone){
     //Place ball sequence
     forward_Mecanum(800, xdir*100, 0, Lf, Lb, Rf, Rb);
 }
+
 /**
  * Center IR
  * Move until the robot's gyro sensor is aligned to the goal.
  */
-void centerIRLeft(int zone){
+void centerIRLeft(int zone)
+{
     float leftFront, leftBack, rightFront, rightBack;
     int irS1,irS2,irS3,irS4,irS5;
     float avgS3,avgS4;
@@ -148,9 +151,6 @@ void centerIRLeft(int zone){
     //Place ball sequence
     forward_Mecanum(800, 100, 0, Lf, Lb, Rf, Rb);
 }
-//TODO enum irAction
-
-//TODO task readIR() in ir.h
 
 /***** PLACE IN CENTER GOAL *****/
 // returns current zone (1,2,3)
