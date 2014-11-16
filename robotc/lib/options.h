@@ -9,9 +9,6 @@ Displays splash screen and enables custom diagnostics.
 
 #include "display.h"
 
-int options_yvalue(int line)     { return 63 - (line*8); }
-int options_xvalue(int position) { return 6*position; }
-
 string options[8] = { "", "", "", "", "", "", "", "" };
 int optionscount = 0;
 
@@ -26,8 +23,8 @@ void options_add(char* option)
 
 void options_displaydot(int old, int new, int addend)
 {
-  nxtDisplayStringAt(options_xvalue(0), options_yvalue(old+addend), " ");
-  nxtDisplayStringAt(options_xvalue(0), options_yvalue(new+addend), ">");
+  nxtDisplayStringAt(display_x(0), display_y(old+addend), " ");
+  nxtDisplayStringAt(display_x(0), display_y(new+addend), ">");
 }
 
 /**
@@ -54,7 +51,7 @@ int options_DisplayList(string title, string caption, int defaultoption)
   }
 
   //Display initial dot
-  nxtDisplayStringAt(options_xvalue(0), options_yvalue(defaultoption+addend), ">");
+  nxtDisplayStringAt(display_x(0), display_y(defaultoption+addend), ">");
   int selected = defaultoption;
 
   //Wait for user input

@@ -28,6 +28,12 @@ bool bCompetitionMode = true;
 float fWarnVolt = 10.5;
 //Critical external voltage level
 float fCritVolt = 8.8;
+
+//Display functions
+int display_y(int line)     { return 63 - (line*8); }
+int display_x(int position) { return 6*position; }
+int display_xright(int positionfromright) { return 99-(6*(1+positionfromright)); }
+
 /**
 * Loads current version number (from git)
 */
@@ -130,6 +136,13 @@ task displaySmartDiags()
             //Update variables with current joystick values
             getJoystickSettings(joystick);
 
+            //NXT Battery Levels
+            float nbat = (float)nAvgBatteryLevel * (float)1000;
+            nxtDisplayTextLine(3, "NXT :%4.1fV", nbat);
+            if (nbat >= 7.5) { nxtDisplayStringAt(display_xright(2), display_y(3), "OK"); }
+            if ((nbat < 7.5) && (nbat > 6.8)) { nxtDisplayStringAt(display_xright(4), display_y(3), "WARN"); }
+            if (nbat <= 6.8) { nxtDisplayStringAt(display_xright(4), display_y(3), "CRIT"); }
+
             if (externalBatteryAvg < 0)
             {
                 nxtDisplayTextLine(2, "NO BATTERY!");
@@ -138,9 +151,9 @@ task displaySmartDiags()
             {
                 float bat = externalBatteryAvg / (float)1000;
                 nxtDisplayTextLine(2, "Batt:%4.1fV", bat);
-                if (bat >= fWarnVolt) { nxtDisplayStringAt(88, 47, "OK"); }
-                if ((bat >= fCritVolt) && (bat < fWarnVolt)) { nxtDisplayStringAt(76, 47, "WARN"); }
-                if (bat < fCritVolt) { nxtDisplayStringAt(76, 47, "CRIT");}
+                if (bat >= fWarnVolt) { nxtDisplayStringAt(display_xright(2), display_y(2), "OK"); }
+                if ((bat >= fCritVolt) && (bat < fWarnVolt)) { nxtDisplayStringAt(display_xright(4), display_y(2), "WARN"); }
+                if (bat < fCritVolt) { nxtDisplayStringAt(display_xright(4), display_y(2), "CRIT");}
             }
             if (bCompetitionMode)
             {
