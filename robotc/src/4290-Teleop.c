@@ -75,9 +75,9 @@ task main()
     bool kickstandenabled = false;
     bool goalreatainenabled = false;
     bool storageclosed = false;
+    int joy1Btn3last = 0;
     int joy2Btn4last = 0;
     int joy2Btn3last = 0;
-    int joy2Btn2last = 0;
     int joy2Btn8last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
@@ -115,6 +115,19 @@ task main()
         //Gyro Reset Code
         if(joy1Btn(4) == 1) { gyro_reset(); }
         if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+
+        //Goal Latch Toggle
+        if(joy1Btn(3)== 1 && joy1Btn3last != 1){
+            if (goalreatainenabled){
+                servo[GoalRetainer] = 255;
+                goalreatainenabled = false;
+            }
+            else{
+                servo[GoalRetainer] = 0;
+                goalreatainenabled = true;
+            }
+        }
+
         //Blower Toggle
         if(joy2Btn(4)== 1 && joy2Btn4last != 1){
             if (blowerenabled){
@@ -141,17 +154,6 @@ task main()
                 kickstandenabled = true;
             }
         }
-        //Goal Latch Toggle
-        if(joy2Btn(2)== 1 && joy2Btn2last != 1){
-            if (goalreatainenabled){
-                servo[GoalRetainer] = 255;
-                goalreatainenabled = false;
-            }
-            else{
-                servo[GoalRetainer] = 0;
-                goalreatainenabled = true;
-            }
-        }
         //Storage Toggle
         if(joy2Btn(8)== 1 && joy2Btn8last != 1){
             if (storageclosed){
@@ -176,9 +178,9 @@ task main()
         else{
             motor[Intake] = 0;
         }
+        joy1Btn3last = joy1Btn(3);
         joy2Btn4last = joy2Btn(4);
         joy2Btn3last = joy2Btn(3);
-        joy2Btn2last = joy2Btn(2);
         joy2Btn8last = joy2Btn(8);
     }
 }
