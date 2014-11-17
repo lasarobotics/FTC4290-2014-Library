@@ -42,7 +42,7 @@ void init()
     bSystemLeaveServosEnabledOnProgramStop = false;
     servo[GoalRetainer] = 255; //ANY SERVO LINE CAUSES THE PROBLEM
     servo[Kickstand] = 135;
-    servo[BallStorage] = 180;
+    servo[BallStorage] = 100;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
     displaySplash("4290", "Scrimmage Teleop", true);
@@ -168,7 +168,7 @@ task main()
             motor[Intake] = 100;
         }
         else if (joy2Btn(5) == 1){
-            motor[Intake] = 40;
+            motor[Intake] = 25;
         }
         else if (joy2Btn(6) == 1){
             motor[Intake] = -100;
@@ -180,5 +180,7 @@ task main()
         joy2Btn3last = joy2Btn(3);
         joy2Btn2last = joy2Btn(2);
         joy2Btn8last = joy2Btn(8);
+        nxtDisplayTextLine(3, "%i", gyro_getheading());
+        wait1Msec(5);
     }
 }
