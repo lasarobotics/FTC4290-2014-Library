@@ -55,9 +55,10 @@ void init()
 Controller 1:
 Left Joystick x/y - Strafe and forward for robot
 Right Joystick x - Turn
+Button 3: Goal Hook
+Button 4: Gyro Reset
 Controller 2:
 Button 1: Intake
-Button 2: Goal Hook
 Button 3: Kickstand
 Button 4: Blower
 Button 5: Lift release
