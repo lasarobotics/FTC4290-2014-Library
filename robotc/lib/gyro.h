@@ -1,10 +1,7 @@
 /**********************************************************
-
 Gyroscopic Drive
 gyro.h
-
 Implements the HiTechnic Gyroscope.
-
 **********************************************************/
 
 #include "../drivers/hitechnic-gyro.h" //gyroscope
@@ -39,16 +36,7 @@ float gyro_init(tSensors link)
 {
     //Read gyro offset
     gyro = link;
-    SetSensorType(gyro, sensorRawValue);  //MAY BE SENSORRAWVALUE!!!
-    return HTGYROstartCal(gyro);
-}
-
-/**
-* Stupid RobotC drivers fix
-*/
-float gyro_smartread(tSensors link)
-{
-		return (SensorValue[link] - HTGYRO_offsets[link][0]);
+    return HTGYROstartCal(link);
 }
 
 /**
@@ -67,7 +55,7 @@ task gyro_calibrate()
         time1[T1]=0;
 
         // Read the current rotation speed
-        rotSpeed = gyro_smartread(gyro);
+        rotSpeed = HTGYROreadRot(gyro);
         if ((rotSpeed != 0) && (firstrot == 0) && (abs(rotSpeed) < 1))
         {
             if (sgn(rotSpeed) == 1) {firstrot = rotSpeed;}
