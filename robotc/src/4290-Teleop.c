@@ -132,7 +132,7 @@ task main()
                 motor[BlowerB] = 1;
                 motor[BlowerC] = 1;
                 //Start timer for 1 sec, then set motors to 0
-                ClearTimer(T1);
+                ClearTimer(T3);
                 blowerenabled = false;
             }
             else{
@@ -143,7 +143,7 @@ task main()
             }
         }
         //If 5 seconds since blower shutdown-brake motors
-        if (time1[T1] > 5000 && !blowerenabled){
+        if (time1[T3] > 5000 && !blowerenabled){
             motor[BlowerA] = 0;
             motor[BlowerB] = 0;
             motor[BlowerC] = 0;
@@ -188,7 +188,9 @@ task main()
         joy2Btn3last = joy2Btn(3);
         joy2Btn8last = joy2Btn(8);
         //DO NOT REMOVE THIS WAIT, See issue #11
-        nxtDisplayTextLine(3, "%i", gyro_getheading());
+        nxtDisplayTextLine(4, "%i", gyro_getheading());
+        nxtDisplayTextLine(5, "%i", time1[T3]);
+
         wait1Msec(5);
     }
 }

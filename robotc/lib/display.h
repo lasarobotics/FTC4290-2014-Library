@@ -32,7 +32,7 @@ float fCritVolt = 8.8;
 //Display functions
 int display_y(int line)     { return 63 - (line*8); }
 int display_x(int position) { return 6*position; }
-int display_xright(int positionfromright) { return 99-(6*(1+positionfromright)); }
+int display_xright(int positionfromright) { return 99-(6*(positionfromright)); }
 
 /**
 * Loads current version number (from git)
@@ -137,7 +137,7 @@ task displaySmartDiags()
             getJoystickSettings(joystick);
 
             //NXT Battery Levels
-            float nbat = (float)nAvgBatteryLevel * (float)1000;
+            float nbat = (float)nAvgBatteryLevel / (float)1000;
             nxtDisplayTextLine(3, "NXT :%4.1fV", nbat);
             if (nbat >= 7.5) { nxtDisplayStringAt(display_xright(2), display_y(3), "OK"); }
             if ((nbat < 7.5) && (nbat > 6.8)) { nxtDisplayStringAt(display_xright(4), display_y(3), "WARN"); }
