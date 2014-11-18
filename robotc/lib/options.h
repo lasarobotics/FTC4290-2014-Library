@@ -1,85 +1,127 @@
 /**********************************************************
-
 Option Selection Display
 options.h
-
 Displays splash screen and enables custom diagnostics.
-
 **********************************************************/
 
 #include "display.h"
 
-string options[8] = { "", "", "", "", "", "", "", "" };
-int optionscount = 0;
+static string options[5][5]; //[option index][choice index]
+static string optionnames[5]; //names of each option
+static int optionscount = 0; //count of options (0-6)
+static int choicecount[5]; //count of choices given to user
+int options_get[5]; //indices of selected choices (PUBLIC!)
 
-void options_reset() { string o[8] = { "", "", "", "", "", "", "", "" }; options=o; optionscount = 0;}
-
-void options_add(char* option)
+void options_reset()
 {
-  if (optionscount >= 7) { return; }
-  options[optionscount] = option;
-  optionscount++;
+	for (int i=0;	i<5; i++)
+	{
+		for (int j=0; i<5; j++)
+		{
+			options[i][j] = "";
+		}
+		choicecount[i] = 0;
+		optionnames[i] = "";
+		options_get[i] = 0;
+	}
+	 optionscount = 0;
 }
 
-void options_displaydot(int old, int new, int addend)
+void options_create(int option, string name)
 {
-  nxtDisplayStringAt(display_x(0), display_y(old+addend), " ");
-  nxtDisplayStringAt(display_x(0), display_y(new+addend), ">");
+  optionnames[option] = name;
+}
+
+//BE SURE TO START AT OPTION ZERO... OR EVERYTHING DIES
+void options_additem(int option, char* choice)
+{
+  if (optionscount >= 5) { return; }
+	if (option > 5) { return; }
+	if (option < 1) { return; }
+	if (choicecount[option] >= 5) { return; }
+
+	int c = choicecount[option];
+	options[option][c] = choice;
+  if (c == 0) { optionscount++; }
+  choicecount[option]++;
+}
+
+//old and new are OPTIONS (starting from zero)
+void options_select(int old, int new)
+{
+  if (old != -1) { nxtInvertLine(0, display_y(old+2), 99, display_y(old+2+1)-1); }
+  nxtInvertLine(0, display_y(new+2), 99, display_y(new+2+1)-1);
+}
+
+void options_redisplay(int option, int choice)
+{
+	nxtEraseLine(0, display_y(option+2), 99, display_y(option+2+1)-1);
+	nxtDisplayTextLine(option, optionnames[option]);
+	string c = options[option][choice];
+  nxtDisplayStringAt(display_xright(strlen(c)), display_y(option+2), c);
+	options_select(-1, option);
 }
 
 /**
  * Displays options immediately to the screen
- * @returns Selected option index, or -1 on failure
  */
-int options_DisplayList(string title, string caption, int defaultoption)
+void options_display(string title, string confirmation)
 {
   //Clear stuff
   diagnosticsOff();
   eraseDisplay();
   //Display caption and title
   nxtDisplayCenteredTextLine(0, title);
-  nxtDisplayTextLine(7, caption);
-  if (optionscount > 7) { optionscount = 7; }
-  if (optionscount < 1) { return -1; }
+  nxtDisplayCenteredTextLine(7, confirmation);
+  if (optionscount > 5) { optionscount = 5; }
+  if (optionscount < 1) { return; }
 
-  //Loop display
-  int addend = 2; //the first line is where?
-  if (optionscount > 4) { addend = 1; }
+  //Loop display default options
   for (int i=0; i<optionscount; i++)
   {
-    nxtDisplayTextLine(i+addend, "  %s", options[i]);
+    nxtDisplayTextLine(i+2, optionnames[i]);
+    string d = options[i][0]; //default choice
+    nxtDisplayStringAt(display_xright(strlen(d)), display_y(i+2), d);
   }
+  options_select(-1, 0);
 
   //Display initial dot
-  nxtDisplayStringAt(display_x(0), display_y(defaultoption+addend), ">");
-  int selected = defaultoption;
+  options_select(-1, 0);
+  int selected = 0;
+  int selchoices[5] = { 0, 0, 0, 0, 0 };
 
   //Wait for user input
   while (true)
   {
-    //ENTER button
+    //ENTER button - rotate the item cycle
     if (nNxtButtonPressed == 3)
     {
         eraseDisplay();
-        return selected;
+        // If we're selecting the "OK" button
+        if (selected == 6) { options_get = selchoices; return; }
+        // If the optioncount available is greater than one, rotate through
+        if (choicecount[selected] > 1)
+        {
+        	selchoices[selected]++;
+        	if (selchoices[selected] >= choicecount[selected])
+        	{ selchoices[selected] = 0; }
+
+        	//Display the rotated choice
+        	options_redisplay(selected, selchoices[selected]);
+      	}
     }
-    //LEFT arrow
+    //LEFT arrow - move up an item
     if ((nNxtButtonPressed == 2) && (selected > 0))
     {
-        options_displaydot(selected, selected - 1, addend);
+        options_select(selected, selected - 1);
         selected--;
     }
-    //RIGHT arrow
+    //RIGHT arrow - move down an item
     if ((nNxtButtonPressed == 1) && (selected < optionscount - 1))
     {
-        options_displaydot(selected, selected + 1, addend);
+        options_select(selected, selected + 1);
         selected++;
     }
     wait10Msec(20);
   }
-}
-
-int options_DisplayInt(int defaultvalue, int min, int max, int increment)
-{
-
 }
