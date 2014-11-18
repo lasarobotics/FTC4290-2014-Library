@@ -141,8 +141,8 @@ task main()
                 blowerenabled = true;
             }
         }
-        //If 3 seconds since blower shutdown-brake motors
-        if (time1[T1] > 3000 && !blowerenabled){
+        //If 5 seconds since blower shutdown-brake motors
+        if (time1[T1] > 5000 && !blowerenabled){
             motor[BlowerA] = 0;
             motor[BlowerB] = 0;
             motor[BlowerC] = 0;
