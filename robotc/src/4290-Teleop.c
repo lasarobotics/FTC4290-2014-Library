@@ -39,13 +39,12 @@ static float k_deadband = 15;
 
 void init()
 {
-    bSystemLeaveServosEnabledOnProgramStop = false;
     servo[GoalRetainer] = 255; //ANY SERVO LINE CAUSES THE PROBLEM
     servo[Kickstand] = 135;
     servo[BallStorage] = 100;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
-    displaySplash("4290", "Scrimmage Teleop", true);
+    displaySplash("High PHidelity", "Teleop", true);
     eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
@@ -64,8 +63,6 @@ Button 4: Blower
 Button 5: Lift release
 Button 6: Intake backwards
 Button 8: Ball storage
-
-
 */
 task main()
 {
@@ -84,7 +81,6 @@ task main()
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
-
     while (true)
     {
         /***** Proportional Motor Control *****/
@@ -134,6 +130,8 @@ task main()
                 motor[BlowerA] = 1;
                 motor[BlowerB] = 1;
                 motor[BlowerC] = 1;
+                //Start timer for 1 sec, then set motors to 0
+                ClearTimer(T1);
                 blowerenabled = false;
             }
             else{
@@ -142,6 +140,12 @@ task main()
                 motor[BlowerC] = 100;
                 blowerenabled = true;
             }
+        }
+        //If 3 seconds since blower shutdown-brake motors
+        if (time1[T1] > 3000 && !blowerenabled){
+            motor[BlowerA] = 0;
+            motor[BlowerB] = 0;
+            motor[BlowerC] = 0;
         }
         //Kickstand Toggle
         if(joy2Btn(3)== 1 && joy2Btn3last != 1){
@@ -182,6 +186,7 @@ task main()
         joy2Btn4last = joy2Btn(4);
         joy2Btn3last = joy2Btn(3);
         joy2Btn8last = joy2Btn(8);
+        //DO NOT REMOVE THIS WAIT, See issue #11
         nxtDisplayTextLine(3, "%i", gyro_getheading());
         wait1Msec(5);
     }

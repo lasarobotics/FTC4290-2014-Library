@@ -22,27 +22,12 @@
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = false; //true to enable competition mode
-
-    displaySplash("NoStep", "IR Seek Test", true);
-
-    bool ok = true;
-    while(!ok)
-    {
-        ok = errorcheck(1,0,1,MOTORCON) &&
-        		 errorcheck(1,0,2,MOTORCON);
-		    if (!ok) {
-		        PlayTone(440, 50);
-		        nxtDisplayCenteredBigTextLine(3, "ERROR!");
-		    }
-		    else { ClearSounds(); nxtDisplayCenteredBigTextLine(3, "A OK!"); }
-    }
-
+    bCompetitionMode = true; //true to enable competition mode
+    displaySplash("High PHidelity", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);
     wait1Msec(50);
     nxtbarOn();
-
     return;
 }
 
