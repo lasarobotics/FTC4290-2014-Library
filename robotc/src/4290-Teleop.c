@@ -182,5 +182,7 @@ task main()
         joy2Btn4last = joy2Btn(4);
         joy2Btn3last = joy2Btn(3);
         joy2Btn8last = joy2Btn(8);
+        nxtDisplayTextLine(3, "%i", gyro_getheading());
+        wait1Msec(5);
     }
 }
