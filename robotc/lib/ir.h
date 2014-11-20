@@ -102,7 +102,7 @@ void ir_moveavg(int sensor, int new)
 	IRavgstore[sensor][indexavg] = new;
 
 	//Calculate Average
-	int avg = 0;
+	float avg = 0;
 	for (int i=0; i<samples; i++)
 	{
 		avg += (float)IRavgstore[sensor][i];
