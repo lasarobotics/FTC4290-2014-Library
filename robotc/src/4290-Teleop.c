@@ -32,7 +32,8 @@
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens and display options
 #include "../drivers/hitechnic-irseeker-v2.h"
-/***** STstorageclosedATICS *****/
+
+/***** STATICS *****/
 static float k_deadband = 15;
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
@@ -51,6 +52,7 @@ void init()
     nxtbarOn();
     return;
 }
+
 /*Control Layout:
 Controller 1:
 Left Joystick x/y - Strafe and forward for robot

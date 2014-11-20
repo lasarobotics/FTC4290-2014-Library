@@ -83,13 +83,13 @@ void init()
 
 task main()
 {
-  	string        sFileName = "test.txt";   // the name of our file
-  	int           nFileSize = 3000;          // will store our file size
+
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
     //StartTask(displaySmartDiags, 255);
-
+    string        sFileName = "test.txt";   // the name of our file
+  	int           nFileSize = 3000;          // will store our file size
 	//Write to file
     OpenWrite(hFileHandle, nIOResult, sFileName, nFileSize);    // open the file for writing (creates the file if it does not exist)
     WriteText(hFileHandle, nIOResult, "Time,IR\r\n");

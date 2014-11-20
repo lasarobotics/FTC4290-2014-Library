@@ -22,6 +22,7 @@
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens
 #include "../drivers/hitechnic-irseeker-v2.h"
+
 /***** STATICS *****/
 static float k_deadband = 15;
 
@@ -49,14 +50,12 @@ task main()
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     wait10Msec(100);
-
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
 
     while (true)
     {
-
 				nxtDisplayCenteredBigTextLine(3, "%i", gyro_getheading());
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
