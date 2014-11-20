@@ -38,6 +38,22 @@ void init()
     ir_init(HTIRS2);
     wait1Msec(50);
     nxtbarOn();
+
+    string title = "HELLO MECABOT";
+    string confirmation = "OK, HOUSTON!";
+
+    options_reset();
+    options_create(0, "Option One");
+    options_add(0, "ONE");
+    options_add(0, "TWO");
+    options_add(0, "HELLO");
+    options_create(1, "Option Two");
+    options_add(1, "THREE");
+    options_add(1, "FOUR");
+    options_add(1, "FIVE");
+    options_display(title, confirmation);
+    wait10Msec(100);
+
     return;
 }
 
@@ -47,12 +63,12 @@ task main()
     init();
     //auto_init();
     StartTask(gyro_calibrate, 8);
-    StartTask(ir_calibrate, 8);
+    //StartTask(ir_calibrate, 8);
     StartTask(displaySmartDiags, 255);
-    auto_moveDownRamp();
-    auto_rampToParking();
+    //auto_moveDownRamp();
+    //auto_rampToParking();
     //True for new IR, false for old
-    float zone = auto_placeCenterGoal(false);
+    //float zone = auto_placeCenterGoal(false);
     //auto_kickstandFromCenterGoal(zone);
 
     //kill everything

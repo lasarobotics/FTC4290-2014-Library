@@ -43,18 +43,6 @@ void init()
     ir_init(HTIRS2);
     wait1Msec(50);
     nxtbarOn();
-
-    string title = "HELLO MECABOT";
-    string confirmation = "OK, HOUSTON!";
-
-    options_reset();
-    options_create(0, "Option One");
-    options_add(0, "ONE");
-    options_add(0, "TWO");
-    options_add(0, "HELLO");
-    options_display(title, confirmation);
-    wait10Msec(100);
-
     return;
 }
 
@@ -70,7 +58,6 @@ task main()
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(false);
     //auto_kickstandFromCenterGoal(zone);
-
     //kill everything
     StopAllTasks();
 }

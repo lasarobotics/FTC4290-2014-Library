@@ -29,7 +29,7 @@ static int samplecount = 0;
 /**** MOVING AVERAGE VARS ****/
 static const int samples = 5; // moving average sample size
 static int indexavg[5];       // current index for each sensor
-static int IRavgstore[5][samples];  // sample list to contain ir averages
+static int IRavgstore[5][samples+1];  // sample list to contain ir averages
 static int IRavg[5];//Current IR Averages
 
 /***** QUICK METHODS *****/
