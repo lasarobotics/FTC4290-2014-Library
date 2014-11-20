@@ -49,6 +49,7 @@ task main()
 
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
+    wait10Msec(100);
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
@@ -83,5 +84,6 @@ task main()
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+        wait1Msec(5);
     }
 }
