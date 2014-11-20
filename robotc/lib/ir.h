@@ -51,7 +51,7 @@ void ir_wait(int count)
 	{
 		if (samplecount != lastcount)
 		{
-			samplecount++;
+			read++;
 			lastcount = samplecount;
 		}
 		wait1Msec(10); //wait half of the actual read time, eliminates most error
@@ -105,15 +105,13 @@ void ir_moveavg(int sensor, int new)
 	int avg = 0;
 	for (int i=0; i<samples; i++)
 	{
-		avg += (float)IRavgstore[sensor][i];
+		avg += (int)IRavgstore[sensor][i];
 	}
-	avg = avg/samples;
+	avg = (int)(avg/samples);
 
 	//Store Average
 	IRavg[sensor] = avg;
 	indexavg[sensor]++;
-
-	return;
 }
 
 /**
