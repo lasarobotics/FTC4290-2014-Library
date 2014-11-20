@@ -37,6 +37,7 @@ task main()
     init();
     //auto_init();
     StartTask(gyro_calibrate, 8);
+    StartTask(ir_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     auto_moveDownRamp();
     auto_rampToParking();

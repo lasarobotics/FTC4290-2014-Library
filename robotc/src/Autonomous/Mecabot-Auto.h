@@ -28,9 +28,6 @@
 #include "../../lib/display.h" //splash screens
 #include "../../lib/ir.h" //other math
 
-/***** CONSTANTS *****/
-const int ir_threshold = 100; //IR threshold between positions 2 and 3
-
 void auto_init()
 {
 
@@ -69,11 +66,8 @@ void auto_rampToParking(){
  */
 void centerIRRight(int zone){
     float leftFront, leftBack, rightFront, rightBack;
-    int irS1,irS2,irS3,irS4,irS5;
-    float avgS3,avgS4;
-    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-    ir_moveavg(3,irS3,avgS3);
-    ir_moveavg(4,irS4,avgS4);
+    float avgS2 = ir_getavg(2);
+    float avgS3 = ir_getavg(3);
     //move until IR
     float xdir = 1;
     mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
@@ -82,24 +76,22 @@ void centerIRRight(int zone){
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS3 < 30 )
+    while (avgS2 < 30 )
     {
-        HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-        ir_moveavg(3,irS3,avgS3);
-        ir_moveavg(4,irS4,avgS4);
-        nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
-        nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
-        nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
-        nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+        avgS3 = ir_getavg(3);
+        nxtDisplayCenteredTextLine(4, "IR2: %i", ir_getraw(2));
+        nxtDisplayCenteredTextLine(5, "IR3: %i", ir_getraw(3));
+        nxtDisplayCenteredTextLine(6, "Avg IR2: %i", ir_getavg(2));
+        nxtDisplayCenteredTextLine(7, "Avg IR3: %i", ir_getavg(3));
         count++;
     }
 		//2.5in delay
     forward_Mecanum(250, 0, 100, Lf, Lb, Rf, Rb);
     motor[Lf] = 0;
-		motor[Rf] = 0;
-		motor[Lb] = 0;
-		motor[Rb] = 0;
-		wait1Msec(20);
+	motor[Rf] = 0;
+	motor[Lb] = 0;
+	motor[Rb] = 0;
+	wait1Msec(20);
     //Place ball sequence
     forward_Mecanum(800, xdir*100, 0, Lf, Lb, Rf, Rb);
 }
@@ -109,11 +101,8 @@ void centerIRRight(int zone){
  */
 void centerIRLeft(int zone){
     float leftFront, leftBack, rightFront, rightBack;
-    int irS1,irS2,irS3,irS4,irS5;
-    float avgS3,avgS4;
-    HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-    ir_moveavg(3,irS3,avgS3);
-    ir_moveavg(4,irS4,avgS4);
+    float avgS2 = ir_getavg(2);
+    float avgS3 = ir_getavg(3);
     //move until IR
     float xdir = -1;
     mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
@@ -122,15 +111,13 @@ void centerIRLeft(int zone){
     motor[Lb] = leftBack*50;
     motor[Rb] = rightBack*50;
     int count = 0;
-    while (avgS4 < 30 )
+    while (avgS3 < 30 )
     {
-        HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-        ir_moveavg(3,irS3,avgS3);
-        ir_moveavg(4,irS4,avgS4);
-        nxtDisplayCenteredTextLine(4, "IR3: %i", irS3);
-        nxtDisplayCenteredTextLine(5, "IR4: %i", irS4);
-        nxtDisplayCenteredTextLine(6, "Avg IR3: %i", avgS3);
-        nxtDisplayCenteredTextLine(7, "Avg IR4: %i", avgS4);
+        avgS3 = ir_getavg(3);
+        nxtDisplayCenteredTextLine(4, "IR3: %i", ir_getraw(2));
+        nxtDisplayCenteredTextLine(5, "IR4: %i", ir_getraw(3));
+        nxtDisplayCenteredTextLine(6, "Avg IR3: %i", ir_getavg(2));
+        nxtDisplayCenteredTextLine(7, "Avg IR4: %i", ir_getavg(3));
         count++;
     }
 		//2.5in delay,zone 1 a little less
@@ -159,18 +146,17 @@ float auto_placeCenterGoal(bool newIR)
     forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
     //wait10Msec(30);
     //forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
-    int irS1,irS2,irS3,irS4,irS5;
-    float avgS3,avgS4;
+    float avgS2 = ir_getavg(2);
+    float avgS3 = ir_getavg(3);
     for (int i = 0; i < 50; i++){
-      HTIRS2readAllACStrength(HTIRS2, irS1, irS2, irS3, irS4, irS5);
-      ir_moveavg(3,irS3,avgS3);
-      ir_moveavg(4,irS4,avgS4);
+      float avgS2 = ir_getavg(2);
+      float avgS3 = ir_getavg(3);
       wait1Msec(10);
     }
 
     //Let things settle down
     wait10Msec(10);
-    float zone = getZone(irS3,irS4,newIR);
+    float zone = getZone(avgS2,avgS3,newIR);
     //Wait for a little bit
     wait10Msec(100);
 
