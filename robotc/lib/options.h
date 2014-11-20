@@ -7,7 +7,7 @@ Displays splash screen and enables custom diagnostics.
 #include "display.h"
 
 static string options[5][5]; //[option index][choice index]
-static string optionnames[5]; //names of each option
+static char* optionnames[5]; //names of each option
 static int optionscount = 0; //count of options (0-6)
 static int choicecount[5]; //count of choices given to user
 int options_get[5]; //indices of selected choices (PUBLIC!)
@@ -27,13 +27,13 @@ void options_reset()
 	 optionscount = 0;
 }
 
-void options_create(int option, string name)
+void options_create(int option, char* name)
 {
   optionnames[option] = name;
 }
 
 //BE SURE TO START AT OPTION ZERO... OR EVERYTHING DIES
-void options_additem(int option, char* choice)
+void options_add(int option, char* choice)
 {
   if (optionscount >= 5) { return; }
 	if (option > 5) { return; }

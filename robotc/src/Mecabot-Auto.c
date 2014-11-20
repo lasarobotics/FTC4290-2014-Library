@@ -43,6 +43,19 @@ void init()
     wait1Msec(50);
     nxtbarOn();
 
+
+    string options[2] = {"Hi, just testing.", "HELLOOOOO" };
+    string title = "HELLO MECABOT";
+    string confirmation = "OK, HOUSTON!";
+
+    options_reset();
+    options_create(0, "Option One");
+    options_add(0, "ONE");
+    options_add(0, "TWO");
+    options_add(0, "HELLO");
+    options_display(title, confirmation);
+    wait10Msec(100);
+
     return;
 }
 
@@ -50,7 +63,6 @@ task main()
 {
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    auto_init();
     StartTask(gyro_calibrate, 8);
     StartTask(ir_calibrate,8);
     StartTask(displaySmartDiags, 255);
