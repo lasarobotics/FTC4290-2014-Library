@@ -73,10 +73,13 @@ task main()
     bool kickstandenabled = false;
     bool goalreatainenabled = false;
     bool storageclosed = false;
+    bool intakeenabled = false;
     int joy1Btn3last = 0;
-    int joy2Btn4last = 0;
+    //Operator
+    int joy2Btn1last = 0;
+    int joy2Btn2last = 0;
     int joy2Btn3last = 0;
-    int joy2Btn8last = 0;
+    int joy2Btn4last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(gyro_calibrate, 8);
@@ -126,7 +129,7 @@ task main()
         }
 
         //Blower Toggle
-        if(joy2Btn(4)== 1 && joy2Btn4last != 1){
+        if(joy2Btn(1)== 1 && joy2Btn1last != 1){
             if (blowerenabled){
                 motor[BlowerA] = 1;
                 motor[BlowerB] = 1;
@@ -148,19 +151,29 @@ task main()
             motor[BlowerB] = 0;
             motor[BlowerC] = 0;
         }
-        //Kickstand Toggle
-        if(joy2Btn(3)== 1 && joy2Btn3last != 1){
-            if (kickstandenabled){
-                servo[Kickstand] = 135;
-                kickstandenabled = false;
+        //Intake Forwards, back, slow forward
+        if (joy2Btn(2) && joy2Btn2last != 1){
+          if (intakeenabled){
+                intakeenabled = false;
             }
             else{
-                servo[Kickstand] = 0;
-                kickstandenabled = true;
+                intakeenabled = true;
             }
         }
+        if (joy2Btn(5) == 1){
+            motor[Intake] = 25;
+        }
+        else if (joy2Btn(6) == 1){
+            motor[Intake] = -100;
+        }
+        else if (intakeenabled){
+            motor[Intake] = 100;
+        }
+        else{
+            motor[Intake] = 0;
+        }
         //Storage Toggle
-        if(joy2Btn(8)== 1 && joy2Btn8last != 1){
+        if(joy2Btn(3)== 1 && joy2Btn3last != 1){
             if (storageclosed){
                 servo[BallStorage] = 180;
                 storageclosed = false;
@@ -170,27 +183,25 @@ task main()
                 storageclosed = true;
             }
         }
-        //Intake Forwards, back, slow forwards
-        if (joy2Btn(1) == 1){
-            motor[Intake] = 100;
-        }
-        else if (joy2Btn(5) == 1){
-            motor[Intake] = 25;
-        }
-        else if (joy2Btn(6) == 1){
-            motor[Intake] = -100;
-        }
-        else{
-            motor[Intake] = 0;
+        //Kickstand Toggle
+        if(joy2Btn(4)== 1 && joy2Btn4last != 1){
+            if (kickstandenabled){
+                servo[Kickstand] = 135;
+                kickstandenabled = false;
+            }
+            else{
+                servo[Kickstand] = 0;
+                kickstandenabled = true;
+            }
         }
         joy1Btn3last = joy1Btn(3);
-        joy2Btn4last = joy2Btn(4);
+        joy2Btn1last = joy2Btn(1);
+        joy2Btn2last = joy2Btn(2);
         joy2Btn3last = joy2Btn(3);
-        joy2Btn8last = joy2Btn(8);
+        joy2Btn4last = joy2Btn(4);
         //DO NOT REMOVE THIS WAIT, See issue #11
         nxtDisplayTextLine(4, "%i", gyro_getheading());
         nxtDisplayTextLine(5, "%i", time1[T3]);
-
         wait1Msec(5);
     }
 }

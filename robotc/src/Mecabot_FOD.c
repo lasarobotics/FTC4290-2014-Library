@@ -48,16 +48,6 @@ task main()
 
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-
-    string options[2] = {"Hi, just testing.", "HELLOOOOO" };
-    string title = "TESTING";
-    string caption = "LASA 4290";
-
-    options_reset();
-    options_add("HELLOOOOO");
-    options_add("Just testing...");
-    options_add("Final test!");
-    options_DisplayList(title, caption, 0);
     wait10Msec(100);
 
     StartTask(gyro_calibrate, 8);
@@ -95,5 +85,6 @@ task main()
 
         if(joy1Btn(4) == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+        wait1Msec(5);
     }
 }
