@@ -22,7 +22,6 @@ static TFileIOResult ioresult;
 
 /**** READING OPERATIONS ****/
 static tSensors ir_sensor = 0;
-static int ir_thresholds[10]; //min, max
 static bool ir_read = true;
 static int IRraw[5];
 static int samplecount = 0;
@@ -70,11 +69,6 @@ void ir_reset()
 		IRavg[i] = 0;
 		IRraw[i] = 0;
 		indexavg[i] = 0;
-		ir_thresholds[2*i] = -999; //min
-		ir_thresholds[3*i+1] = 999; //max
-	}
-	for (int i=0; i<5; i++)
-	{
 		for (int j=0; j<samples;j++)
 		{
 			IRavgstore[i][j] = 0;
@@ -90,21 +84,6 @@ void ir_init(tSensors ir)
 	ir_sensor = ir;
 	ir_read = true;
 	ir_reset();
-}
-
-/**
-* Set IR thresholds for next reading operation.
-* @param A sensor on the IR, between 1 and 5
-* @param Minimum value, between 0 and 255, or -1
-* @param Maximum value, between 0 and 255. or -1
-**/
-void ir_setThreshold(int sensor, int min, int max)
-{
-	if (min > max) { return; }
-	if (min != -1) { ir_thresholds[2*(sensor-1)] = min; }
-	else           { ir_thresholds[2*(sensor-1)] = 999; }
-	if (max != -1) { ir_thresholds[2*(sensor-1)+1] = max; }
-	else           { ir_thresholds[2*(sensor-1)+1] = 999; }
 }
 
 /**

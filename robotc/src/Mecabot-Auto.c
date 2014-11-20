@@ -40,11 +40,10 @@ void init()
 
     eraseDisplay();
     gyro_init(HTGYRO);
+    ir_init(HTIRS2);
     wait1Msec(50);
     nxtbarOn();
 
-
-    string options[2] = {"Hi, just testing.", "HELLOOOOO" };
     string title = "HELLO MECABOT";
     string confirmation = "OK, HOUSTON!";
 

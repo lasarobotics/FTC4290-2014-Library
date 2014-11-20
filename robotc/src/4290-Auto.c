@@ -35,6 +35,7 @@ void init()
     displaySplash("GiraPHPHe", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);
+    ir_init(HTIRS2);
     wait1Msec(50);
     nxtbarOn();
     return;
