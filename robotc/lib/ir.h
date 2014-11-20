@@ -51,7 +51,7 @@ void ir_wait(int count)
 	{
 		if (samplecount != lastcount)
 		{
-			samplecount++;
+			read++;
 			lastcount = samplecount;
 		}
 		wait1Msec(10); //wait half of the actual read time, eliminates most error
