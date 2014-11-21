@@ -53,6 +53,9 @@ void init()
     options_add(2, "1");
     options_add(2, "2");
     options_add(2, "3");
+    options_create(3, "Option Three");
+    options_create(4, "Option Three");
+    options_create(5, "Option Three");
     options_display("HELLO MECABOT", "OK, HOUSTON!");
     wait10Msec(100);
 

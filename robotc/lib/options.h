@@ -6,17 +6,20 @@ Displays splash screen and enables custom diagnostics.
 
 #include "display.h"
 
-static string options[5][5]; //[option index][choice index]
-static char* optionnames[5]; //names of each option
+static const int maxoptions = 6; //maximum options count
+
+static const int startline = 7 - maxoptions; //line of origin for options
+static string options[maxoptions][maxoptions]; //[option index][choice index]
+static char* optionnames[maxoptions]; //names of each option
 static int optionscount = 0; //count of options (0-6)
-static int choicecount[5]; //count of choices given to user
-int options_get[5]; //indices of selected choices (PUBLIC!)
+static int choicecount[maxoptions]; //count of choices given to user
+int options_get[maxoptions]; //indices of selected choices (PUBLIC!)
 
 void options_reset()
 {
-	for (int i=0;	i<5; i++)
+	for (int i=0;	i<maxoptions; i++)
 	{
-		for (int j=0; j<5; j++)
+		for (int j=0; j<maxoptions; j++)
 		{
 			options[i][j] = "";
 		}
@@ -37,10 +40,10 @@ void options_create(int option, char* name)
 //BE SURE TO START AT OPTION ZERO... OR EVERYTHING DIES
 void options_add(int option, char* choice)
 {
-  if (optionscount >= 5) { return; }
-	if (option > 4) { return; }
+  if (optionscount >= maxoptions) { return; }
+	if (option > maxoptions - 1) { return; }
 	if (option < 0) { return; }
-	if (choicecount[option] >= 5) { return; }
+	if (choicecount[option] >= maxoptions) { return; }
 
 	int c = choicecount[option];
 	options[option][c] = choice;
@@ -49,8 +52,8 @@ void options_add(int option, char* choice)
 
 void options_invert(int line)
 {
-  int max = display_y(line+2+1)+1;
-  int min = display_y(line+2);
+  int max = display_y(line+startline+1)+1;
+  int min = display_y(line+startline);
   for(int i=max; i<=min; i++)
   {
     nxtInvertLine(0, i, 99, i);
@@ -66,10 +69,10 @@ void options_select(int old, int new)
 
 void options_redisplay(int option, int choice)
 {
-	nxtEraseLine(0, display_y(option+2), 99, display_y(option+2+1)-1);
-	nxtDisplayTextLine(option+2, optionnames[option]);
+	nxtEraseLine(0, display_y(option+startline), 99, display_y(option+startline+1)-1);
+	nxtDisplayTextLine(option+startline, optionnames[option]);
 	string c = options[option][choice];
-  nxtDisplayStringAt(display_xright(strlen(c)), display_y(option+2), c);
+  nxtDisplayStringAt(display_xright(strlen(c)), display_y(option+startline), c);
 	options_select(-1, option);
 }
 
@@ -84,22 +87,23 @@ void options_display(char* title, char* confirmation)
   //Display caption and title
   nxtDisplayCenteredTextLine(0, title);
   nxtDisplayCenteredTextLine(7, confirmation);
-  if (optionscount > 5) { optionscount = 5; }
+  if (optionscount > maxoptions) { optionscount = maxoptions; }
   if (optionscount < 1) { return; }
 
   //Loop display default options
   for (int i=0; i<optionscount; i++)
   {
-    nxtDisplayTextLine(i+2, optionnames[i]);
+    nxtDisplayTextLine(i+startline, optionnames[i]);
     string d;
     StringFromChars(d, options[i][0]);
-    nxtDisplayStringAt(display_xright(strlen(d)), display_y(i+2), d);
+    nxtDisplayStringAt(display_xright(strlen(d)), display_y(i+startline), d);
   }
 
   //Display initial dot
   options_select(-1, 0);
   int selected = 0;
-  int selchoices[5] = { 0, 0, 0, 0, 0 };
+  int selchoices[maxoptions];
+  for (int i=0; i<maxoptions; i++) { selchoices[i]=0; }
 
   //Wait for user input
   while (true)
@@ -108,8 +112,8 @@ void options_display(char* title, char* confirmation)
     if (nNxtButtonPressed == 3)
     {
         // If we're selecting the "OK" button
-        if (selected == 5) {
-          for (int i=0; i<5; i++)
+        if (selected == maxoptions) {
+          for (int i=0; i<maxoptions; i++)
           {
             options_get[i] = selchoices[i];
           }
@@ -126,11 +130,12 @@ void options_display(char* title, char* confirmation)
         	//Display the rotated choice
         	options_redisplay(selected, selchoices[selected]);
       	}
+      	wait10Msec(50);
     }
     //LEFT arrow - move up an item
     if ((nNxtButtonPressed == 2) && (selected > 0))
     {
-        if (selected == 5)
+        if (selected == maxoptions) //if we're on the OK button
         {
           options_select(selected, optionscount - 1);
           selected = optionscount - 1;
@@ -139,6 +144,7 @@ void options_display(char* title, char* confirmation)
           options_select(selected, selected - 1);
           selected--;
         }
+        wait10Msec(25);
     }
     //RIGHT arrow - move down an item
     if ((nNxtButtonPressed == 1) && (selected <= optionscount - 1))
@@ -146,14 +152,15 @@ void options_display(char* title, char* confirmation)
         if (selected == optionscount - 1)
         {
           //if we are on the last item, select the "OK" button
-          options_select(selected, 5);
-          selected = 5;
+          options_select(selected, maxoptions);
+          selected = maxoptions;
         }
         else {
 	        options_select(selected, selected + 1);
 	        selected++;
         }
+        wait10Msec(25);
     }
-    wait10Msec(20);
+    wait1Msec(10);
   }
 }
