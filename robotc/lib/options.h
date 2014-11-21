@@ -1,7 +1,7 @@
 /**********************************************************
 Option Selection Display
 options.h
-Displays splash screen and enables custom diagnostics.
+Allows use of custom menu GUIs.
 **********************************************************/
 
 #include "display.h"
