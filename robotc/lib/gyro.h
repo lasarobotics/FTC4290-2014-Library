@@ -47,12 +47,12 @@ task gyro_calibrate()
 {
     while (go)
     {
-        // Wait until 20ms has passed
-        while (time1[T1] < 20)
-          wait1Msec(1);
-
         // Reset the timer
         time1[T1]=0;
+        // Wait until 20ms has passed
+        wait1Msec(20);
+
+
 
         // Read the current rotation speed
         rotSpeed = HTGYROreadRot(gyro);
@@ -73,7 +73,7 @@ task gyro_calibrate()
         // If our current rate of rotation is 100 degrees/second,
         // then we will have turned 100 * (20/1000) = 2 degrees since
         // the last time we measured.
-        heading += rotSpeed * 0.02;
+        heading += rotSpeed * (time1[T1]/1000);
         if (heading > 360) { heading -= 360; }
         if (heading < -360) { heading += 360; }
     }
