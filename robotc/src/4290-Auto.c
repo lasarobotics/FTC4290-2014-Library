@@ -40,24 +40,42 @@ void init()
     nxtbarOn();
 
     options_reset();
-    options_create(0, "Option One");
-    options_add(0, "0");
-    options_add(0, "1");
-    options_add(0, "2");
-    options_create(1, "Option Two");
-    options_add(1, "0");
-    options_add(1, "1");
-    options_add(1, "2");
-    options_create(2, "Option Three");
-    options_add(2, "0");
-    options_add(2, "1");
-    options_add(2, "2");
-    options_add(2, "3");
-    options_create(3, "Option Three");
-    options_create(4, "Option Three");
-    options_create(5, "Option Three");
-    options_display("HELLO MECABOT", "OK, HOUSTON!");
+
+    options_create(0, "START");
+    options_add(0, "Parking");
+    //options_add(0, "Ramp");
+
+    options_create(1, "CENTER GOAL");
+    options_add(1, "Yes");
+    options_add(1, "No");
+
+    options_create(2, "KICKSTAND");
+    //options_add(2, "Yes");
+    options_add(2, "No");
+
+    options_create(3, "PLACE");
+    //options_add(3, "90 cm");
+    //options_add(3, "60 cm");
+    options_add(3, "Off");
+
+    options_create(4, "WAIT");
+    options_add(4, "0 s");
+    //options_add(4, "5 s");
+    //options_add(4, "10 s");
+    //options_add(4, "15 s");
+    //options_add(4, "20 s");
+
+    options_create(5, "LOGGING");
+    options_add(5, "On");
+    options_add(5, "Off");
+
+    options_display("TEST","READY!");
     wait10Msec(100);
+
+    //STORE OPTIONS DETAILS
+    //if logging is on
+    if (options_get[5] == 0) { ir_loggingEnabled = true; }
+    else                     { ir_loggingEnabled = false; }
 
     return;
 }
@@ -68,7 +86,7 @@ task main()
     init();
     //auto_init();
     StartTask(gyro_calibrate, 8);
-    //StartTask(ir_calibrate, 8);
+    StartTask(ir_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     //auto_moveDownRamp();
     //auto_rampToParking();

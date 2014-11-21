@@ -8,7 +8,7 @@ Displays splash screen and enables custom diagnostics.
 
 static const int maxoptions = 6; //maximum options count
 
-static const int startline = 7 - maxoptions; //line of origin for options
+static int startline = 7 - maxoptions; //line of origin for options
 static string options[maxoptions][maxoptions]; //[option index][choice index]
 static char* optionnames[maxoptions]; //names of each option
 static int optionscount = 0; //count of options (0-6)
@@ -32,6 +32,8 @@ void options_reset()
 
 void options_create(int option, char* name)
 {
+  if (option > maxoptions - 1) { return; }
+  if (option < 0) { return; }
   optionnames[option] = name;
   optionscount++;
   return;
@@ -40,7 +42,6 @@ void options_create(int option, char* name)
 //BE SURE TO START AT OPTION ZERO... OR EVERYTHING DIES
 void options_add(int option, char* choice)
 {
-  if (optionscount >= maxoptions) { return; }
 	if (option > maxoptions - 1) { return; }
 	if (option < 0) { return; }
 	if (choicecount[option] >= maxoptions) { return; }
@@ -78,12 +79,17 @@ void options_redisplay(int option, int choice)
 
 /**
  * Displays options immediately to the screen
+ * @param title of the window.  If the title is "", then no title will display.
  */
 void options_display(char* title, char* confirmation)
 {
   //Clear stuff
   diagnosticsOff();
   eraseDisplay();
+
+  if (title == "") { startline = 0; }
+  if (startline > 2) { startline = 2; }
+
   //Display caption and title
   nxtDisplayCenteredTextLine(0, title);
   nxtDisplayCenteredTextLine(7, confirmation);
@@ -106,13 +112,14 @@ void options_display(char* title, char* confirmation)
   for (int i=0; i<maxoptions; i++) { selchoices[i]=0; }
 
   //Wait for user input
+  const int enter = maxoptions - startline + 1;
   while (true)
   {
     //ENTER button - rotate the item cycle
     if (nNxtButtonPressed == 3)
     {
         // If we're selecting the "OK" button
-        if (selected == maxoptions) {
+        if (selected == enter) {
           for (int i=0; i<maxoptions; i++)
           {
             options_get[i] = selchoices[i];
@@ -135,7 +142,7 @@ void options_display(char* title, char* confirmation)
     //LEFT arrow - move up an item
     if ((nNxtButtonPressed == 2) && (selected > 0))
     {
-        if (selected == maxoptions) //if we're on the OK button
+        if (selected == enter) //if we're on the OK button
         {
           options_select(selected, optionscount - 1);
           selected = optionscount - 1;
@@ -152,8 +159,8 @@ void options_display(char* title, char* confirmation)
         if (selected == optionscount - 1)
         {
           //if we are on the last item, select the "OK" button
-          options_select(selected, maxoptions);
-          selected = maxoptions;
+          options_select(selected, enter);
+          selected = enter;
         }
         else {
 	        options_select(selected, selected + 1);

@@ -82,8 +82,8 @@ void ir_reset()
 void ir_init(tSensors ir)
 {
 	ir_sensor = ir;
-	ir_read = true;
 	ir_reset();
+	ir_read = true;
 }
 
 /**
