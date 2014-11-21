@@ -69,7 +69,7 @@ void init()
     options_add(5, "On");
     options_add(5, "Off");
 
-    options_display("TEST","READY!");
+    options_display("","READY!");
     wait10Msec(100);
 
     //STORE OPTIONS DETAILS
