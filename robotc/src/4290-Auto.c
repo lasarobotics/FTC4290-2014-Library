@@ -44,13 +44,18 @@ void init()
 
     options_reset();
     options_create(0, "Option One");
-    options_add(0, "ONE");
-    options_add(0, "TWO");
-    options_add(0, "HELLO");
+    options_add(0, "0");
+    options_add(0, "1");
+    options_add(0, "2");
     options_create(1, "Option Two");
-    options_add(1, "THREE");
-    options_add(1, "FOUR");
-    options_add(1, "FIVE");
+    options_add(1, "0");
+    options_add(1, "1");
+    options_add(1, "2");
+    options_create(2, "Option Three");
+    options_add(2, "0");
+    options_add(2, "1");
+    options_add(2, "2");
+    options_add(2, "3");
     options_display(title, confirmation);
     wait10Msec(100);
 

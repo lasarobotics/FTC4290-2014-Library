@@ -109,7 +109,12 @@ void options_display(string title, string confirmation)
     {
         // If we're selecting the "OK" button
         if (selected == 5) {
-          options_get = selchoices; eraseDisplay(); return;
+          for (int i=0; i<5; i++)
+          {
+            options_get[i] = selchoices[i];
+          }
+          eraseDisplay();
+          return;
         }
         // If the optioncount available is greater than one, rotate through
         if (choicecount[selected] > 1)
