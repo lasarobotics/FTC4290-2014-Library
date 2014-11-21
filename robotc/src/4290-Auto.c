@@ -39,9 +39,6 @@ void init()
     wait1Msec(50);
     nxtbarOn();
 
-    string title = "HELLO MECABOT";
-    string confirmation = "OK, HOUSTON!";
-
     options_reset();
     options_create(0, "Option One");
     options_add(0, "0");
@@ -56,7 +53,7 @@ void init()
     options_add(2, "1");
     options_add(2, "2");
     options_add(2, "3");
-    options_display(title, confirmation);
+    options_display("HELLO MECABOT", "OK, HOUSTON!");
     wait10Msec(100);
 
     return;

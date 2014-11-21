@@ -76,7 +76,7 @@ void options_redisplay(int option, int choice)
 /**
  * Displays options immediately to the screen
  */
-void options_display(string title, string confirmation)
+void options_display(char* title, char* confirmation)
 {
   //Clear stuff
   diagnosticsOff();
