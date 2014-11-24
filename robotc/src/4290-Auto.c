@@ -69,7 +69,7 @@ void init()
     options_add(5, "On");
     options_add(5, "Off");
 
-    options_display("","READY!");
+    //options_display("","READY!");
     wait10Msec(100);
 
     //STORE OPTIONS DETAILS
@@ -91,7 +91,7 @@ task main()
     //auto_moveDownRamp();
     //auto_rampToParking();
     //True for new IR, false for old
-    //float zone = auto_placeCenterGoal(false);
+    float zone = auto_placeCenterGoal(true);
     //auto_kickstandFromCenterGoal(zone);
 
     //kill everything

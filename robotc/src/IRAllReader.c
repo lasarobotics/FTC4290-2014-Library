@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Sensor, S2,     HTGYRO,         sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S4,     HTIRS2,             sensorI2CCustom)
+#pragma config(Sensor, S3,     HTIRS2,             sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)

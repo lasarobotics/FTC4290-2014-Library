@@ -74,7 +74,7 @@ void centerIRRight(int zone){
 	float avgS2 = ir_getavg(2);
 	float avgS3 = ir_getavg(3);
 	//move until IR
-	float xdir = 1;
+	float xdir = -1;
 	mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
 	motor[Lf] = leftFront*50;
 	motor[Rf] = rightFront*50;
@@ -91,7 +91,7 @@ void centerIRRight(int zone){
 		count++;
 	}
 	//2.5in delay
-	forward_Mecanum(250, 0, 100, Lf, Lb, Rf, Rb);
+	forward_Mecanum(250, 0, -100, Lf, Lb, Rf, Rb);
 	motor[Lf] = 0;
 	motor[Rf] = 0;
 	motor[Lb] = 0;
@@ -111,14 +111,13 @@ void centerIRLeft(int zone){
 	//move until IR
 	float xdir = -1;
 	mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
-	motor[Lf] = leftFront*50;
-	motor[Rf] = rightFront*50;
-	motor[Lb] = leftBack*50;
-	motor[Rb] = rightBack*50;
+	motor[Lf] = leftFront*100;
+	motor[Rf] = rightFront*100;
+	motor[Lb] = leftBack*100;
+	motor[Rb] = rightBack*100;
 	int count = 0;
-	while (avgS3 < 30 )
+	while (ir_getavg(2) < 10 )
 	{
-		avgS3 = ir_getavg(3);
 		nxtDisplayCenteredTextLine(4, "IR3: %i", ir_getraw(2));
 		nxtDisplayCenteredTextLine(5, "IR4: %i", ir_getraw(3));
 		nxtDisplayCenteredTextLine(6, "Avg IR3: %i", ir_getavg(2));
@@ -148,16 +147,17 @@ void centerIRLeft(int zone){
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-	forward_Mecanum(1700, 100, 0, Lf, Lb, Rf, Rb);
+	forward_Mecanum(1300, -100, 0, Lf, Lb, Rf, Rb);
 	//wait10Msec(30);
 	//forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
 	float avgS2 = ir_getavg(2);
 	float avgS3 = ir_getavg(3);
-	ir_wait(50); //wait 50 samples
+	//ir_wait(50); //wait 50 samples
 
 	//Let things settle down
 	wait10Msec(10);
 	float zone = getZone(avgS2,avgS3,newIR);
+	zone = 3;
 	//Wait for a little bit
 	wait10Msec(100);
 
@@ -174,11 +174,11 @@ float auto_placeCenterGoal(bool newIR)
 	}
 	if (zone == 1){
 		//Nav to zone 1 (farthest)
-		forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+		forward_Mecanum(1000, 0, 100, Lf, Lb, Rf, Rb);
 		wait10Msec(100);
 		turnToDeg_Mecanum(90, 70, Lf, Lb, Rf, Rb);
 		wait1Msec(100);
-		forward_Mecanum(2100, 0, -100, Lf, Lb, Rf, Rb);
+		forward_Mecanum(2100, 0, 100, Lf, Lb, Rf, Rb);
 		centerIRLeft(zone);
 	}
 
