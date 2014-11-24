@@ -9,7 +9,7 @@ and functionality of the IR sensor.
 **********************************************************/
 
 /**** INCLUDES ****/
-#include "../../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
+#include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
 
 /**** Globals ****/
 bool ir_loggingEnabled = true; //Enable Logging
@@ -190,7 +190,7 @@ task ir_calibrate()
 		// Wait until 20ms has passed
 		wait1Msec(20);
 		//Read
-		HTIRS2readAllACStrength(HTIRS2, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
+		HTIRS2readAllACStrength(ir_sensor, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
 		//Move Averages
 		ir_moveavg(0,IRraw[0]);
 		ir_moveavg(1,IRraw[1]);
