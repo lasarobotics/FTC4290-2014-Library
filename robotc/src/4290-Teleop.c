@@ -59,6 +59,7 @@ Left Joystick x/y - Strafe and forward for robot
 Right Joystick x - Turn
 Button 3: Goal Hook
 Button 4: Gyro Reset
+Button 8: Slo-Mo
 Controller 2:
 Button 1: Intake
 Button 3: Kickstand
@@ -87,10 +88,18 @@ task main()
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
+
+    int power = 100; //power for drive motors
     while (true)
     {
         /***** Proportional Motor Control *****/
         getJoystickSettings(joystick); //get all joystick statuses
+        if (joy1Btn(8))
+        {
+        	power = 50;
+        }
+        else { power = 100; }
+
         //Drive Code
         if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
             deadband(k_deadband,joystick.joy1_x1) == 0 &&
@@ -109,10 +118,10 @@ task main()
             mecanum_arcadeFOD(y, x, c, gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
 
-            motor[Lf] = leftFront*100;
-            motor[Rf] = rightFront*100;
-            motor[Lb] = leftBack*100;
-            motor[Rb] = rightBack*100;
+            motor[Lf] = leftFront*power;
+            motor[Rf] = rightFront*power;
+            motor[Lb] = leftBack*power;
+            motor[Rb] = rightBack*power;
         }
         //Gyro Reset Code
         if(joy1Btn(4) == 1) { gyro_reset(); }
