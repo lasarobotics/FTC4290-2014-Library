@@ -49,6 +49,7 @@ void init()
     displaySplash("High PHidelity", "Teleop", true);
     eraseDisplay();
     gyro_init(HTGYRO);
+    ir_init(IR);
     wait1Msec(50);
     nxtbarOn();
     return;
