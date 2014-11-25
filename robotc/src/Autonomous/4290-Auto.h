@@ -129,7 +129,7 @@ float leftFront, leftBack, rightFront, rightBack;
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-	forward_encoder_Mecanum(2000, -25, 0, Lf, Lb, Rf, Rb);
+	forward_encoder_Mecanum(-2000, -25, 0, Lf, Lb, Rf, Rb);
 	//wait10Msec(30);
 	//forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
 	//ir_wait(50); //wait 50 samples
