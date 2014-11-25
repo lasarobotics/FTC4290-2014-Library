@@ -97,8 +97,6 @@ task main()
 
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
-    wait1Msec(1000);
-
     //Release ball
     servo[BallStorage] = 200;
     wait1Msec(1000);

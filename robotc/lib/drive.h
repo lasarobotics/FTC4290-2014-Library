@@ -142,7 +142,8 @@ void forward_Mecanum(float millis, float forward, float strafe, tMotor Lf, tMoto
         motor[Lb] = 0;
         motor[Rb] = 0;
 }
-void forward_encoder_Mecanum(float encodercount, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+void forward_encoderMecanum(float encodercount, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+        nMotorEncoder[Rb] = 0;
         float leftFront, leftBack, rightFront, rightBack;
 				forward = speedController(forward);
 				strafe = speedController(strafe);
@@ -156,8 +157,7 @@ void forward_encoder_Mecanum(float encodercount, float forward, float strafe, tM
         motor[Rb] = rightBack*100;
 
         //Pause
-        while (abs(nMotorEncoder[Rb]-encodercount) > 10){
-          wait1Msec(5);
+        while (abs(nMotorEncoder[Rb]) <= encodercount){
           nxtDisplayCenteredTextLine(7, "%.2f", nMotorEncoder[Rb]);
         }
 
