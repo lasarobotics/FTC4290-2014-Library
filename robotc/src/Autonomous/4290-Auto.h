@@ -37,12 +37,12 @@
 #include "../../lib/options.h" //splash screens
 #include "../../lib/ir.h" //other math
 
-float getZone(float avgS3,float avgS4,bool newIR){
-	//Change based on sensor
+float getZone(float avgS2,float avgS3,bool newIR){
 	float zone = 1;
-	if ((avgS3 > 40) && (avgS4 > 40)) {
+	if ((avgS2 > 30) && (avgS3 > 30)) {
 		zone = 2;
-		} else if ((avgS3 < 10) && (avgS4 > 50)) {
+	}
+	else if ((avgS2 < 10) && (avgS3 > 30)) {
 		zone = 3;
 	}
 	nxtDisplayCenteredTextLine(3, "%i", zone);
@@ -71,23 +71,18 @@ void auto_rampToParking(){
 */
 void centerIRRight(int zone){
 	float leftFront, leftBack, rightFront, rightBack;
-	float avgS2 = ir_getavg(2);
-	float avgS3 = ir_getavg(3);
 	//move until IR
-	float xdir = -1;
-	mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
+	mecanum_arcade(0, -1, 0, leftFront, leftBack, rightFront, rightBack);
 	motor[Lf] = leftFront*100;
 	motor[Rf] = rightFront*100;
 	motor[Lb] = leftBack*100;
 	motor[Rb] = rightBack*100;
-	int count = 0;
 	while (ir_getavg(2) < 50 )
 	{
 		nxtDisplayCenteredTextLine(4, "IR2: %i", ir_getraw(2));
 		nxtDisplayCenteredTextLine(5, "IR3: %i", ir_getraw(3));
 		nxtDisplayCenteredTextLine(6, "Avg IR2: %i", ir_getavg(2));
 		nxtDisplayCenteredTextLine(7, "Avg IR3: %i", ir_getavg(3));
-		count++;
 	}
 	//2.5in delay 250 for low bat
 	forward_Mecanum(150, 0, -100, Lf, Lb, Rf, Rb);
@@ -95,57 +90,40 @@ void centerIRRight(int zone){
 	motor[Rf] = 0;
 	motor[Lb] = 0;
 	motor[Rb] = 0;
-	wait1Msec(20);
 	//Place ball sequence
 	//~1200 for low bat
-	forward_Mecanum(950, xdir*25, 0, Lf, Lb, Rf, Rb);
+	forward_Mecanum(950, -25, 0, Lf, Lb, Rf, Rb);
 }
 /**
 * Center IR
 * Move until the robot's gyro sensor is aligned to the goal.
 */
 void centerIRLeft(int zone){
-	float leftFront, leftBack, rightFront, rightBack;
-	//float avgS2 = ir_getavg(2);
-	float avgS3 = ir_getavg(3);
+float leftFront, leftBack, rightFront, rightBack;
 	//move until IR
-	float xdir = 1;
-	mecanum_arcade(0, xdir, 0, leftFront, leftBack, rightFront, rightBack);
+	mecanum_arcade(0, 1, 0, leftFront, leftBack, rightFront, rightBack);
 	motor[Lf] = leftFront*100;
 	motor[Rf] = rightFront*100;
 	motor[Lb] = leftBack*100;
 	motor[Rb] = rightBack*100;
-	int count = 0;
-	while (ir_getavg(2) < 10 )
+	while (ir_getavg(3) < 50 )
 	{
-		nxtDisplayCenteredTextLine(4, "IR3: %i", ir_getraw(2));
-		nxtDisplayCenteredTextLine(5, "IR4: %i", ir_getraw(3));
-		nxtDisplayCenteredTextLine(6, "Avg IR3: %i", ir_getavg(2));
-		nxtDisplayCenteredTextLine(7, "Avg IR4: %i", ir_getavg(3));
-		count++;
+		nxtDisplayCenteredTextLine(4, "IR2: %i", ir_getraw(2));
+		nxtDisplayCenteredTextLine(5, "IR3: %i", ir_getraw(3));
+		nxtDisplayCenteredTextLine(6, "Avg IR2: %i", ir_getavg(2));
+		nxtDisplayCenteredTextLine(7, "Avg IR3: %i", ir_getavg(3));
 	}
-  motor[Lf] = 0;
-	motor[Rf] = 0;
-	motor[Lb] = 0;
-	motor[Rb] = 0;
-	//2.5in delay,zone 1 a little less
-	if(zone == 1){
-		forward_Mecanum(125, 0, xdir*100, Lf, Lb, Rf, Rb);
-	}
-	else {
-		forward_Mecanum(250, 0, xdir*100, Lf, Lb, Rf, Rb);
-	}
+	//2.5in delay 250 for low bat
+	forward_Mecanum(150, 0, -100, Lf, Lb, Rf, Rb);
 	motor[Lf] = 0;
 	motor[Rf] = 0;
 	motor[Lb] = 0;
 	motor[Rb] = 0;
-	wait1Msec(20);
 	//Place ball sequence
-	forward_Mecanum(1500, 25, 0, Lf, Lb, Rf, Rb);
+	//~1200 for low bat
+	forward_Mecanum(950, 25, 0, Lf, Lb, Rf, Rb);
 }
 //TODO enum irAction
-
-//TODO task readIR() in ir.h
 
 /***** PLACE IN CENTER GOAL *****/
 // returns current zone (1,2,3)
@@ -154,16 +132,14 @@ float auto_placeCenterGoal(bool newIR)
 	forward_Mecanum(2000, -25, 0, Lf, Lb, Rf, Rb);
 	//wait10Msec(30);
 	//forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
-	float avgS2 = ir_getavg(2);
-	float avgS3 = ir_getavg(3);
 	//ir_wait(50); //wait 50 samples
 
-	//Let things settle down
-	wait1Msec(100);
-	float zone = getZone(avgS2,avgS3,newIR);
-	zone = 3;
 	//Wait for a little bit
 	wait1Msec(1000);
+    float avgS2 = ir_getavg(2);
+	float avgS3 = ir_getavg(3);
+	float zone = getZone(avgS2,avgS3,newIR);
+	zone = 3;
 
 	if (zone == 3){
 		centerIRRight(zone);

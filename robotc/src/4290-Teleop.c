@@ -212,7 +212,6 @@ task main()
         joy2Btn4last = joy2Btn(4);
         //DO NOT REMOVE THIS WAIT, See issue #11
         nxtDisplayTextLine(4, "%i", gyro_getheading());
-        nxtDisplayTextLine(5, "%i", time1[T3]);
         wait1Msec(5);
     }
 }

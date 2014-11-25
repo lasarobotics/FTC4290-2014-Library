@@ -31,7 +31,7 @@
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = true; //true to enable competition mode
+    bCompetitionMode = false; //true to enable competition mode
     displaySplash("GiraPHPHe", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);
@@ -88,15 +88,19 @@ task main()
     StartTask(gyro_calibrate, 8);
     StartTask(ir_calibrate, 8);
     StartTask(displaySmartDiags, 255);
+    if (bCompetitionMode) {waitForStart();}
     //auto_moveDownRamp();
     //auto_rampToParking();
+
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
     wait1Msec(1000);
+
     //Release ball
     servo[BallStorage] = 200;
     wait1Msec(1000);
-	  //auto_kickstandFromCenterGoal(zone);
+
+    //auto_kickstandFromCenterGoal(zone);
 
     //kill everything
     ir_stopLogging();
