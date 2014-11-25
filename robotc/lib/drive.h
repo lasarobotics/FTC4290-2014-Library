@@ -156,7 +156,7 @@ void forward_encoder_Mecanum(float encodercount, float forward, float strafe, tM
         motor[Rb] = rightBack*100;
 
         //Pause
-        while (abs(nMotorEncoder[Rb]-encodercount) > 10){}
+        while (abs(nMotorEncoder[Rb]-encodercount) > 10){ wait1Msec(5); }
 
         //Stop
         motor[Lf] = 0;
