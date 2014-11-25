@@ -142,6 +142,28 @@ void forward_Mecanum(float millis, float forward, float strafe, tMotor Lf, tMoto
         motor[Lb] = 0;
         motor[Rb] = 0;
 }
+void forward_encoder_Mecanum(float encodercount, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+        float leftFront, leftBack, rightFront, rightBack;
+				forward = speedController(forward);
+				strafe = speedController(strafe);
+        mecanum_arcade(forward, strafe, 0,
+        	leftFront, rightFront, leftBack, rightBack);
+
+        //Move
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
+
+        //Pause
+        while (abs(nMotorEncoder[Rb]-encodercount) > 10){}
+
+        //Stop
+        motor[Lf] = 0;
+        motor[Rf] = 0;
+        motor[Lb] = 0;
+        motor[Rb] = 0;
+}
 /**
 * Autonomous go forward for a certain time.
 * @param Milliseconds to go forward for.

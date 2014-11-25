@@ -129,19 +129,19 @@ float leftFront, leftBack, rightFront, rightBack;
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-	forward_Mecanum(2000, -25, 0, Lf, Lb, Rf, Rb);
+	forward_encoder_Mecanum(2000, -25, 0, Lf, Lb, Rf, Rb);
 	//wait10Msec(30);
 	//forward_Mecanum(400, 0, 100, Lf, Lb, Rf, Rb);
 	//ir_wait(50); //wait 50 samples
 
 	//Wait for a little bit
 	wait1Msec(1000);
-    float avgS2 = ir_getavg(2);
+  float avgS2 = ir_getavg(2);
 	float avgS3 = ir_getavg(3);
 	float zone = getZone(avgS2,avgS3,newIR);
 	zone = 3;
 
-	if (zone == 3){
+	/*if (zone == 3){
 		centerIRRight(zone);
 	}
 	if (zone <= 2){
@@ -160,7 +160,7 @@ float auto_placeCenterGoal(bool newIR)
 		wait1Msec(100);
 		forward_Mecanum(2100, 0, 100, Lf, Lb, Rf, Rb);
 		centerIRLeft(zone);
-	}
+	}*/
 
 	return zone;
 }
