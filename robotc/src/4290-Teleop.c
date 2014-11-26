@@ -96,9 +96,9 @@ task main()
         getJoystickSettings(joystick); //get all joystick statuses
         if (joy1Btn(8))
         {
-        	power = 50;
+        	power = .5;
         }
-        else { power = 100; }
+        else { power = 1; }
 
         //Drive Code
         if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
@@ -111,17 +111,17 @@ task main()
         }
         else {
             //scale to -1 to 1
-            y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
-            x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
-            c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
+            y = ((deadband(k_deadband,joystick.joy1_y1)+1)/128)*power; //strafe
+            x = ((deadband(k_deadband,joystick.joy1_x1)+1)/128)*power; //forward/rev
+            c = ((deadband(k_deadband,joystick.joy1_x2)+1)/128)*power; //spin
 
             mecanum_arcadeFOD(y, x, c, gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
 
-            motor[Lf] = leftFront*power;
-            motor[Rf] = rightFront*power;
-            motor[Lb] = leftBack*power;
-            motor[Rb] = rightBack*power;
+            motor[Lf] = leftFront*100;
+            motor[Rf] = rightFront*100;
+            motor[Lb] = leftBack*100;
+            motor[Rb] = rightBack*100;
         }
         //Gyro Reset Code
         if(joy1Btn(4) == 1) { gyro_reset(); }
