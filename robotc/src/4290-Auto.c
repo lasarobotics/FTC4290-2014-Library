@@ -34,7 +34,7 @@
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = false; //true to enable competition mode
+    bCompetitionMode = true; //true to enable competition mode
     displaySplash("GiraPHPHe", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);

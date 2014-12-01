@@ -137,7 +137,7 @@ float auto_placeCenterGoal(bool newIR)
     forward_encoderMecanum(2250, -25, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
     motor[Intake] = 30;
-    wait1Msec(500);
+    wait1Msec(3000);
     motor[Intake] = 1;
     //Wait for a little bit
     wait1Msec(1000);
@@ -149,7 +149,6 @@ float auto_placeCenterGoal(bool newIR)
     float avgS2 = ir_getavg(2);
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
-    zone = 1;
     wait1Msec(1000);
     if (zone == 3){
         centerIRRight(zone);

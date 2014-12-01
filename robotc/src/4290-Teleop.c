@@ -40,7 +40,7 @@ static float k_deadband = 15;
 
 void init()
 {
-    servo[GoalRetainer] = 255; //ANY SERVO LINE CAUSES THE PROBLEM
+    servo[GoalRetainer] = 200;
     servo[Kickstand] = 135;
     servo[BallStorage] = 100;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -89,6 +89,7 @@ task main()
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
 
+
     int power = 100; //power for drive motors
     while (true)
     {
@@ -96,9 +97,9 @@ task main()
         getJoystickSettings(joystick); //get all joystick statuses
         if (joy1Btn(8))
         {
-        	power = .5;
+        	power = 25;
         }
-        else { power = 1; }
+        else { power = 100; }
 
         //Drive Code
         if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
@@ -111,17 +112,17 @@ task main()
         }
         else {
             //scale to -1 to 1
-            y = ((deadband(k_deadband,joystick.joy1_y1)+1)/128)*power; //strafe
-            x = ((deadband(k_deadband,joystick.joy1_x1)+1)/128)*power; //forward/rev
-            c = ((deadband(k_deadband,joystick.joy1_x2)+1)/128)*power; //spin
+            y = ((deadband(k_deadband,joystick.joy1_y1)+1)/128); //strafe
+            x = ((deadband(k_deadband,joystick.joy1_x1)+1)/128); //forward/rev
+            c = ((deadband(k_deadband,joystick.joy1_x2)+1)/128); //spin
 
             mecanum_arcadeFOD(y, x, c, gyro_getheading(),
             leftFront, rightFront, leftBack, rightBack);
 
-            motor[Lf] = leftFront*100;
-            motor[Rf] = rightFront*100;
-            motor[Lb] = leftBack*100;
-            motor[Rb] = rightBack*100;
+            motor[Lf] = leftFront*power;
+            motor[Rf] = rightFront*power;
+            motor[Lb] = leftBack*power;
+            motor[Rb] = rightBack*power;
         }
         //Gyro Reset Code
         if(joy1Btn(4) == 1) { gyro_reset(); }
@@ -130,11 +131,11 @@ task main()
         //Goal Latch Toggle
         if(joy1Btn(3)== 1 && joy1Btn3last != 1){
             if (goalreatainenabled){
-                servo[GoalRetainer] = 255;
+                servo[GoalRetainer] = 200;
                 goalreatainenabled = false;
             }
             else{
-                servo[GoalRetainer] = 0;
+                servo[GoalRetainer] = 20;
                 goalreatainenabled = true;
             }
         }
