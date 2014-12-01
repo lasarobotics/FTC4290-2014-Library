@@ -136,6 +136,9 @@ float auto_placeCenterGoal(bool newIR)
 {
     forward_encoderMecanum(2250, -25, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
+    motor[Intake] = 30;
+    wait1Msec(500);
+    motor[Intake] = 1;
     //Wait for a little bit
     wait1Msec(1000);
     gyro_reset();
@@ -175,7 +178,7 @@ float auto_placeCenterGoal(bool newIR)
         forward_encoderMecanum(150, -10, 0, Lf, Lb, Rf, Rb);
         wait1Msec(100);
     }
-
+    motor[Intake] = 0;
     return zone;
 }
 
