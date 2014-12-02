@@ -151,16 +151,18 @@ float auto_placeCenterGoal(bool newIR)
     float zone = getZone(avgS2,avgS3,newIR);
     wait1Msec(1000);
     if (zone == 3){
-        centerIRRight(zone);
+       forward_encoderMecanum(2000, 0, -50, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(1500, -25, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(500, -15, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(800, 0, -25, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(800, 0, -50, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(500, -5, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(600, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(15,25,Lf,Lb,Rf,Rb);
         wait1Msec(1000);
     }
@@ -171,16 +173,36 @@ float auto_placeCenterGoal(bool newIR)
         forward_encoderMecanum(2650, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1150, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(500, -5, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(500, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
-        forward_encoderMecanum(150, -10, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(250, -10, 0, Lf, Lb, Rf, Rb);
         wait1Msec(100);
     }
     motor[Intake] = 0;
+    wait1Msec(1000);
     return zone;
 }
+void auto_centerGoalToLarge(float zone){
+    if (zone == 3){
+       forward_encoderMecanum(1000,15,0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(5000, 0, -100, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(8000, -25, 0, Lf, Lb, Rf, Rb);
+    }
+    if (zone == 2){
+        turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
+        forward_encoderMecanum(3000, 0, 50, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(8000, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(10000, 0, -100, Lf, Lb, Rf, Rb);
+    }
+    if (zone == 1){
+        forward_encoderMecanum(500,15,0, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
+        forward_encoderMecanum(4000, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(10000, 0, -50, Lf, Lb, Rf, Rb);
+    }
 
+}
 /**** PLACE IN KICKSTAND
 (from already placing a ball in center goal) ****/
 void auto_kickstandFromCenterGoal(int zone)
