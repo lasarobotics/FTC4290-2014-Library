@@ -42,7 +42,7 @@ void init()
 {
     servo[GoalRetainer] = 200;
     servo[Kickstand] = 135;
-    servo[BallStorage] = 100;
+    servo[BallStorage] = 180;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
     displaySplash("High PHidelity", "Teleop", true);
