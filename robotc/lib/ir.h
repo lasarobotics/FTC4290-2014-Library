@@ -140,7 +140,40 @@ void ir_stopLogging()
 		Close(filehandle, ioresult);
 	}
 }
-
+void logDecisionValues(int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,int avg1,int avg2,int avg3,int avg4){
+	if (!ir_loggingEnabled) { return; }
+	string s = "";
+	//IR0
+	StringFormat(s,"DECISION%i,",ir0);
+	WriteText(filehandle, ioresult, s);
+	//IR1
+	StringFormat(s,"%i,",ir1);
+	WriteText(filehandle, ioresult, s);
+	//IR2
+	StringFormat(s,"%i,",ir2);
+	WriteText(filehandle, ioresult, s);
+	//IR3
+	StringFormat(s,"%i,",ir3);
+	WriteText(filehandle, ioresult, s);
+	//IR4
+	StringFormat(s,"%i,",ir4);
+	WriteText(filehandle, ioresult, s);
+	//AVG0
+	StringFormat(s,"%i,",avg0);
+	WriteText(filehandle, ioresult, s);
+	//AVG1
+	StringFormat(s,"%i,",avg1);
+	WriteText(filehandle, ioresult, s);
+	//AVG2
+	StringFormat(s,"%i,",avg2);
+	WriteText(filehandle, ioresult, s);
+	//AVG3
+	StringFormat(s,"%i,",avg3);
+	WriteText(filehandle, ioresult, s);
+	//AVG4
+	StringFormat(s,"%i\r\n",avg4);
+	WriteText(filehandle, ioresult, s);
+}
 void logValues(int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,int avg1,int avg2,int avg3,int avg4){
 	if (!ir_loggingEnabled) { return; }
 	string s = "";

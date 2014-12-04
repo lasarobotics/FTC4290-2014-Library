@@ -49,6 +49,9 @@ float getZone(float avgS2,float avgS3,bool newIR){
         zone = 3;
     }
     nxtDisplayCenteredTextLine(3, "%i", zone);
+    if (ir_loggingEnabled) {
+        logDecisionValues(ir_getraw(0),ir_getraw(1),ir_getraw(2),ir_getraw(3),ir_getraw(4),ir_getavg(0),ir_getavg(1),ir_getavg(2),ir_getavg(3),ir_getavg(4));
+    }
     return zone;
 }
 
