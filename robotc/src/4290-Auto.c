@@ -92,7 +92,7 @@ task main()
     if (bCompetitionMode) {waitForStart();}
 
     //WAIT if requested
-    if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
+    if (options_get[2] != 0) { wait10Msec(500 * options_get[2]); }
 
     //auto_moveDownRamp();
     //auto_rampToParking();
@@ -101,7 +101,7 @@ task main()
     float zone = auto_placeCenterGoal(true);
     servo[BallStorage] = 200;
     wait1Msec(1000);
-    if (options_get[2] == 0) { auto_centerGoalToLarge(zone); }
+    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
     //Release ball
     wait1Msec(1000);
 

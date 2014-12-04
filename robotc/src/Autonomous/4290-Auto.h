@@ -30,7 +30,7 @@
 
 /***** DEFINES *****/
 //#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
@@ -160,18 +160,18 @@ float auto_placeCenterGoal(bool newIR)
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(800, 0, -50, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(725, 0, -50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
         wait1Msec(1000);
         //Place ball sequence
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(600, -10, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(15,25,Lf,Lb,Rf,Rb);
+        //turnToDeg_Mecanum(15,25,Lf,Lb,Rf,Rb);
         wait1Msec(1000);
     }
     if (zone == 1){
         //Nav to zone 1 (farthest)
-        forward_encoderMecanum(2000, 0, 100, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2100, 0, 100, Lf, Lb, Rf, Rb);
         wait10Msec(100);
         forward_encoderMecanum(2650, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1150, -25, 0, Lf, Lb, Rf, Rb);
@@ -179,7 +179,7 @@ float auto_placeCenterGoal(bool newIR)
         forward_encoderMecanum(500, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
-        forward_encoderMecanum(250, -10, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(100, -10, 0, Lf, Lb, Rf, Rb);
         wait1Msec(100);
     }
     motor[Intake] = 0;
@@ -199,12 +199,13 @@ void auto_centerGoalToLarge(float zone){
         forward_encoderMecanum(10000, 0, -100, Lf, Lb, Rf, Rb);
     }
     if (zone == 1){
-        forward_encoderMecanum(500,15,0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(4000, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(10000, 0, -50, Lf, Lb, Rf, Rb);
     }
-    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
+    turnToDeg_Mecanum(35,20,Lf,Lb,Rf,Rb);
+    forward_encoderMecanum(4000, -40, 0, Lf, Lb, Rf, Rb);
 }
 /**** PLACE IN KICKSTAND
 (from already placing a ball in center goal) ****/
