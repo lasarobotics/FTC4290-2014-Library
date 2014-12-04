@@ -40,7 +40,7 @@ static float k_deadband = 15;
 
 void init()
 {
-    servo[GoalRetainer] = 200;
+    servo[GoalRetainer] = 100;
     servo[Kickstand] = 135;
     servo[BallStorage] = 180;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -131,7 +131,7 @@ task main()
         //Goal Latch Toggle
         if(joy1Btn(3)== 1 && joy1Btn3last != 1){
             if (goalreatainenabled){
-                servo[GoalRetainer] = 200;
+                servo[GoalRetainer] = 100;
                 goalreatainenabled = false;
             }
             else{
