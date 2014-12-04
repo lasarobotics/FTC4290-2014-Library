@@ -46,38 +46,38 @@ void init()
 
     options_create(0, "START");
     options_add(0, "Parking");
-    //options_add(0, "Ramp");
+    options_add(0, "Ramp"); //IMPLEMENT!
 
     options_create(1, "CENTER GOAL");
     options_add(1, "Yes");
-    options_add(1, "No");
+    options_add(1, "No"); //IMPLEMENT MAYBE
 
-    options_create(2, "KICKSTAND");
+    //options_create(2, "KICKSTAND");
     //options_add(2, "Yes");
-    options_add(2, "No");
+    //options_add(2, "No");
 
-    options_create(3, "PLACE");
-    //options_add(3, "90 cm");
-    //options_add(3, "60 cm");
-    options_add(3, "Off");
+    options_create(2, "PLACE");
+    options_add(2, "90 cm");
+    //options_add(2, "60 cm");
+    options_add(2, "Off"); //IMPLEMENT
 
-    options_create(4, "WAIT");
-    options_add(4, "0 s");
-    //options_add(4, "5 s");
-    //options_add(4, "10 s");
-    //options_add(4, "15 s");
-    //options_add(4, "20 s");
+    options_create(3, "WAIT");
+    options_add(3, "0 s");
+    options_add(3, "5 s"); //IMPLEMENT
+    options_add(3, "10 s"); //IMPLEMENT
+    //options_add(3, "15 s");
+    //options_add(3, "20 s");
 
-    options_create(5, "LOGGING");
-    options_add(5, "On");
-    options_add(5, "Off");
+    options_create(4, "LOGGING");
+    options_add(4, "On");
+    options_add(4, "Off"); //SET DEFAULT TO OFF?
 
-    //options_display("","READY!");
+    options_display("LASA 4290","READY!");
     wait10Msec(100);
 
     //STORE OPTIONS DETAILS
     //if logging is on
-    if (options_get[5] == 0) { ir_loggingEnabled = true; }
+    if (options_get[4] == 0) { ir_loggingEnabled = true; }
     else                     { ir_loggingEnabled = false; }
 
     return;
