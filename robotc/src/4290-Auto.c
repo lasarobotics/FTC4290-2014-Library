@@ -48,36 +48,34 @@ void init()
     options_add(0, "Parking");
     options_add(0, "Ramp"); //IMPLEMENT!
 
-    options_create(1, "CENTER GOAL");
-    options_add(1, "Yes");
-    options_add(1, "No"); //IMPLEMENT MAYBE
+    //options_create(1, "CENTER GOAL");
+    //options_add(1, "Yes");
+    //options_add(1, "No");
 
     //options_create(2, "KICKSTAND");
     //options_add(2, "Yes");
     //options_add(2, "No");
 
-    options_create(2, "PLACE");
-    options_add(2, "90 cm");
-    //options_add(2, "60 cm");
-    options_add(2, "Off"); //IMPLEMENT
+    options_create(1, "MOVE");
+    options_add(1, "to 90cm");
+    //options_add(1, "60 cm");
+    options_add(1, "No");
 
-    options_create(3, "WAIT");
-    options_add(3, "0 s");
-    options_add(3, "5 s"); //IMPLEMENT
-    options_add(3, "10 s"); //IMPLEMENT
-    //options_add(3, "15 s");
-    //options_add(3, "20 s");
+    options_create(2, "WAIT");
+    options_add(2, "0 s");
+    options_add(2, "5 s");
+    options_add(2, "10 s");
 
-    options_create(4, "LOGGING");
-    options_add(4, "On");
-    options_add(4, "Off"); //SET DEFAULT TO OFF?
+    options_create(3, "LOGGING");
+    options_add(3, "On");
+    options_add(3, "Off");
 
     options_display("LASA 4290","READY!");
     wait10Msec(100);
 
     //STORE OPTIONS DETAILS
     //if logging is on
-    if (options_get[4] == 0) { ir_loggingEnabled = true; }
+    if (options_get[3] == 0) { ir_loggingEnabled = true; }
     else                     { ir_loggingEnabled = false; }
 
     return;
@@ -92,6 +90,10 @@ task main()
     StartTask(ir_calibrate, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
+
+    //WAIT if requested
+    if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
+
     //auto_moveDownRamp();
     //auto_rampToParking();
 
@@ -99,7 +101,7 @@ task main()
     float zone = auto_placeCenterGoal(true);
     servo[BallStorage] = 200;
     wait1Msec(1000);
-    auto_centerGoalToLarge(zone);
+    if (options_get[2] == 0) { auto_centerGoalToLarge(zone); }
     //Release ball
     wait1Msec(1000);
 

@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Sensor, S2,     HTGYRO,         sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S4,     IR,             sensorI2CCustom)
+#pragma config(Sensor, S4,     PSPNXV4,        sensorI2CCustomFastSkipStates)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -16,12 +16,13 @@
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
-#include "../lib/naturalization.h" //naturalize RobotC
+//#include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
 #include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens
 #include "../drivers/hitechnic-irseeker-v2.h"
+#include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 
 /***** STATICS *****/
 static float k_deadband = 15;
@@ -32,7 +33,7 @@ static float k_deadband = 15;
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = true; //true to enable competition mode
+    bCompetitionMode = false; //true to enable competition mode
 
     displaySplash("Mecanum Bot", "FOD Test", true);
     eraseDisplay();
@@ -46,43 +47,48 @@ task main()
 {
     float leftFront, leftBack, rightFront, rightBack; // motors
     float y, x, c;
+    tPSP controller;
 
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     wait10Msec(100);
     StartTask(gyro_calibrate, 8);
     StartTask(displaySmartDiags, 255);
-    if (bCompetitionMode) {waitForStart();}
+    //if (bCompetitionMode) {waitForStart();}
 
     while (true)
     {
-				nxtDisplayCenteredBigTextLine(3, "%i", gyro_getheading());
+				nxtDisplayCenteredTextLine(3, "%i", gyro_getheading());
         /***** Proportional Motor Control *****/
-        getJoystickSettings(joystick); //get all joystick statuses
-				if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
-					  deadband(k_deadband,joystick.joy1_x1) == 0 &&
-        		deadband(k_deadband,joystick.joy1_x2) == 0 ) {
-          motor[Lf] = 0;
-        	motor[Rf] = 0;
-        	motor[Lb] = 0;
-        	motor[Rb] = 0;
+        PSPV4readButtons(PSPNXV4, controller);
+
+			  //scale to -1 to 1
+        y = (deadband(k_deadband,-controller.joystickLeft_y))/100; //strafe
+        x = (deadband(k_deadband,controller.joystickLeft_x))/100; //forward/rev
+        c = (deadband(k_deadband,controller.joystickRight_x))/100; //spin
+
+        nxtDisplayTextLine(4, "%i", controller.joypadRight);
+        nxtDisplayTextLine(4, "%i", controller.joypadLeft);
+
+        if ((y == 0) && (x == 0))
+        {
+        	x += controller.joypadRight; //strafe
+        	x -= controller.joypadLeft; //strafe
+	        y += controller.joypadUp; //forward/rev
+	        y -= controller.joypadDown; //forward/rev
         }
-        else {
-				  //scale to -1 to 1
-	        y = (deadband(k_deadband,joystick.joy1_y1)+1)/128; //strafe
-	        x = (deadband(k_deadband,joystick.joy1_x1)+1)/128; //forward/rev
-	        c = (deadband(k_deadband,joystick.joy1_x2)+1)/128; //spin
 
-	        mecanum_arcadeFOD(y, x, c, gyro_getheading(),
-	        leftFront, rightFront, leftBack, rightBack);
+        nxtDisplayTextLine(5, "%i", y);
 
-	        motor[Lf] = leftFront*100;
-	        motor[Rf] = rightFront*100;
-	        motor[Lb] = leftBack*100;
-	        motor[Rb] = rightBack*100;
-	      }
+        mecanum_arcadeFOD(y, x, c, gyro_getheading(),
+        leftFront, rightFront, leftBack, rightBack);
 
-        if(joy1Btn(4) == 1) { gyro_reset(); }
+        motor[Lf] = leftFront*100;
+        motor[Rf] = rightFront*100;
+        motor[Lb] = leftBack*100;
+        motor[Rb] = rightBack*100;
+
+        if(controller.circleBtn == 1) { gyro_reset(); }
         while(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
         wait1Msec(5);
     }

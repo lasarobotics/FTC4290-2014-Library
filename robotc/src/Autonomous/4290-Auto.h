@@ -204,7 +204,7 @@ void auto_centerGoalToLarge(float zone){
         forward_encoderMecanum(4000, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(10000, 0, -50, Lf, Lb, Rf, Rb);
     }
-    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb)
+    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
 }
 /**** PLACE IN KICKSTAND
 (from already placing a ball in center goal) ****/
