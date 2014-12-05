@@ -161,7 +161,7 @@ float auto_placeCenterGoal(bool newIR)
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(725, 0, -50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
+        forward_encoderMecanum(425, 0, -50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
         wait1Msec(1000);
         //Place ball sequence
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
