@@ -60,7 +60,7 @@ float getZone(float avgS2,float avgS3,bool newIR){
 * Move the robot down the ramp
 */
 void auto_moveDownRamp(){
-    forward_encoderMecanum(3000, 100, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(10000, 100, 0, Lf, Lb, Rf, Rb);
 }
 
 /**

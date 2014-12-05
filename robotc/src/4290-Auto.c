@@ -76,7 +76,7 @@ void init()
     //STORE OPTIONS DETAILS
     //if logging is on
     if (options_get[3] == 0) { ir_loggingEnabled = true; }
-    else                     { ir_loggingEnabled = false; }
+    else { ir_loggingEnabled = false; }
 
     return;
 }
@@ -96,14 +96,18 @@ task main()
 
     //auto_moveDownRamp();
     //auto_rampToParking();
-
-    //True for new IR, false for old
-    float zone = auto_placeCenterGoal(true);
-    servo[BallStorage] = 200;
-    wait1Msec(1000);
-    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
-    //Release ball
-    wait1Msec(1000);
+    if (options_get[0] == 0){
+	    //True for new IR, false for old
+	    float zone = auto_placeCenterGoal(true);
+	    servo[BallStorage] = 200;
+	    wait1Msec(1000);
+	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
+	    //Release ball
+	    wait1Msec(1000);
+    }
+    else if (options_get[0] == 1){
+        auto_moveDownRamp();
+    }
 
     //auto_kickstandFromCenterGoal(zone);
 
