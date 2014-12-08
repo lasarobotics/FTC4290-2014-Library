@@ -60,7 +60,7 @@ float getZone(float avgS2,float avgS3,bool newIR){
 * Move the robot down the ramp
 */
 void auto_moveDownRamp(){
-    forward_encoderMecanum(10000, 100, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(10000, -50, 0, Lf, Lb, Rf, Rb);
 }
 
 /**
@@ -154,33 +154,33 @@ float auto_placeCenterGoal(bool newIR)
     float zone = getZone(avgS2,avgS3,newIR);
     wait1Msec(1000);
     if (zone == 3){
-       forward_encoderMecanum(1700, 0, -50, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(2000, 0, -50, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
-       forward_encoderMecanum(1500, -25, 0, Lf, Lb, Rf, Rb);
-       forward_encoderMecanum(500, -15, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(1700, -25, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(425, 0, -50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
+        forward_encoderMecanum(550,0,-50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
         wait1Msec(1000);
         //Place ball sequence
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(500, -15, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(600, -10, 0, Lf, Lb, Rf, Rb);
-        //turnToDeg_Mecanum(15,25,Lf,Lb,Rf,Rb);
+        //turnToDeg_Mecanum(10,25,Lf,Lb,Rf,Rb);
         wait1Msec(1000);
     }
     if (zone == 1){
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2100, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(2000);
-        forward_encoderMecanum(2650, -50, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2850, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1150, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(400, -15, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(500, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
-        forward_encoderMecanum(300, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(500, -25, 0, Lf, Lb, Rf, Rb);
         wait1Msec(100);
     }
     motor[Intake] = 0;
@@ -194,7 +194,7 @@ void auto_centerGoalToLarge(float zone){
        forward_encoderMecanum(8000, -25, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
-        turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
+        //turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(3200, 0, 50, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(8000, -25, 0, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
