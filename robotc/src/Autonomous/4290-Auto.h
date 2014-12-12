@@ -47,11 +47,10 @@
 void auto_init()
 {
 	if (log_enabled)
-  {
-  	ir_setupLogging();
-  	log_init("auto.txt", false, logid);
-  	log_write("LOG  : Started", logid);
-	}
+    {
+		log_init("auto.txt", false, logid);
+		log_write("LOG  : Started", logid);
+    }
 }
 
 float getZone(float avgS2,float avgS3,bool newIR){

@@ -185,7 +185,9 @@ void updateIR(){
 	ir_moveavg(4,IRraw[4]);
 	//Log
 	#ifdef _LOGGING_ENABLED
-	logValues(false, IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
+	if (log_enabled){
+	    logValues(false, IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
+    }
 	#endif
 	samplecount++;
 	if (samplecount > 1022) { samplecount = 0; }

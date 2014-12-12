@@ -18,7 +18,8 @@ float dt = 0.0;
 static float heading = 0;
 static tSensors gyro = 0;
 static bool go = true;
-
+static int gyro_logid = -1;
+string gyro_filename = "gyrolog.txt";
 /***** QUICK METHODS *****/
 
 //Get current rotational speed (in deg/s)
@@ -31,7 +32,15 @@ void gyro_reset() { heading = 0; }
 void gyro_kill() { go = false; }
 
 /***** METHODS *****/
-
+/**
+* Gyro logging setup
+*/
+void gyro_setupLogging()
+{
+	if (!log_enabled) { return; }
+	log_init(gyro_filename, false, gyro_logid);
+	log_write("Gyro Log", gyro_logid);
+}
 /**
 * Gyro initialization function
 * @param The gyro sensor.
@@ -40,6 +49,9 @@ float gyro_init_internal(tSensors link)
 {
     //Read gyro offset
     gyro = link;
+    #ifdef _LOGGING_ENABLED
+    gyro_setupLogging();
+    #endif
     return HTGYROstartCal(link);
 }
 /**
@@ -57,9 +69,11 @@ void updateGyro()
     heading += ((float)vel_prev+(float)vel_curr)*(float)0.5*(float)dt;
 
     #ifdef _LOGGING_ENABLED
-    string s;
-    StringFormat(s, "GYRO : %.4f, %.4f, %.4f", vel_prev, vel_curr, dt);
-    log_write(s, logid);
-		#endif
+    if(log_enabled){
+	    string s;
+	    StringFormat(s, "GYRO : %.4f, %.4f, %.4f", vel_prev, vel_curr, dt);
+	    log_write(s, gyro_logid);
+    }
+	#endif
 }
 #endif
