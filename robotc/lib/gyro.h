@@ -6,8 +6,8 @@ gyro.h
 Implements the HiTechnic Gyroscope.
 
 **********************************************************/
-#ifndef _GYROSCOPE_ENABLED
-#define _GYROSCOPE_ENABLED
+#ifndef _GYRO_H
+#define _GYRO_H
 
 #include "../drivers/hitechnic-gyro.h" //gyroscope
 
@@ -37,7 +37,7 @@ void gyro_kill() { go = false; }
 */
 void gyro_setupLogging()
 {
-	if (!log_enabled) { return; }
+
 	log_init(gyro_filename, false, gyro_logid);
 	log_write("Gyro Log", gyro_logid);
 }
@@ -49,9 +49,9 @@ float gyro_init_internal(tSensors link)
 {
     //Read gyro offset
     gyro = link;
-    #ifdef _LOGGING_ENABLED
-    gyro_setupLogging();
-    #endif
+    if (log_enabled) {
+        gyro_setupLogging();
+    }
     return HTGYROstartCal(link);
 }
 /**
@@ -68,12 +68,10 @@ void updateGyro()
     // Average of last two velocities multiplied by the time passed = change in heading
     heading += ((float)vel_prev+(float)vel_curr)*(float)0.5*(float)dt;
 
-    #ifdef _LOGGING_ENABLED
     if(log_enabled){
 	    string s;
 	    StringFormat(s, "GYRO : %.4f, %.4f, %.4f", vel_prev, vel_curr, dt);
 	    log_write(s, gyro_logid);
     }
-	#endif
 }
 #endif

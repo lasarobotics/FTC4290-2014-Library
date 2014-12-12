@@ -6,11 +6,8 @@ logging.h
 Allows rapidly writing to files on the NXT.
 
 **********************************************************/
-#ifndef _LOGGING_ENABLED
-#define _LOGGING_ENABLED
-
-/**** INCLUDES ****/
-#include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
+#ifndef _LOGGING_H
+#define _LOGGING_H
 
 /**** Globals ****/
 bool log_enabled = true; //enable logging

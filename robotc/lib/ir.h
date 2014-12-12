@@ -101,15 +101,12 @@ void ir_moveavg(int sensor, int new)
 	indexavg[sensor]++;
 }
 
-#ifdef _LOGGING_ENABLED
-
 /**
 * File Setup
 * Setup File Handles for Logging
 */
 void ir_setupLogging()
 {
-	if (!log_enabled) { return; }
 	log_init(ir_filename, false, ir_logid);
 	log_write("IR0,IR1,IR2,IR3,IR4,AVG0,AVG1,AVG2,AVG3,AVG4", ir_logid);
 }
@@ -157,7 +154,6 @@ void logValues(bool isdecision,int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,
 	}
 }
 
-#endif
 
 /**
 * Initialize the IR sensor for reading.
@@ -166,9 +162,9 @@ void ir_init_internal(tSensors ir)
 {
 	ir_sensor = ir;
 	ir_reset();
-	#ifdef _LOGGING_ENABLED
-	ir_setupLogging();
-	#endif
+	if (log_enabled) {
+        ir_setupLogging();
+    }
 }
 
 /**
@@ -184,11 +180,9 @@ void updateIR(){
 	ir_moveavg(3,IRraw[3]);
 	ir_moveavg(4,IRraw[4]);
 	//Log
-	#ifdef _LOGGING_ENABLED
 	if (log_enabled){
 	    logValues(false, IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
     }
-	#endif
 	samplecount++;
 	if (samplecount > 1022) { samplecount = 0; }
 }
