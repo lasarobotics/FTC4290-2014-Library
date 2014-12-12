@@ -86,8 +86,7 @@ task main()
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     //auto_init();
-    StartTask(gyro_calibrate, 8);
-    StartTask(ir_calibrate, 8);
+    StartTask(readSensors, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
 

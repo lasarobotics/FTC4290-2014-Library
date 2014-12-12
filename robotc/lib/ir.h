@@ -7,6 +7,8 @@ Mathematics and drivers required for operation
 and functionality of the IR sensor.
 
 **********************************************************/
+#ifndef IR_H
+#define IR_H
 
 /**** INCLUDES ****/
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
@@ -76,15 +78,6 @@ void ir_reset()
 	}
 }
 
-/**
-* Initialize the IR sensor for reading.
-**/
-void ir_init(tSensors ir)
-{
-	ir_sensor = ir;
-	ir_reset();
-	ir_read = true;
-}
 
 /**
 * Moving Average
@@ -210,31 +203,34 @@ void logValues(int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,int avg1,int avg
 }
 
 /**
-* IR calibration task
-* Call before your while(true) loop with priority 8
-*/
-task ir_calibrate()
+* Initialize the IR sensor for reading.
+**/
+void ir_init_internal(tSensors ir)
 {
+	ir_sensor = ir;
+	ir_reset();
 	if (ir_loggingEnabled){
 		ir_setupLogging();
 	}
-	while (ir_read)
-	{
-		// Wait until 20ms has passed
-		wait1Msec(20);
-		//Read
-		HTIRS2readAllACStrength(ir_sensor, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
-		//Move Averages
-		ir_moveavg(0,IRraw[0]);
-		ir_moveavg(1,IRraw[1]);
-		ir_moveavg(2,IRraw[2]);
-		ir_moveavg(3,IRraw[3]);
-		ir_moveavg(4,IRraw[4]);
-		//Log
-		if (ir_loggingEnabled){
-			logValues(IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
-		}
-		samplecount++;
-		if (samplecount > 1022) { samplecount = 0; }
-	}
 }
+
+/**
+* Update IR
+*/
+void updateIR(){
+   //Read
+	HTIRS2readAllACStrength(ir_sensor, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
+	//Move Averages
+	ir_moveavg(0,IRraw[0]);
+	ir_moveavg(1,IRraw[1]);
+	ir_moveavg(2,IRraw[2]);
+	ir_moveavg(3,IRraw[3]);
+	ir_moveavg(4,IRraw[4]);
+	//Log
+	if (ir_loggingEnabled){
+		logValues(IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
+	}
+	samplecount++;
+	if (samplecount > 1022) { samplecount = 0; }
+}
+#endif

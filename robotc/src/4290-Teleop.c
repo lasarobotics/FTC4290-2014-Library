@@ -28,10 +28,9 @@
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/drive.h" //drive trains
-#include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens and display options
-#include "../drivers/hitechnic-irseeker-v2.h"
+#include "../lib/sensor.h"
 
 /***** STATICS *****/
 static float k_deadband = 15;
@@ -85,7 +84,7 @@ task main()
     int joy2Btn4last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    StartTask(gyro_calibrate, 8);
+    StartTask(readSensors, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
 

@@ -38,7 +38,7 @@
 #include "../../lib/drive.h" //drive trains
 #include "../../lib/i2c.h" //I2C error checking
 #include "../../lib/options.h" //splash screens
-#include "../../lib/ir.h" //other math
+#include "../lib/sensor.h"
 
 float getZone(float avgS2,float avgS3,bool newIR){
     float zone = 1;
