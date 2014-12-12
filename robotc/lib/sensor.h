@@ -11,8 +11,8 @@ Implements the HiTechnic Gyroscope.
 #define SENSOR_H
 
 /***** Includes *****/
-#include "../../lib/gyro.h" //gyroscope
-#include "../../lib/ir.h" //gyroscope
+#include "gyro.h" //gyroscope
+#include "ir.h" //gyroscope
 /***** LOCAL VARIABLES *****/
 static bool gyro_enabled = false;
 static bool ir_enabled = false;

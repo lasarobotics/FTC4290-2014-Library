@@ -12,6 +12,7 @@ and functionality of the IR sensor.
 
 /**** INCLUDES ****/
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
+#include "../lib/logging.h" //logging
 
 /**** Globals ****/
 string ir_filename = "irlog.txt"; // the name of our file

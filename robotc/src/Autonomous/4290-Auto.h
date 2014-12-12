@@ -28,20 +28,6 @@
 * Contains methods for 4290 autonomous
 **/
 
-/***** DEFINES *****/
-//#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
-//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
-#define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
-
-/***** INCLUDES *****/
-#include "../../lib/naturalization.h" //naturalize RobotC
-#include "../../lib/logging.h" //logging
-
-#include "../../lib/drive.h" //drive trains
-#include "../../lib/i2c.h" //I2C error checking
-#include "../../lib/options.h" //splash screens
-#include "../../lib/sensor.h" //sensor IO
-
 void auto_init()
 {
 	if (log_enabled)

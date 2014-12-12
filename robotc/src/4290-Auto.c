@@ -27,9 +27,18 @@
  * Autonomous Program for 4290 GiraPHPHe
  * Moves from parking zone, places ball into small goal, then executes center goal scoring
  **/
+/***** DEFINES *****/
+//#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
+//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
+#include "../../lib/naturalization.h" //naturalize RobotC
+#include "../../lib/logging.h" //logging
+#include "../../lib/drive.h" //drive trains
+#include "../../lib/options.h" //splash screens
+#include "../../lib/sensor.h" //sensor IO
 
 void init()
 {

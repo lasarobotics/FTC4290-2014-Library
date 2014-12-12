@@ -10,6 +10,7 @@ Implements the HiTechnic Gyroscope.
 #define _GYRO_H
 
 #include "../drivers/hitechnic-gyro.h" //gyroscope
+#include "../lib/logging.h" //logging
 
 /***** LOCAL VARIABLES *****/
 float vel_curr = 0.0;
