@@ -9,8 +9,8 @@ your coding pleasure.
 **********************************************************/
 
 #include "drivemath.h"
-#include "gyro.h"
 #include "controller.h"
+
 /**
 * Provide tank steering using the stored robot configuration.
 * This function lets you directly provide joystick values from any source.
@@ -42,6 +42,7 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     norm_mecanum(leftfront,rightfront,leftback,rightback);
 }
 
+#ifdef _GYROSCOPE_ENABLED
 /**
 * Mecanum 2-joystick arcade drive with field orientation.
 * Recommended: forward=y1, strafe=x1, spin=x2
@@ -114,6 +115,7 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
     motor[Lb] = 0;
     motor[Rb] = 0;
 }
+#endif
 /**
 * Autonomous go forward for a certain time.
 * @param Milliseconds to go forward for.

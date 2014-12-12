@@ -35,10 +35,24 @@
 
 /***** INCLUDES *****/
 #include "../../lib/naturalization.h" //naturalize RobotC
+#include "../../lib/logging.h" //logging
+
+#include "../../lib/gyro.h" //gyroscope
 #include "../../lib/drive.h" //drive trains
 #include "../../lib/i2c.h" //I2C error checking
 #include "../../lib/options.h" //splash screens
-#include "../lib/sensor.h"
+#include "../../lib/ir.h" //IR reading
+#include "../../lib/sensor.h" //sensor IO
+
+void auto_init()
+{
+	if (log_enabled)
+  {
+  	ir_setupLogging();
+  	log_init("auto.txt", false, logid);
+  	log_write("LOG  : Started", logid);
+	}
+}
 
 float getZone(float avgS2,float avgS3,bool newIR){
     float zone = 1;
@@ -49,9 +63,10 @@ float getZone(float avgS2,float avgS3,bool newIR){
         zone = 3;
     }
     nxtDisplayCenteredTextLine(3, "%i", zone);
-    if (ir_loggingEnabled) {
-        logDecisionValues(ir_getraw(0),ir_getraw(1),ir_getraw(2),ir_getraw(3),ir_getraw(4),ir_getavg(0),ir_getavg(1),avgS2,avgS3,ir_getavg(4));
-    }
+    logValues(true,ir_getraw(0),ir_getraw(1),ir_getraw(2),ir_getraw(3),ir_getraw(4),ir_getavg(0),ir_getavg(1),avgS2,avgS3,ir_getavg(4));
+    string s;
+    StringFormat(s, "ZONE : Zone %i located", zone);
+    log_write(s, logid);
     return zone;
 }
 

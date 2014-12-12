@@ -7,11 +7,13 @@ Implements the HiTechnic Gyroscope.
 
 **********************************************************/
 
-#include "gyro.h"
-#include "ir.h"
+#ifndef SENSOR_H
+#define SENSOR_H
+
 /***** LOCAL VARIABLES *****/
 static bool gyro_enabled = false;
 static bool ir_enabled = false;
+
 /***** METHODS *****/
 
 /**
@@ -20,8 +22,8 @@ static bool ir_enabled = false;
 */
 void gyro_init(tSensors gyro)
 {
-    gyro_init_internal(gyro);
-    gyro_enabled = true;
+	gyro_init_internal(gyro);
+	gyro_enabled = true;
 }
 
 /**
@@ -34,15 +36,17 @@ void ir_init(tSensors ir)
 	ir_enabled = true;
 }
 
-task readSensors{
-    while (true){
-        wait1Msec(20);
-        if (gyro_enabled){
-            updateGyro();
-        }
-        wait1Msec(20);
-        if (ir_enabled){
-            updateIR();
-        }
-    }
+task readSensors {
+	while (true){
+		wait1Msec(20);
+		if (gyro_enabled){
+			updateGyro();
+		}
+		wait1Msec(20);
+		if (ir_enabled){
+			updateIR();
+		}
+	}
 }
+
+#endif

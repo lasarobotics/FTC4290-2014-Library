@@ -46,7 +46,7 @@ void init()
 
     options_create(0, "START");
     options_add(0, "Parking");
-    options_add(0, "Ramp"); //IMPLEMENT!
+    options_add(0, "Ramp");
 
     //options_create(1, "CENTER GOAL");
     //options_add(1, "Yes");
@@ -75,9 +75,10 @@ void init()
 
     //STORE OPTIONS DETAILS
     //if logging is on
-    if (options_get[3] == 0) { ir_loggingEnabled = true; }
-    else { ir_loggingEnabled = false; }
+    if (options_get[3] == 0) { log_enabled = true; }
+    else { log_enabled = false; }
 
+  	auto_init();
     return;
 }
 
@@ -85,7 +86,7 @@ task main()
 {
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    //auto_init();
+
     StartTask(readSensors, 8);
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
@@ -111,6 +112,6 @@ task main()
     //auto_kickstandFromCenterGoal(zone);
 
     //kill everything
-    ir_stopLogging();
+    log_stop();
     StopAllTasks();
 }

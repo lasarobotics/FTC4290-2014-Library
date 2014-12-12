@@ -27,10 +27,14 @@
 
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
+#include "../lib/logging.h" //logging
+
+#include "../lib/gyro.h" //gyroscope
 #include "../lib/drive.h" //drive trains
 #include "../lib/i2c.h" //I2C error checking
-#include "../lib/options.h" //splash screens and display options
-#include "../lib/sensor.h"
+#include "../lib/options.h" //splash screens
+#include "../lib/ir.h" //IR reading
+#include "../lib/sensor.h" //sensor IO
 
 /***** STATICS *****/
 static float k_deadband = 15;

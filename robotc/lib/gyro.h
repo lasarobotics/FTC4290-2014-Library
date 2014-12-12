@@ -6,8 +6,9 @@ gyro.h
 Implements the HiTechnic Gyroscope.
 
 **********************************************************/
-#ifndef GYRO_H
-#define GYRO_H
+#ifndef _GYROSCOPE_ENABLED
+#define _GYROSCOPE_ENABLED
+
 #include "../drivers/hitechnic-gyro.h" //gyroscope
 
 /***** LOCAL VARIABLES *****/
@@ -54,5 +55,11 @@ void updateGyro()
     vel_curr = (float)HTGYROreadRot(gyro);
     // Average of last two velocities multiplied by the time passed = change in heading
     heading += ((float)vel_prev+(float)vel_curr)*(float)0.5*(float)dt;
+
+    #ifdef _LOGGING_ENABLED
+    string s;
+    StringFormat(s, "GYRO : %.4f, %.4f, %.4f", vel_prev, vel_curr, dt);
+    log_write(s, logid);
+		#endif
 }
 #endif
