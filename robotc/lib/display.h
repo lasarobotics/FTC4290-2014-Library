@@ -116,6 +116,7 @@ void displaySplash(const string title, const string statustext, bool displayvers
         nxtDisplayCenteredTextLine(7, "%s", versiontext);
     }
 
+    PlaySound(soundFastUpwardTones);
     wait10Msec(250);
     eraseDisplay();
 }
