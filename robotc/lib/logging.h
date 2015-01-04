@@ -10,7 +10,7 @@ Allows rapidly writing to files on the NXT.
 #define _LOGGING_H
 
 /**** Globals ****/
-bool log_enabled = true; //enable logging
+bool log_enabled = false; //enable logging
 int logid = -1; //main log passed down literally everywhere
 
 /**** File OPERATIONS ****/
