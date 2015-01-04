@@ -33,13 +33,12 @@
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
+#include "../lib/naturalization.h" //naturalize RobotC
+#include "../lib/logging.h" //logging
+#include "../lib/drive.h" //drive trains
+#include "../lib/options.h" //splash screens
+#include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
-#include "../../lib/naturalization.h" //naturalize RobotC
-#include "../../lib/logging.h" //logging
-#include "../../lib/drive.h" //drive trains
-#include "../../lib/options.h" //splash screens
-#include "../../lib/sensor.h" //sensor IO
-
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -76,16 +75,16 @@ void init()
     options_add(2, "10 s");
 
     options_create(3, "LOGGING");
-    options_add(3, "On");
     options_add(3, "Off");
+    options_add(3, "On");
 
     options_display("LASA 4290","READY!");
     wait10Msec(100);
 
     //STORE OPTIONS DETAILS
     //if logging is on
-    if (options_get[3] == 0) { log_enabled = true; }
-    else { log_enabled = false; }
+    if (options_get[3] == 0) { log_enabled = false; }
+    else { log_enabled = true; }
 
   	auto_init();
     return;

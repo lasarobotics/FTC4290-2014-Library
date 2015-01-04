@@ -46,6 +46,7 @@ void init()
     servo[BallStorage] = 180;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
+    log_enabled = false; //Disable logging in Teleop
     displaySplash("High PHidelity", "Teleop", true);
     eraseDisplay();
     gyro_init(HTGYRO);
