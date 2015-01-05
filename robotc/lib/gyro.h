@@ -26,7 +26,14 @@ string gyro_filename = "gyrolog.txt";
 //Get current rotational speed (in deg/s)
 float gyro_getrotspeed() { return vel_curr; }
 //Get current heading
-float gyro_getheading() { return (heading % 360); }
+float gyro_getheading() {
+  if (heading < 0){
+    return (float)360 - (float)(abs(heading)%360);
+  }
+  else{
+    return (heading % 360);
+  }
+}
 //Reset gyro heading to zero
 void gyro_reset() { heading = 0; }
 //Stop gyro calibration task
