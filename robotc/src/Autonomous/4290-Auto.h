@@ -58,7 +58,8 @@ float getZone(float avgS2,float avgS3,bool newIR){
 * Move the robot down the ramp
 */
 void auto_moveDownRamp(){
-    forward_encoderMecanum(10000, -50, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(4000, 0, 50, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(4000, 0, 40, Lf, Lb, Rf, Rb);
 }
 
 /**
@@ -172,7 +173,7 @@ float auto_placeCenterGoal(bool newIR)
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
-        forward_encoderMecanum(2000, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2600, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(567, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
