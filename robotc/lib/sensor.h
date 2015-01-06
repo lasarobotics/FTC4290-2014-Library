@@ -1,9 +1,9 @@
 /**********************************************************
 
-Gyroscopic Drive
-gyro.h
+Sensors
+sensor.h
 
-Implements the HiTechnic Gyroscope.
+Basic Sensor task
 
 **********************************************************/
 
