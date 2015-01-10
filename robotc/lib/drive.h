@@ -64,8 +64,7 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
 }
-//Range of values turnToDeg considers the target starting from deg-mechanum_tolerance and going till deg+mechanum_tolerance
-static const float mechanum_tolerance = 1;
+
 /**
 * Autonomous turn to a specific degree based on gyro.
 * @param Degree to turn to.
@@ -100,14 +99,22 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
     //While we are greater than within mechanum_tolerance, drive
     /** MOVE MOTORS HERE! **/
     if (!goclockwise) { speed = -speed; }
-    mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
+    speed = speedController(speed);
+    mecanum_arcadeFOD(0, 0, speed, 0,
        leftFront, rightFront, leftBack, rightBack);
     motor[Lf] = leftFront*100;
     motor[Rf] = rightFront*100;
     motor[Lb] = leftBack*100;
     motor[Rb] = rightBack*100;
-    while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
-        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
+    if (goclockwise){
+	    while (concGyro(gyro_getheading()) < deg ){
+	        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
+	    }
+    }
+    else{
+       while (concGyro(gyro_getheading()) > deg ){
+	        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
+	    }
     }
     motor[Lf] = 0;
     motor[Rf] = 0;

@@ -2,8 +2,7 @@
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     IR,             sensorI2CCustom)
-#pragma config(Sensor, S4,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S3,     HTGYRO,             sensorAnalogInactive)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -33,7 +32,6 @@
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens and display options
 #include "../drivers/hitechnic-irseeker-v2.h"
-
 /***** STATICS *****/
 static float k_deadband = 15;
 /***** VARIABLES *****/
@@ -87,8 +85,8 @@ task main()
     int joy2Btn4last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    StartTask(readSensors, 8);
-    StartTask(displaySmartDiags, 255);
+    StartTask(readSensors);
+    StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
 
 

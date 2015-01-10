@@ -12,9 +12,16 @@ Displays splash screen and enables custom diagnostics.
 #endif
 
 //Disables RobotC diagnostic screen
-void diagnosticsOff() { bDisplayDiagnostics = false; }
+void diagnosticsOff() {
+    StopTask(displayDiagnostics);
+    bDisplayDiagnostics = false;
+}
 //Enables RobotC diagnostic screen
-void diagnosticsOn() { bDisplayDiagnostics = true; }
+void diagnosticsOn() {
+
+    StartTask(displayDiagnostics);
+    bDisplayDiagnostics = true;
+}
 //Disable top NXT bar
 void nxtbarOff() { bNxtLCDStatusDisplay = false; }
 //Enable top NXT bar

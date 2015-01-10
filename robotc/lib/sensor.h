@@ -37,6 +37,11 @@ void ir_init(tSensors ir)
 	ir_init_internal(ir);
 	ir_enabled = true;
 }
+void ir_init(tMUXSensor ir)
+{
+	ir_init_internal(ir);
+	ir_enabled = true;
+}
 task readSensors {
 	while (true){
 		wait1Msec(20);

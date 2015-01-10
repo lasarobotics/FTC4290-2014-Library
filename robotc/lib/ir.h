@@ -11,15 +11,16 @@ and functionality of the IR sensor.
 #define IR_H
 
 /**** INCLUDES ****/
+#include "../drivers/hitechnic-sensormux.h"
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
 #include "../lib/logging.h" //logging
-
 /**** Globals ****/
 string ir_filename = "irlog.txt"; // the name of our file
 
 /**** READING OPERATIONS ****/
 static int ir_logid = -1;
-static tSensors ir_sensor = 0;
+static tSensors ir_sensor = -1;
+static tMUXSensor ir_sensor_mux = -1;
 static bool ir_read = true;
 static int IRraw[5];
 static int samplecount = 0;
@@ -167,13 +168,23 @@ void ir_init_internal(tSensors ir)
         ir_setupLogging();
     }
 }
-
+void ir_init_internal(tMUXSensor ir)
+{
+	ir_sensor_mux = ir;
+	ir_reset();
+	if (log_enabled) {
+        ir_setupLogging();
+    }
+}
 /**
 * Update IR
 */
 void updateIR(){
   //Read
-	HTIRS2readAllACStrength(ir_sensor, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
+    if(ir_sensor_mux != -1)
+	    HTIRS2readAllACStrength(ir_sensor_mux, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
+	else
+	    HTIRS2readAllACStrength(ir_sensor, IRraw[0], IRraw[1], IRraw[2], IRraw[3], IRraw[4]);
 	//Move Averages
 	ir_moveavg(0,IRraw[0]);
 	ir_moveavg(1,IRraw[1]);

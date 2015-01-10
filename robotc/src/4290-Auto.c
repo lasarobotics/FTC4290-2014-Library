@@ -2,8 +2,7 @@
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     IR,             sensorI2CCustom)
-#pragma config(Sensor, S4,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S3,     HTGYRO,             sensorAnalogInactive)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -39,6 +38,9 @@
 #include "../lib/options.h" //splash screens
 #include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
+const static tMUXSensor irSensor =  msensor_S4_1;
+const static tMUXSensor touchSensorOne = msensor_S4_2;
+const static tMUXSensor touchSensorTwo = msensor_S4_3;
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -46,7 +48,7 @@ void init()
     displaySplash("GiraPHPHe", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);
-    ir_init(IR);
+    ir_init(irSensor);
     wait1Msec(50);
     nxtbarOn();
 
@@ -76,7 +78,6 @@ void init()
 
     options_create(3, "LOGGING");
     options_add(3, "Off");
-    options_add(3, "On");
 
     options_display("LASA 4290","READY!");
     wait10Msec(100);
@@ -84,7 +85,6 @@ void init()
     //STORE OPTIONS DETAILS
     //if logging is on
     if (options_get[3] == 0) { log_enabled = false; }
-    else { log_enabled = true; }
 
   	auto_init();
     return;
@@ -95,8 +95,8 @@ task main()
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
 
-    StartTask(readSensors, 8);
-    StartTask(displaySmartDiags, 255);
+    StartTask(readSensors);
+    StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
 
     //WAIT if requested
