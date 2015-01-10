@@ -11,7 +11,6 @@ and functionality of the IR sensor.
 #define IR_H
 
 /**** INCLUDES ****/
-#include "../drivers/hitechnic-sensormux.h"
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
 #include "../lib/logging.h" //logging
 /**** Globals ****/

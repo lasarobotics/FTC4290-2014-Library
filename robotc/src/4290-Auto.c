@@ -32,15 +32,14 @@
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
+#include "../drivers/hitechnic-sensormux.h"
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/logging.h" //logging
 #include "../lib/drive.h" //drive trains
 #include "../lib/options.h" //splash screens
 #include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
-const static tMUXSensor irSensor =  msensor_S4_1;
-const static tMUXSensor touchSensorOne = msensor_S4_2;
-const static tMUXSensor touchSensorTwo = msensor_S4_3;
+tMUXSensor irSensor =  msensor_S4_1;
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
