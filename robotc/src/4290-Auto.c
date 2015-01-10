@@ -2,8 +2,7 @@
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     IR,             sensorI2CCustom)
-#pragma config(Sensor, S4,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S3,     HTGYRO,             sensorAnalogInactive)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -27,10 +26,21 @@
  * Autonomous Program for 4290 GiraPHPHe
  * Moves from parking zone, places ball into small goal, then executes center goal scoring
  **/
+/***** DEFINES *****/
+//#define _FORCE_DEBUG //Uncomment to force using debug (non-optimized) mode
+//#define _DISABLE_JOYDISPLAY //Uncomment to disable joystick display
+#define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
+#include "../lib/naturalization.h" //naturalize RobotC
+#include "../lib/logging.h" //logging
+#include "../lib/drive.h" //drive trains
+#include "../lib/options.h" //splash screens
+#include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
-
+const static tMUXSensor irSensor =  msensor_S4_1;
+const static tMUXSensor touchSensorOne = msensor_S4_2;
+const static tMUXSensor touchSensorTwo = msensor_S4_3;
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
@@ -38,7 +48,7 @@ void init()
     displaySplash("GiraPHPHe", "Autonomous", true);
     eraseDisplay();
     gyro_init(HTGYRO);
-    ir_init(IR);
+    ir_init(irSensor);
     wait1Msec(50);
     nxtbarOn();
 
@@ -46,7 +56,7 @@ void init()
 
     options_create(0, "START");
     options_add(0, "Parking");
-    options_add(0, "Ramp"); //IMPLEMENT!
+    options_add(0, "Ramp");
 
     //options_create(1, "CENTER GOAL");
     //options_add(1, "Yes");
@@ -67,7 +77,6 @@ void init()
     options_add(2, "10 s");
 
     options_create(3, "LOGGING");
-    options_add(3, "On");
     options_add(3, "Off");
 
     options_display("LASA 4290","READY!");
@@ -75,9 +84,9 @@ void init()
 
     //STORE OPTIONS DETAILS
     //if logging is on
-    if (options_get[3] == 0) { ir_loggingEnabled = true; }
-    else { ir_loggingEnabled = false; }
+    if (options_get[3] == 0) { log_enabled = false; }
 
+  	auto_init();
     return;
 }
 
@@ -85,10 +94,9 @@ task main()
 {
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    //auto_init();
-    StartTask(gyro_calibrate, 8);
-    StartTask(ir_calibrate, 8);
-    StartTask(displaySmartDiags, 255);
+
+    StartTask(readSensors);
+    StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
 
     //WAIT if requested
@@ -100,10 +108,9 @@ task main()
 	    //True for new IR, false for old
 	    float zone = auto_placeCenterGoal(true);
 	    servo[BallStorage] = 200;
-	    wait1Msec(1000);
+	    wait1Msec(500);
 	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
-	    //Release ball
-	    wait1Msec(1000);
+
     }
     else if (options_get[0] == 1){
         auto_moveDownRamp();
@@ -112,6 +119,6 @@ task main()
     //auto_kickstandFromCenterGoal(zone);
 
     //kill everything
-    ir_stopLogging();
+    log_stop();
     StopAllTasks();
 }

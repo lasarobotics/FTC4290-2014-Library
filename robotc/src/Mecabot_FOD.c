@@ -16,12 +16,13 @@
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
-//#include "../lib/naturalization.h" //naturalize RobotC
+#include "../lib/naturalization.h" //naturalize RobotC
+
 #include "../lib/drive.h" //drive trains
-#include "../lib/gyro.h" //gyroscope and FOD
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens
-#include "../drivers/hitechnic-irseeker-v2.h"
+#include "../lib/sensor.h" //sensor IO
+
 #include "../drivers/mindsensors-ps2ctrl-v4.h" //mindsensors stuffs
 
 /***** STATICS *****/
@@ -52,7 +53,7 @@ task main()
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     wait10Msec(100);
-    StartTask(gyro_calibrate, 8);
+    StartTask(readSensors, 8);
     StartTask(displaySmartDiags, 255);
     //if (bCompetitionMode) {waitForStart();}
 

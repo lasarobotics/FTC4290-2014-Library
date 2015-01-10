@@ -12,9 +12,16 @@ Displays splash screen and enables custom diagnostics.
 #endif
 
 //Disables RobotC diagnostic screen
-void diagnosticsOff() { bDisplayDiagnostics = false; }
+void diagnosticsOff() {
+    StopTask(displayDiagnostics);
+    bDisplayDiagnostics = false;
+}
 //Enables RobotC diagnostic screen
-void diagnosticsOn() { bDisplayDiagnostics = true; }
+void diagnosticsOn() {
+
+    StartTask(displayDiagnostics);
+    bDisplayDiagnostics = true;
+}
 //Disable top NXT bar
 void nxtbarOff() { bNxtLCDStatusDisplay = false; }
 //Enable top NXT bar
@@ -117,6 +124,7 @@ void displaySplash(const string title, const string statustext, bool displayvers
         nxtDisplayCenteredTextLine(7, "%s", versiontext);
     }
 
+    PlaySound(soundFastUpwardTones);
     wait10Msec(250);
     eraseDisplay();
 }

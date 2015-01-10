@@ -2,8 +2,7 @@
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
-#pragma config(Sensor, S3,     IR,             sensorI2CCustom)
-#pragma config(Sensor, S4,     HTGYRO,         sensorI2CHiTechnicGyro)
+#pragma config(Sensor, S3,     HTGYRO,             sensorAnalogInactive)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -27,11 +26,12 @@
 
 /***** INCLUDES *****/
 #include "../lib/naturalization.h" //naturalize RobotC
+#include "../lib/logging.h" //logging
 #include "../lib/drive.h" //drive trains
+#include "../lib/sensor.h" //sensor IO
 #include "../lib/i2c.h" //I2C error checking
 #include "../lib/options.h" //splash screens and display options
 #include "../drivers/hitechnic-irseeker-v2.h"
-
 /***** STATICS *****/
 static float k_deadband = 15;
 /***** VARIABLES *****/
@@ -44,6 +44,7 @@ void init()
     servo[BallStorage] = 180;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
+    log_enabled = false; //Disable logging in Teleop
     displaySplash("High PHidelity", "Teleop", true);
     eraseDisplay();
     gyro_init(HTGYRO);
@@ -84,8 +85,8 @@ task main()
     int joy2Btn4last = 0;
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
-    StartTask(gyro_calibrate, 8);
-    StartTask(displaySmartDiags, 255);
+    StartTask(readSensors);
+    StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
 
 
