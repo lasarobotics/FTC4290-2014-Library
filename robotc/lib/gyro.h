@@ -27,8 +27,14 @@ string gyro_filename = "gyrolog.txt";
 float gyro_getrotspeed() { return vel_curr; }
 //Get current heading
 float gyro_getheading() {
-    float localheading = heading % 360;
+  if (heading < 0){
+    float localheading = (float)360 - (float)(abs(heading)%360);
     return localheading;
+  }
+  else{
+    float localheading = (heading % 360);
+    return localheading;
+  }
 }
 //Reset gyro heading to zero
 void gyro_reset() { heading = 0; }

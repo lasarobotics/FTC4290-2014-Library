@@ -1,9 +1,9 @@
 /**********************************************************
 
-Gyroscopic Drive
-gyro.h
+Sensors
+sensor.h
 
-Implements the HiTechnic Gyroscope.
+Basic Sensor task
 
 **********************************************************/
 
@@ -12,7 +12,7 @@ Implements the HiTechnic Gyroscope.
 
 /***** Includes *****/
 #include "gyro.h" //gyroscope
-#include "ir.h" //gyroscope
+#include "ir.h" //ir sensor
 /***** LOCAL VARIABLES *****/
 static bool gyro_enabled = false;
 static bool ir_enabled = false;

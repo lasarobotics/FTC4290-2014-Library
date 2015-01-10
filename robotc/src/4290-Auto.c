@@ -108,10 +108,9 @@ task main()
 	    //True for new IR, false for old
 	    float zone = auto_placeCenterGoal(true);
 	    servo[BallStorage] = 200;
-	    wait1Msec(1000);
+	    wait1Msec(500);
 	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
-	    //Release ball
-	    wait1Msec(1000);
+
     }
     else if (options_get[0] == 1){
         auto_moveDownRamp();
