@@ -48,10 +48,6 @@ float getZone(float avgS2,float avgS3,bool newIR){
         zone = 3;
     }
     nxtDisplayCenteredTextLine(3, "%i", zone);
-    logValues(true,ir_getraw(0),ir_getraw(1),ir_getraw(2),ir_getraw(3),ir_getraw(4),ir_getavg(0),ir_getavg(1),avgS2,avgS3,ir_getavg(4));
-    string s;
-    StringFormat(s, "ZONE : Zone %i located", zone);
-    log_write(s, logid);
     return zone;
 }
 
@@ -164,11 +160,11 @@ void centerIRLeft(int zone){
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-    forward_encoderMecanum(1500, -25, 0, Lf, Lb, Rf, Rb);
-    forward_encoderMecanum(666, -15, 0, Lf, Lb, Rf, Rb);
     motor[Intake] = 30;
     wait1Msec(3000);
     motor[Intake] = 1;
+    forward_encoderMecanum(1500, -25, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(666, -15, 0, Lf, Lb, Rf, Rb);
     //Wait for a little bit
     wait1Msec(1000);
     gyro_reset();
@@ -179,7 +175,6 @@ float auto_placeCenterGoal(bool newIR)
     float avgS2 = ir_getavg(2);
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
-    wait1Msec(1000);
     if (zone == 3){
        forward_encoderMecanum(1233, 0, -50, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
