@@ -179,6 +179,6 @@ task displaySmartDiags()
         }
 
         abortTimeslice();
-        wait1Msec(200);
+        wait1Msec(2000);
     }
 }
