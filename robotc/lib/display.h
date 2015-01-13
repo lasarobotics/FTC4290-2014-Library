@@ -113,7 +113,6 @@ void displaySplash(const string title, const string statustext, bool displayvers
     nxtbarOff();
     eraseDisplay();
     wait10Msec(1);
-    PlaySound(soundFastUpwardTones);
     nxtDisplayRICFile(0, 5, "lasa.ric");
     nxtDisplayCenteredTextLine(5, "%s", title);
     nxtDisplayCenteredTextLine(6, "%s", statustext);
@@ -123,8 +122,6 @@ void displaySplash(const string title, const string statustext, bool displayvers
         getVersion(versiontext);
         nxtDisplayCenteredTextLine(7, "%s", versiontext);
     }
-
-    PlaySound(soundFastUpwardTones);
     wait10Msec(250);
     eraseDisplay();
 }

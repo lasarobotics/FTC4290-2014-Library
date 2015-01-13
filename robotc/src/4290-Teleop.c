@@ -39,9 +39,9 @@ static float k_deadband = 15;
 
 void init()
 {
-    servo[GoalRetainer] = 100;
+    servo[GoalRetainer] = 255;
     servo[Kickstand] = 155;
-    servo[BallStorage] = 140;
+    servo[BallStorage] = 85;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
     log_enabled = false; //Disable logging in Teleop
@@ -131,11 +131,11 @@ task main()
         //Goal Latch Toggle
         if(joy1Btn(3)== 1 && joy1Btn3last != 1){
             if (goalreatainenabled){
-                servo[GoalRetainer] = 100;
+                servo[GoalRetainer] = 255;
                 goalreatainenabled = false;
             }
             else{
-                servo[GoalRetainer] = 20;
+                servo[GoalRetainer] = 175;
                 goalreatainenabled = true;
             }
         }
