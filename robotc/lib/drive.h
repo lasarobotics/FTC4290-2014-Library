@@ -97,7 +97,8 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
     //While we are greater than within mechanum_tolerance, drive
     /** MOVE MOTORS HERE! **/
     if (!goclockwise) { speed = -speed; }
-    mecanum_arcadeFOD(0, 0, speedController(speed), gyro_getheading(),
+    float localspeed = speedController(speed);
+    mecanum_arcadeFOD(0, 0, localspeed, 0,
        leftFront, rightFront, leftBack, rightBack);
     motor[Lf] = leftFront*100;
     motor[Rf] = rightFront*100;
