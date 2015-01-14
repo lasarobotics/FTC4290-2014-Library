@@ -12,6 +12,7 @@
 
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
+#include "../drivers/hitechnic-sensormux.h"
 #include "../lib/naturalization.h"
 
 /*

@@ -162,10 +162,9 @@ float auto_placeCenterGoal(bool newIR)
     motor[Intake] = 30;
     wait1Msec(3000);
     motor[Intake] = 1;
-    forward_encoderMecanum(1500, -25, 0, Lf, Lb, Rf, Rb);
-    forward_encoderMecanum(666, -15, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(2100, -15, 0, Lf, Lb, Rf, Rb);
     //Wait for a little bit
-    wait1Msec(1000);
+    wait1Msec(3000);
     gyro_reset();
     //wait10Msec(30);
     //forward_encoderMecanum(400, 0, 100, Lf, Lb, Rf, Rb);
@@ -175,10 +174,13 @@ float auto_placeCenterGoal(bool newIR)
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
     if (zone == 3){
-       forward_encoderMecanum(1233, 0, -50, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(600, 0, -75, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
-       forward_encoderMecanum(900, -25, 0, Lf, Lb, Rf, Rb);
-       forward_encoderMecanum(267, -15, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(450, 0, -75, Lf, Lb, Rf, Rb);
+       turnToDeg_Mecanum(0, 50, Lf, Lb, Rf, Rb);
+       wait1Msec(1000);
+       forward_encoderMecanum(1000, -35, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(267, -25, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
         //Nav to zone 2
@@ -213,6 +215,7 @@ void auto_centerGoalToLarge(float zone){
        forward_encoderMecanum(5333, -25, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
+        forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
         //turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(2133, 0, 50, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(5333, -25, 0, Lf, Lb, Rf, Rb);
@@ -223,8 +226,7 @@ void auto_centerGoalToLarge(float zone){
     if (zone == 1){
         forward_encoderMecanum(333, 15, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
-        forward_encoderMecanum(3000, -15, 0, Lf, Lb, Rf, Rb);
-        wait1Msec(5000);
+        forward_encoderMecanum(3000, -50, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(6667, -50, 0, Lf, Lb, Rf, Rb);
     }
