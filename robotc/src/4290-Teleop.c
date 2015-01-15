@@ -135,7 +135,7 @@ task main()
                 goalreatainenabled = false;
             }
             else{
-                servo[GoalRetainer] = 175;
+                servo[GoalRetainer] = 150;
                 goalreatainenabled = true;
             }
         }

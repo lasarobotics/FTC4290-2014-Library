@@ -177,17 +177,16 @@ float auto_placeCenterGoal(bool newIR)
        forward_encoderMecanum(600, 0, -75, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
        forward_encoderMecanum(450, 0, -75, Lf, Lb, Rf, Rb);
-       turnToDeg_Mecanum(0, 50, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
        forward_encoderMecanum(1000, -35, 0, Lf, Lb, Rf, Rb);
        forward_encoderMecanum(267, -25, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(367,0,-50, Lf, Lb, Rf, Rb); //decrease from 800 to 725
+        forward_encoderMecanum(367,0,-50, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
-        forward_encoderMecanum(733, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(1000, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(333, -15, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(400, -10, 0, Lf, Lb, Rf, Rb);
         //turnToDeg_Mecanum(10,25,Lf,Lb,Rf,Rb);
