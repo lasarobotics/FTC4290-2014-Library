@@ -174,9 +174,7 @@ float auto_placeCenterGoal(bool newIR)
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
     if (zone == 3){
-       forward_encoderMecanum(600, 0, -75, Lf, Lb, Rf, Rb);
-       wait1Msec(1000);
-       forward_encoderMecanum(450, 0, -75, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(1100, 0, -75, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
        forward_encoderMecanum(1000, -35, 0, Lf, Lb, Rf, Rb);
        forward_encoderMecanum(267, -25, 0, Lf, Lb, Rf, Rb);
