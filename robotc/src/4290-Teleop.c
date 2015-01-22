@@ -39,7 +39,7 @@ static float k_deadband = 15;
 
 void init()
 {
-    servo[GoalRetainer] = 255;
+    servo[GoalRetainer] = 75;
     servo[Kickstand] = 155;
     servo[BallStorage] = 85;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
