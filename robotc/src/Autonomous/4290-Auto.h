@@ -167,7 +167,7 @@ float auto_placeCenterGoal(bool newIR)
     motor[Intake] = 30;
     wait1Msec(3000);
     motor[Intake] = 1;
-    servo[GoalRetainer] = GoalRetainer_Closed;
+    servo[GoalRetainer] = GoalRetainer_Open;
     forward_encoderMecanum(2100, -15, 0, Lf, Lb, Rf, Rb);
     //Wait for a little bit
     wait1Msec(3000);
@@ -182,19 +182,20 @@ float auto_placeCenterGoal(bool newIR)
     if (zone == 3){
        forward_encoderMecanum(1100, 0, -90, Lf, Lb, Rf, Rb);
        wait1Msec(1000);
-       forward_encoderMecanum(1000, -35, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(700, -35, 0, Lf, Lb, Rf, Rb);
        forward_encoderMecanum(267, -25, 0, Lf, Lb, Rf, Rb);
+       forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
     }
     if (zone == 2){
         //Nav to zone 2
         forward_encoderMecanum(367,0,-50, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
-        forward_encoderMecanum(1000, -25, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(333, -15, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(400, -10, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(700, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(733, -15, 0, Lf, Lb, Rf, Rb);
         //turnToDeg_Mecanum(10,25,Lf,Lb,Rf,Rb);
         wait1Msec(1000);
+        forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
     }
     if (zone == 1){
         //Nav to zone 1 (farthest)
@@ -204,8 +205,8 @@ float auto_placeCenterGoal(bool newIR)
         forward_encoderMecanum(567, -10, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
-        forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
-        wait1Msec(100);
+        forward_encoderMecanum(700, -15, 0, Lf, Lb, Rf, Rb);
+        forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
     }
     motor[Intake] = 0;
     wait1Msec(250);

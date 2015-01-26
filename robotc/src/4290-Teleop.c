@@ -77,6 +77,7 @@ task main()
     bool goalreatainenabled = false;
     bool storageclosed = false;
     bool intakeenabled = false;
+    bool estop = false;
     int joy1Btn3last = 0;
     //Operator
     int joy2Btn1last = 0;
@@ -88,8 +89,7 @@ task main()
     StartTask(readSensors);
     StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
-
-
+    ClearTimer(T4);
     int power = 100; //power for drive motors
     while (true)
     {
@@ -205,6 +205,16 @@ task main()
                 servo[Kickstand] = 31;
                 kickstandenabled = true;
             }
+        }
+        //E Stop for blower
+        if (!estop && time1[T4] > 117000 && blowerenabled){
+                motor[BlowerA] = 1;
+                motor[BlowerB] = 1;
+                motor[BlowerC] = 1;
+                //Start timer for 1 sec, then set motors to 0
+                ClearTimer(T3);
+                blowerenabled = false;
+                estop = true;
         }
         joy1Btn3last = joy1Btn(3);
         joy2Btn1last = joy2Btn(1);
