@@ -210,14 +210,16 @@ float auto_placeCenterGoal(bool newIR)
     }
     motor[Intake] = 0;
     wait1Msec(250);
-    servo[BallStorage] = BallStorage_Open;
+    servo[BallStorage] = 110;
     return zone;
 }
 void auto_centerGoalToLarge(float zone){
     if (zone == 3){
+       turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
        forward_encoderMecanum(667,15,0, Lf, Lb, Rf, Rb);
        forward_encoderMecanum(2667, 0, -100, Lf, Lb, Rf, Rb);
-       forward_encoderMecanum(5333, -25, 0, Lf, Lb, Rf, Rb);
+       forward_encoderMecanum(5550, -50, 0, Lf, Lb, Rf, Rb);
+
     }
     if (zone == 2){
         forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
@@ -235,7 +237,14 @@ void auto_centerGoalToLarge(float zone){
         turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(6667, -50, 0, Lf, Lb, Rf, Rb);
     }
-    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
+    turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
+    forward_encoderMecanum(3500, -25, 0, Lf, Lb, Rf, Rb);
+    forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
+    servo[GoalRetainer] = GoalRetainer_Closed;
+    forward_encoderMecanum(200, 25, 0, Lf, Lb, Rf, Rb);
+    wait1Msec(2000);
+    servo[BallStorage] = BallStorage_Open;
+    wait1Msec(1000);
 }
 /**** PLACE IN KICKSTAND
 (from already placing a ball in center goal) ****/
