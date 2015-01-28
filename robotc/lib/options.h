@@ -106,13 +106,13 @@ void options_display(char* title, char* confirmation)
   }
 
   //Display initial dot
-  options_select(-1, 0);
-  int selected = 0;
+  const int enter = maxoptions - startline + 1;
+  options_select(-1, enter);
+  int selected = enter;
   int selchoices[maxoptions];
   for (int i=0; i<maxoptions; i++) { selchoices[i]=0; }
 
   //Wait for user input
-  const int enter = maxoptions - startline + 1;
   while (true)
   {
     //ENTER button - rotate the item cycle
