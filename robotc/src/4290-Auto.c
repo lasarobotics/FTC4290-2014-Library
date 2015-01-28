@@ -88,15 +88,15 @@ void init()
 task main()
 {
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
-    servo[BallStorage] = BallStorage_Closed;
     init();
     servo[BallStorage] = BallStorage_Closed;
+    servo[GoalRetainer] = GoalRetainer_Closed;
     StartTask(readSensors);
     StartTask(displaySmartDiags);
     servo[BallStorage] = BallStorage_Closed;
+	  servo[Kickstand] = 155;
     if (bCompetitionMode) {waitForStart();}
     servo[GoalRetainer] = GoalRetainer_Open;
-	  servo[Kickstand] = 155;
     //WAIT if requested
     if (options_get[2] != 0) { wait10Msec(500 * options_get[2]); }
 
