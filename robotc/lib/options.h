@@ -140,9 +140,13 @@ void options_display(char* title, char* confirmation)
       	wait10Msec(50);
     }
     //LEFT arrow - move up an item
-    if ((nNxtButtonPressed == 2) && (selected > 0))
+    if (nNxtButtonPressed == 2)
     {
-        if (selected == enter) //if we're on the OK button
+        if (selected == 0) {
+          options_select(selected, enter);
+          selected = enter;
+        }
+        else if (selected == enter) //if we're on the OK button
         {
           options_select(selected, optionscount - 1);
           selected = optionscount - 1;
@@ -154,9 +158,14 @@ void options_display(char* title, char* confirmation)
         wait10Msec(25);
     }
     //RIGHT arrow - move down an item
-    if ((nNxtButtonPressed == 1) && (selected <= optionscount - 1))
+    if (nNxtButtonPressed == 1)
     {
-        if (selected == optionscount - 1)
+    		if (selected == enter)
+    		{
+    			options_select(selected, 0);
+          selected = 0;
+    		}
+        else if (selected == optionscount - 1)
         {
           //if we are on the last item, select the "OK" button
           options_select(selected, enter);
