@@ -28,6 +28,7 @@
 **/
 
 const int BallStorage_Closed = 140;
+const int BallStorage_OpenSmall = 95;
 const int BallStorage_Open = 85;
 const int GoalRetainer_Open = 0;
 const int GoalRetainer_Closed = 255;
@@ -212,7 +213,7 @@ float auto_placeCenterGoal(bool newIR)
   }
   motor[Intake] = 0;
   wait1Msec(250);
-  servo[BallStorage] = 110;
+  servo[BallStorage] = BallStorage_OpenSmall;
   return zone;
 }
 void auto_centerGoalToLarge(float zone){
