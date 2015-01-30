@@ -96,14 +96,13 @@ task main()
     servo[BallStorage] = BallStorage_Closed;
 	  servo[Kickstand] = 155;
     if (bCompetitionMode) {waitForStart();}
-    servo[GoalRetainer] = GoalRetainer_Open;
     //WAIT if requested
     if (options_get[2] != 0) { wait10Msec(500 * options_get[2]); }
 
     //auto_moveDownRamp();
     //auto_rampToParking();
     if (options_get[0] == 0){
-	    //True for new IR, false for old
+	  //True for new IR, false for old
       float zone = auto_placeCenterGoal(true);
 	    wait1Msec(500);
 	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
