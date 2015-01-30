@@ -168,8 +168,8 @@ float auto_placeCenterGoal(bool newIR)
   servo[GoalRetainer] = GoalRetainer_Open;
   wait1Msec(1000);
   motor[Intake] = 30;
-  wait1Msec(3000);
-  motor[Intake] = 1;
+  wait1Msec(500);
+  motor[Intake] = 0;
   forward_encoderMecanum(2100, -15, 0, Lf, Lb, Rf, Rb);
   //Wait for a little bit
   wait1Msec(3000);
