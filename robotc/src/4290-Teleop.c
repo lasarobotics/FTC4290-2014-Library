@@ -57,16 +57,17 @@ void init()
 Controller 1:
 Left Joystick x/y - Strafe and forward for robot
 Right Joystick x - Turn
-Button 3: Goal Hook
+Button 1: Goal Latch Open
+Button 3: Goal Latch Closed
 Button 4: Gyro Reset
 Button 8: Slo-Mo
 Controller 2:
-Button 1: Intake
-Button 3: Kickstand
-Button 4: Blower
-Button 5: Lift release
+Button 1: Blower
+Button 2: Intake
+Button 3: Ball storage
+Button 4: Kickstand
+Button 5: Intake slow (lift release)
 Button 6: Intake backwards
-Button 8: Ball storage
 */
 task main()
 {
@@ -74,11 +75,11 @@ task main()
     float y, x, c;
     bool blowerenabled = false;
     bool kickstandenabled = false;
-    bool goalreatainenabled = false;
     bool storageclosed = false;
     bool intakeenabled = false;
     bool estop = false;
     int joy1Btn3last = 0;
+    int joy1Btn1last = 0;
     //Operator
     int joy2Btn1last = 0;
     int joy2Btn2last = 0;
@@ -128,16 +129,13 @@ task main()
         if(joy1Btn(4) == 1) { gyro_reset(); }
         if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
 
-        //Goal Latch Toggle
+        //Goal Latch Open
         if(joy1Btn(3)== 1 && joy1Btn3last != 1){
-            if (goalreatainenabled){
-                servo[GoalRetainer] = 255;
-                goalreatainenabled = false;
-            }
-            else{
-                servo[GoalRetainer] = 75;
-                goalreatainenabled = true;
-            }
+            servo[GoalRetainer] = 255;
+        }
+        //Goal Latch Closed
+        if(joy1Btn(1)== 1 && joy1Btn1last != 1){
+            servo[GoalRetainer] = 75;
         }
 
         //Blower Toggle
@@ -216,6 +214,7 @@ task main()
                 blowerenabled = false;
                 estop = true;
         }
+        joy1Btn1last = joy1Btn(1);
         joy1Btn3last = joy1Btn(3);
         joy2Btn1last = joy2Btn(1);
         joy2Btn2last = joy2Btn(2);
