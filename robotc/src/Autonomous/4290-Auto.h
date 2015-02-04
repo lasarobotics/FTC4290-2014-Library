@@ -205,7 +205,7 @@ float auto_placeCenterGoal(bool newIR)
     //Nav to zone 1 (farthest)
     forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
     wait1Msec(250);
-    forward_encoderMecanum(2600, -25, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(2300, -25, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
     turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
     wait1Msec(100);
@@ -218,6 +218,7 @@ float auto_placeCenterGoal(bool newIR)
   return zone;
 }
 void auto_centerGoalToLarge(float zone){
+  servo[GoalRetainer] = 75;
   if (zone == 3){
     turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
     forward_encoderMecanum(667,15,0, Lf, Lb, Rf, Rb);

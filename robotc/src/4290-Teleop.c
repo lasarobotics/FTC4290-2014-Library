@@ -57,8 +57,8 @@ void init()
 Controller 1:
 Left Joystick x/y - Strafe and forward for robot
 Right Joystick x - Turn
-Button 1: Goal Latch Open
-Button 3: Goal Latch Closed
+Button 1: Goal Latch Closed
+Button 3: Goal Latch Open
 Button 4: Gyro Reset
 Button 8: Slo-Mo
 Controller 2:
@@ -129,11 +129,11 @@ task main()
         if(joy1Btn(4) == 1) { gyro_reset(); }
         if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
 
-        //Goal Latch Open
+        //Goal Latch Closed
         if(joy1Btn(3)== 1 && joy1Btn3last != 1){
             servo[GoalRetainer] = 255;
         }
-        //Goal Latch Closed
+        //Goal Latch Open
         if(joy1Btn(1)== 1 && joy1Btn1last != 1){
             servo[GoalRetainer] = 75;
         }
