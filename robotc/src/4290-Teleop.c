@@ -185,11 +185,11 @@ task main()
         //Storage Toggle
         if(joy2Btn(3)== 1 && joy2Btn3last != 1){
             if (storageclosed){
-                servo[BallStorage] = 140;
+                servo[BallStorage] = 85;
                 storageclosed = false;
             }
             else{
-                servo[BallStorage] = 85;
+                servo[BallStorage] = 140;
                 storageclosed = true;
             }
         }
