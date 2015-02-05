@@ -187,7 +187,7 @@ float auto_placeCenterGoal(bool newIR)
     forward_encoderMecanum(400, -35, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(267, -25, 0, Lf, Lb, Rf, Rb);
     forward_Mecanum(1000,-15,0,Lf,Lb,Rf,Rb);
-    servo[BallStorage] = BallStorage_Open;
+    servo[BallStorage] = BallStorage_OpenSmall;
   }
   if (zone == 2){
     //Nav to zone 2
@@ -199,19 +199,19 @@ float auto_placeCenterGoal(bool newIR)
     //turnToDeg_Mecanum(10,25,Lf,Lb,Rf,Rb);
     wait1Msec(1000);
     forward_Mecanum(1000,-15,0,Lf,Lb,Rf,Rb);
-    servo[BallStorage] = BallStorage_Open;
+    servo[BallStorage] = BallStorage_OpenSmall;
   }
   if (zone == 1){
     //Nav to zone 1 (farthest)
     forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
     wait1Msec(250);
-    forward_encoderMecanum(2300, -25, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(2200, -25, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
     turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
     wait1Msec(100);
     forward_encoderMecanum(700, -15, 0, Lf, Lb, Rf, Rb);
     forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);
-    servo[BallStorage] = BallStorage_Open;
+    servo[BallStorage] = BallStorage_OpenSmall;
   }
   motor[Intake] = 0;
   wait1Msec(250);
@@ -253,7 +253,7 @@ void auto_centerGoalToLarge(float zone){
   }
   if (zone == 1){
     forward_encoderMecanum(333, 15, 0, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(0,35,Lf,Lb,Rf,Rb);
+    turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
     forward_encoderMecanum(3000, -50, 0, Lf, Lb, Rf, Rb);
     turnToDeg_Mecanum(75,35,Lf,Lb,Rf,Rb);
     forward_encoderMecanum(6667, -50, 0, Lf, Lb, Rf, Rb);
