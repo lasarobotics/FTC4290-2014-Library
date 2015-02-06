@@ -53,26 +53,23 @@ void init()
   options_add(0, "Parking");
   options_add(0, "Ramp");
 
-  //options_create(1, "CENTER GOAL");
-  //options_add(1, "Yes");
-  //options_add(1, "No");
-
-  //options_create(2, "KICKSTAND");
-  //options_add(2, "Yes");
-  //options_add(2, "No");
 
   options_create(1, "MOVE");
   options_add(1, "to 90cm");
-  //options_add(1, "60 cm");
   options_add(1, "No");
 
-  options_create(2, "WAIT");
-  options_add(2, "0 s");
-  options_add(2, "5 s");
-  options_add(2, "10 s");
+  options_create(2, "90 DIR");
+  options_add(2, "Default");
+  options_add(2, "Left");
+  options_add(2, "Right");
 
-  options_create(3, "LOGGING");
-  options_add(3, "Off");
+  options_create(3, "WAIT");
+  options_add(3, "0 s");
+  options_add(3, "5 s");
+  options_add(3, "10 s");
+
+  options_create(4, "LOGGING");
+  options_add(4, "Off");
 
   options_display("LASA 4290","READY!");
   wait10Msec(100);
@@ -87,16 +84,17 @@ void init()
 
 task main()
 {
-    /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     servo[BallStorage] = 140;
     servo[GoalRetainer] = GoalRetainer_Closed;
+	servo[Kickstand] = 155;
+
     StartTask(readSensors);
     StartTask(displaySmartDiags);
-	  servo[Kickstand] = 155;
+
     if (bCompetitionMode) {waitForStart();}
     //WAIT if requested
-    if (options_get[2] != 0) { wait10Msec(500 * options_get[2]); }
+    if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
 
     //auto_moveDownRamp();
     //auto_rampToParking();
@@ -104,7 +102,7 @@ task main()
 	  //True for new IR, false for old
       float zone = auto_placeCenterGoal(true);
 	    wait1Msec(500);
-	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone); }
+	    if (options_get[1] == 0) { auto_centerGoalToLarge(zone,options_get[2]); }
     }
     else if (options_get[0] == 1){
         auto_moveDownRamp();
