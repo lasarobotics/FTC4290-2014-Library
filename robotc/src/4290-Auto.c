@@ -69,6 +69,7 @@ void init()
     options_add(3, "10 s");
 
     options_create(4, "LOGGING");
+    options_add(4, "On");
     options_add(4, "Off");
 
     options_display("LASA 4290","READY!");
