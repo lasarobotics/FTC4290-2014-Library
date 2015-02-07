@@ -36,7 +36,14 @@
 static float k_deadband = 15;
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
-
+void tele_log_init()
+{
+    if (log_enabled)
+    {
+        log_init("tele.txt",false);
+        log_write("GEN","TELE LOG: Started");
+    }
+}
 void init()
 {
     servo[GoalRetainer] = 255;
@@ -68,9 +75,14 @@ Button 3: Ball storage
 Button 4: Kickstand
 Button 5: Intake slow (lift release)
 Button 6: Intake backwards
+Timers:
+T1:Gyro
+T3:Blower
+T4:Global
 */
 task main()
 {
+    log_enabled = true;
     float leftFront, leftBack, rightFront, rightBack; // motors
     float y, x, c;
     bool blowerenabled = false;
@@ -85,13 +97,14 @@ task main()
     int joy2Btn2last = 0;
     int joy2Btn3last = 0;
     int joy2Btn4last = 0;
+    int power = 100; //power for drive motors
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
     StartTask(readSensors);
     StartTask(displaySmartDiags);
     if (bCompetitionMode) {waitForStart();}
     ClearTimer(T4);
-    int power = 100; //power for drive motors
+    tele_log_init();
     while (true)
     {
         /***** Proportional Motor Control *****/
@@ -147,12 +160,14 @@ task main()
                 //Start timer for 1 sec, then set motors to 0
                 ClearTimer(T3);
                 blowerenabled = false;
+                log_write("BL","OFF");
             }
             else{
                 motor[BlowerA] = 100;
                 motor[BlowerB] = 100;
                 motor[BlowerC] = 100;
                 blowerenabled = true;
+                log_write("BL","ON");
             }
         }
         //If 5 seconds since blower shutdown-brake motors
@@ -165,9 +180,11 @@ task main()
         if (joy2Btn(2) && joy2Btn2last != 1){
           if (intakeenabled){
                 intakeenabled = false;
+                log_write("IN","OFF");
             }
             else{
                 intakeenabled = true;
+                log_write("IN","ON");
             }
         }
         if (joy2Btn(5) == 1){
@@ -213,6 +230,9 @@ task main()
                 ClearTimer(T3);
                 blowerenabled = false;
                 estop = true;
+        }
+        else if (time1[T4] >117000){
+            log_stop();
         }
         joy1Btn1last = joy1Btn(1);
         joy1Btn3last = joy1Btn(3);

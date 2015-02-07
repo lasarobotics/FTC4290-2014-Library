@@ -39,8 +39,8 @@ void auto_init()
 {
     if (log_enabled)
     {
-        log_init("auto.txt", false, logid);
-        log_write("LOG  : Started", logid);
+        log_init("auto.txt",false);
+        log_write("GEN","AUTO LOG: Started");
     }
 }
 
@@ -53,6 +53,9 @@ float getZone(float avgS2,float avgS3,bool newIR){
         zone = 3;
     }
     nxtDisplayCenteredTextLine(3, "%i", zone);
+    string strtemp;
+    StringFormat(strtemp,"Z%f %f,%f",zone,avgS2,avgS3);
+    log_write("IR",strtemp);
     return zone;
 }
 

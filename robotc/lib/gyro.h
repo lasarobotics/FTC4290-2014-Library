@@ -42,15 +42,7 @@ void gyro_reset() { heading = 0; }
 void gyro_kill() { go = false; }
 
 /***** METHODS *****/
-/**
-* Gyro logging setup
-*/
-void gyro_setupLogging()
-{
 
-	log_init(gyro_filename, false, gyro_logid);
-	log_write("Gyro Log", gyro_logid);
-}
 /**
 * Gyro initialization function
 * @param The gyro sensor.
@@ -59,9 +51,6 @@ float gyro_init_internal(tSensors link)
 {
     //Read gyro offset
     gyro = link;
-    if (log_enabled) {
-        gyro_setupLogging();
-    }
     return HTGYROstartCal(link);
 }
 /**
@@ -77,11 +66,5 @@ void updateGyro()
     vel_curr = (float)HTGYROreadRot(gyro);
     // Average of last two velocities multiplied by the time passed = change in heading
     heading += ((float)vel_prev+(float)vel_curr)*(float)0.5*(float)dt;
-
-    if(log_enabled){
-	    string s;
-	    StringFormat(s, "GYRO : %.4f, %.4f, %.4f", vel_prev, vel_curr, dt);
-	    log_write(s, gyro_logid);
-    }
 }
 #endif

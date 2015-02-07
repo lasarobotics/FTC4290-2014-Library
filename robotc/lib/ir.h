@@ -103,57 +103,40 @@ void ir_moveavg(int sensor, int new)
 	indexavg[sensor]++;
 }
 
-/**
-* File Setup
-* Setup File Handles for Logging
-*/
-void ir_setupLogging()
-{
-	log_init(ir_filename, false, ir_logid);
-	log_write("IR0,IR1,IR2,IR3,IR4,AVG0,AVG1,AVG2,AVG3,AVG4", ir_logid);
-}
 
-void logValues(bool isdecision,int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,int avg1,int avg2,int avg3,int avg4){
+void logValues(int ir0,int ir1,int ir2,int ir3,int ir4,int avg0,int avg1,int avg2,int avg3,int avg4){
 	if (!log_enabled) { return; }
 	string s = "";
 	//IR0
 	StringFormat(s,"%i,",ir0);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//IR1
 	StringFormat(s,"%i,",ir1);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//IR2
 	StringFormat(s,"%i,",ir2);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//IR3
 	StringFormat(s,"%i,",ir3);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//IR4
 	StringFormat(s,"%i,",ir4);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//AVG0
 	StringFormat(s,"%i,",avg0);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//AVG1
 	StringFormat(s,"%i,",avg1);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//AVG2
 	StringFormat(s,"%i,",avg2);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//AVG3
 	StringFormat(s,"%i,",avg3);
-	log_write(s, ir_logid);
+	log_write("IR",s);
 	//AVG4
-	if (isdecision)
-	{
-		StringFormat(s,"%iDECISION\r\n",avg4);
-		log_write(s, ir_logid);
-	}
-	else
-	{
-		StringFormat(s,"%i\r\n",avg4);
-		log_write(s, ir_logid);
-	}
+	StringFormat(s,"%i,",avg4);
+	log_write("IR",s);
 }
 
 
@@ -164,17 +147,11 @@ void ir_init_internal(tSensors ir)
 {
 	ir_sensor = ir;
 	ir_reset();
-	if (log_enabled) {
-        ir_setupLogging();
-    }
 }
 void ir_init_internal(tMUXSensor ir)
 {
 	ir_sensor_mux = ir;
 	ir_reset();
-	if (log_enabled) {
-        ir_setupLogging();
-    }
 }
 /**
 * Update IR
@@ -191,10 +168,6 @@ void updateIR(){
 	ir_moveavg(2,IRraw[2]);
 	ir_moveavg(3,IRraw[3]);
 	ir_moveavg(4,IRraw[4]);
-	//Log
-	if (log_enabled){
-	    logValues(false, IRraw[0],IRraw[1],IRraw[2],IRraw[3],IRraw[4],IRavg[0],IRavg[1],IRavg[2],IRavg[3],IRavg[4]);
-    }
 	samplecount++;
 	if (samplecount > 1022) { samplecount = 0; }
 }
