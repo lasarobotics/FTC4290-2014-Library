@@ -236,7 +236,8 @@ task main()
         else if (time1[T4] >117000){
             log_stop();
         }
-        if ((time1[T2])%20 == 0 && blowerenabled){
+        //RPM
+        if ((time100[T2])%20 == 0 && blowerenabled){
             float dEncoderCount = nMotorEncoder[BlowerA];
             float dTime = time1[T2];
             float rpm = (4439 * (dEncoderCount))/(dTime);
