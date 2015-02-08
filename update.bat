@@ -1,4 +1,6 @@
-@call .\tools\buildgit.bat
+@cd .\tools\
+@call buildgit.bat
+@cd ..
 @echo -------------------------------
 @echo Updating version information...
 @echo -------------------------------
