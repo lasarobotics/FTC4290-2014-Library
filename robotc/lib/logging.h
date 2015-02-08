@@ -53,7 +53,7 @@ bool log_write(const string tag,const string text)
 {
 	if (!log_enabled) { return true; }
 	if (!log_setup){
-	    log_init("Default log",true);
+	    log_init("default.txt",true);
     }
     float time = time1[T4]/1000;
     string s = "";

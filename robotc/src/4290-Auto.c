@@ -74,7 +74,6 @@ void init()
 
     options_display("LASA 4290","READY!");
     wait10Msec(100);
-
     //STORE OPTIONS DETAILS
     //if logging is on
     if (options_get[4] == 0) { log_enabled = true; }

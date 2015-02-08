@@ -51,7 +51,7 @@ void init()
     servo[BallStorage] = 85;
     bSmartDiagnostics = true; //true to enable smart diagnostic screen
     bCompetitionMode = true; //true to enable competition mode
-    log_enabled = false; //Disable logging in Teleop
+    log_enabled = true; //Enable logging in Teleop
     displaySplash("High PHidelity", "Teleop", true);
     eraseDisplay();
     gyro_init(HTGYRO);
@@ -77,12 +77,12 @@ Button 5: Intake slow (lift release)
 Button 6: Intake backwards
 Timers:
 T1:Gyro
+T2:Measure RPM
 T3:Blower
 T4:Global
 */
 task main()
 {
-    log_enabled = true;
     float leftFront, leftBack, rightFront, rightBack; // motors
     float y, x, c;
     bool blowerenabled = false;
@@ -111,14 +111,14 @@ task main()
         getJoystickSettings(joystick); //get all joystick statuses
         if (joy1Btn(8))
         {
-        	power = 25;
+            power = 25;
         }
         else { power = 100; }
 
         //Drive Code
         if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
             deadband(k_deadband,joystick.joy1_x1) == 0 &&
-            deadband(k_deadband,joystick.joy1_x2) == 0 ) {
+        deadband(k_deadband,joystick.joy1_x2) == 0 ) {
             motor[Lf] = 0;
             motor[Rf] = 0;
             motor[Lb] = 0;
@@ -163,6 +163,8 @@ task main()
                 log_write("BL","OFF");
             }
             else{
+                ClearTimer(T2);
+                nMotorEncoder[BlowerA] = 0;
                 motor[BlowerA] = 100;
                 motor[BlowerB] = 100;
                 motor[BlowerC] = 100;
@@ -178,7 +180,7 @@ task main()
         }
         //Intake Forwards, back, slow forward
         if (joy2Btn(2) && joy2Btn2last != 1){
-          if (intakeenabled){
+            if (intakeenabled){
                 intakeenabled = false;
                 log_write("IN","OFF");
             }
@@ -223,16 +225,28 @@ task main()
         }
         //E Stop for blower
         if (!estop && time1[T4] > 117000 && blowerenabled){
-                motor[BlowerA] = 1;
-                motor[BlowerB] = 1;
-                motor[BlowerC] = 1;
-                //Start timer for 1 sec, then set motors to 0
-                ClearTimer(T3);
-                blowerenabled = false;
-                estop = true;
+            motor[BlowerA] = 1;
+            motor[BlowerB] = 1;
+            motor[BlowerC] = 1;
+            //Start timer for 1 sec, then set motors to 0
+            ClearTimer(T3);
+            blowerenabled = false;
+            estop = true;
         }
         else if (time1[T4] >117000){
             log_stop();
+        }
+        if ((time1[T2])%20 == 0 && blowerenabled){
+            float dEncoderCount = nMotorEncoder[BlowerA];
+            float dTime = time1[T2];
+            float rpm = (4439 * (dEncoderCount))/(dTime);
+            string s = "";
+            StringFormat(s,"RPM: %1.2f",rpm);
+            nxtDisplayTextLine(5, s);
+            log_write("BL",s);
+            //Clear for next calculation
+            ClearTimer(T2);
+            nMotorEncoder[BlowerA] = 0;
         }
         joy1Btn1last = joy1Btn(1);
         joy1Btn3last = joy1Btn(3);
