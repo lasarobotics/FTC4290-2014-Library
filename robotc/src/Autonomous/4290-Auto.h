@@ -74,7 +74,7 @@ void move_encoderortouch(float encodercount, float forward, float strafe, tMotor
     motor[Rb] = rightBack*100;
 
     //Pause
-    while ((abs(nMotorEncoder[Rb])) <= encodercount /*&& !TSreadState(touchSensorOne)*/){
+    while ((abs(nMotorEncoder[Rb])) <= encodercount /*&& (!TSreadState(touchSensorOne) && !TSreadState(touchSensorTwo))*/){
         nxtDisplayCenteredTextLine(7, "%.2f", nMotorEncoder[Rb]);
     }
 

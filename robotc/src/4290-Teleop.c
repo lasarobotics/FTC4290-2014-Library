@@ -25,6 +25,7 @@
 #define _ENABLE_LCDDISPLAY //Uncomment to enable live NXT LCD display
 
 /***** INCLUDES *****/
+#include "../drivers/hitechnic-sensormux.h"
 #include "../lib/naturalization.h" //naturalize RobotC
 #include "../lib/logging.h" //logging
 #include "../lib/drive.h" //drive trains
@@ -34,6 +35,8 @@
 #include "../drivers/hitechnic-irseeker-v2.h"
 /***** STATICS *****/
 static float k_deadband = 15;
+tMUXSensor touchSensorOne = msensor_S4_2;
+tMUXSensor touchSensorTwo = msensor_S4_3;
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
 void tele_log_init()
@@ -75,6 +78,7 @@ Button 3: Ball storage
 Button 4: Kickstand
 Button 5: Intake slow (lift release)
 Button 6: Intake backwards
+Button 7: Touch sensor
 Timers:
 T1:Gyro
 T2:Measure RPM
@@ -85,6 +89,7 @@ task main()
 {
     float leftFront, leftBack, rightFront, rightBack; // motors
     float y, x, c;
+    bool touchsensorenabled = false;
     bool blowerenabled = false;
     bool kickstandenabled = false;
     bool storageclosed = false;
@@ -97,6 +102,7 @@ task main()
     int joy2Btn2last = 0;
     int joy2Btn3last = 0;
     int joy2Btn4last = 0;
+    int joy2Btn7last = 0;
     int power = 100; //power for drive motors
     /***** BEGIN Mecanum Field Oriented Drive Test *****/
     init();
@@ -116,9 +122,9 @@ task main()
         else { power = 100; }
 
         //Drive Code
-        if (deadband(k_deadband,joystick.joy1_y1) == 0 &&
+        if ((deadband(k_deadband,joystick.joy1_y1) == 0 &&
             deadband(k_deadband,joystick.joy1_x1) == 0 &&
-        deadband(k_deadband,joystick.joy1_x2) == 0 ) {
+            deadband(k_deadband,joystick.joy1_x2) == 0) || (touchsensorenabled/*&& (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo))*/) ) {
             motor[Lf] = 0;
             motor[Rf] = 0;
             motor[Lb] = 0;
@@ -223,6 +229,19 @@ task main()
                 kickstandenabled = true;
             }
         }
+
+        //Touch Sensor Toggle TEMPORARILY TOGGLES KICKSTAND INSTEAD
+        if(joy2Btn(7)== 1 && joy2Btn7last != 1){
+            if (touchsensorenabled){
+                servo[Kickstand] = 155;
+                touchsensorenabled = false;
+            }
+            else{
+                servo[Kickstand] = 31;
+                touchsensorenabled = true;
+            }
+        }
+
         //E Stop for blower
         if (!estop && time1[T4] > 117000 && blowerenabled){
             motor[BlowerA] = 1;
@@ -255,6 +274,7 @@ task main()
         joy2Btn2last = joy2Btn(2);
         joy2Btn3last = joy2Btn(3);
         joy2Btn4last = joy2Btn(4);
+        joy2Btn7last = joy2Btn(7);
         //DO NOT REMOVE THIS WAIT, See issue #11
         nxtDisplayTextLine(4, "%i", gyro_getheading());
         wait1Msec(5);
