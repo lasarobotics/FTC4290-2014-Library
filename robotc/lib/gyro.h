@@ -19,8 +19,6 @@ float dt = 0.0;
 static float heading = 0;
 static tSensors gyro = 0;
 static bool go = true;
-static int gyro_logid = -1;
-string gyro_filename = "gyrolog.txt";
 /***** QUICK METHODS *****/
 
 //Get current rotational speed (in deg/s)

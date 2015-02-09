@@ -22,7 +22,6 @@
 * Autonomous Program Headers for 4290 GiraPHPHe
 * Contains methods for 4290 autonomous
 **/
-
 const int BallStorage_Closed = 140;
 const int BallStorage_OpenSmall = 95;
 const int BallStorage_Open = 85;
@@ -68,12 +67,15 @@ void move_encoderortouch(float encodercount, float forward, float strafe, tMotor
     motor[Rf] = rightFront*100;
     motor[Lb] = leftBack*100;
     motor[Rb] = rightBack*100;
-    bool touch = TSreadState(touchSensorOne);
-    //Pause (abs(nMotorEncoder[Rb])) <= encodercount &&
-    while (!touch){
-      touch = TSreadState(touchSensorOne);
+    while (abs(nMotorEncoder[Rb]) <= encodercount){
+        if (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo)){
+            nxtDisplayCenteredTextLine(7, "PRESSED");
+            break;
+        }
+        else{
+            nxtDisplayCenteredTextLine(7, "INACTIVE");
+        }
     }
-
     //Stop
     nMotorEncoder[Rb] = 0;
     motor[Lf] = 0;

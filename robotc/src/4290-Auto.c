@@ -38,6 +38,7 @@
 #include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
 const tMUXSensor irSensor =  msensor_S3_2;
+
 void init()
 {
     bSmartDiagnostics = true; //true to enable smart diagnostic screen

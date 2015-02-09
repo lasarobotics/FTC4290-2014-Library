@@ -14,11 +14,8 @@ and functionality of the IR sensor.
 #include "../drivers/hitechnic-sensormux.h"
 #include "../drivers/hitechnic-irseeker-v2.h" //IR seeker drivers
 #include "../lib/logging.h" //logging
-/**** Globals ****/
-string ir_filename = "irlog.txt"; // the name of our file
 
 /**** READING OPERATIONS ****/
-static int ir_logid = -1;
 static tSensors ir_sensor = -1;
 static tMUXSensor ir_sensor_mux = -1;
 static bool ir_read = true;
