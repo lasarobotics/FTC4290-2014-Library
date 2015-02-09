@@ -55,10 +55,11 @@ bool log_write(const string tag,const string text)
 	if (!log_setup){
 	    log_init("default.txt",true);
     }
-    float time = time1[T4]/1000;
+    float time = (float)(time1[T4]/1000);
     string s = "";
-    StringFormat(s,"%1.2f:[%s]%s\r\n",time,tag,text);
+    StringFormat(s,"%1.2f:[%s]%s",time,tag,text);
 	WriteText(filehandle, ioresult, s);
+	WriteText(filehandle, ioresult, "\r\n");
 	return log_failure();
 }
 
