@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  none,     none)
 #pragma config(Sensor, S2,     HTGYRO,         sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S3,     HTIRS2,             sensorI2CCustom)
+#pragma config(Sensor, S3,     MUX,            sensorI2CCustom)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -14,7 +14,7 @@
 
 #include "../drivers/hitechnic-sensormux.h"
 #include "../lib/naturalization.h"
-
+const tMUXSensor HTIRS2 = msensor_S3_2;
 /*
  * $Id: hitechnic-irseeker-v2-test1.c 133 2013-03-10 15:15:38Z xander $
  */
@@ -44,6 +44,7 @@
  * version 0.4
  */
 
+#include "../drivers/hitechnic-sensormux.h"
 #include "../drivers/hitechnic-irseeker-v2.h"
 #include "../lib/drive.h" //drive trains
 // global variables
@@ -90,10 +91,6 @@ task main ()
       else
         nxtDisplayTextLine(0, "");
       nxtDisplayCenteredBigTextLine(1, "IR Seekr");
-
-      // set the DSP to the new mode
-      if (HTIRS2setDSPMode(HTIRS2, _mode))
-        break; // Sensor initialized
 
       ++nNumbCyles;
       PlaySound(soundShortBlip);
