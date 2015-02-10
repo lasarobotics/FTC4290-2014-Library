@@ -38,80 +38,80 @@
 #include "../lib/sensor.h" //sensor IO
 #include "Autonomous/4290-Auto.h" //naturalize RobotC
 const tMUXSensor irSensor =  msensor_S3_2;
-
+const tMUXSensor touchSensorOne = msensor_S3_3;
 void init()
 {
-    bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = true; //true to enable competition mode
-    displaySplash("GiraPHPHe", "Autonomous", true);
-    eraseDisplay();
-    gyro_init(HTGYRO);
-    ir_init(irSensor);
-    wait1Msec(50);
-    nxtbarOn();
+  bSmartDiagnostics = true; //true to enable smart diagnostic screen
+  bCompetitionMode = true; //true to enable competition mode
+  displaySplash("GiraPHPHe", "Autonomous", true);
+  eraseDisplay();
+  gyro_init(HTGYRO);
+  ir_init(irSensor);
+  touch_init(touchSensorOne);
+  wait1Msec(50);
+  nxtbarOn();
 
-    options_reset();
+  options_reset();
 
-    options_create(0, "START");
-    options_add(0, "Parking");
-    options_add(0, "Ramp");
+  options_create(0, "START");
+  options_add(0, "Parking");
+  options_add(0, "Ramp");
 
 
-    options_create(1, "MOVE");
-    options_add(1, "to 90cm");
-    options_add(1, "No");
+  options_create(1, "MOVE");
+  options_add(1, "to 90cm");
+  options_add(1, "No");
 
-    options_create(2, "90 DIR");
-    options_add(2, "Default");
-    options_add(2, "Left");
-    options_add(2, "Right");
+  options_create(2, "90 DIR");
+  options_add(2, "Default");
+  options_add(2, "Left");
+  options_add(2, "Right");
 
-    options_create(3, "WAIT");
-    options_add(3, "0 s");
-    options_add(3, "5 s");
-    options_add(3, "10 s");
+  options_create(3, "WAIT");
+  options_add(3, "0 s");
+  options_add(3, "5 s");
+  options_add(3, "10 s");
 
-    options_create(4, "LOGGING");
-    options_add(4, "On");
-    options_add(4, "Off");
+  options_create(4, "LOGGING");
+  options_add(4, "On");
+  options_add(4, "Off");
 
-    options_display("LASA 4290","READY!");
-    wait10Msec(100);
-    //STORE OPTIONS DETAILS
-    //if logging is on
-    if (options_get[4] == 0) { log_enabled = true; }
-    return;
+  options_display("LASA 4290","READY!");
+  wait10Msec(100);
+  //STORE OPTIONS DETAILS
+  //if logging is on
+  if (options_get[4] == 0) { log_enabled = true; }
+  return;
 }
 
 task main()
 {
-    init();
-    servo[BallStorage] = 140;
-    servo[GoalRetainer] = GoalRetainer_Closed;
-    servo[Kickstand] = 155;
-    servo[TouchSensor] = 65;
-    StartTask(readSensors);
-    StartTask(displaySmartDiags);
+  init();
+  servo[BallStorage] = 140;
+  servo[GoalRetainer] = GoalRetainer_Closed;
+  servo[Kickstand] = 155;
+  servo[TouchSensor] = 65;
+  StartTask(readSensors);
+  StartTask(displaySmartDiags);
+  if (bCompetitionMode) {waitForStart();}
+  ClearTimer(T4);
+  auto_init();
+  //WAIT if requested
+  if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
 
-    if (bCompetitionMode) {waitForStart();}
-    ClearTimer(T4);
-    auto_init();
-    //WAIT if requested
-    if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
-
-    //auto_moveDownRamp();
-    //auto_rampToParking();
-    if (options_get[0] == 0){
-        //True for new IR, false for old
-        float zone = auto_placeCenterGoal(true);
-        wait1Msec(500);
-        if (options_get[1] == 0) { auto_centerGoalToLarge(zone,options_get[2]); }
-    }
-    else if (options_get[0] == 1){
-        auto_moveDownRamp();
-    }
-    //kill everything
-    servo[BallStorage] = BallStorage_Open;
-    log_stop();
-    StopAllTasks();
+  //auto_moveDownRamp();
+  //auto_rampToParking();
+  if (options_get[0] == 0){
+    //True for new IR, false for old
+    float zone = auto_placeCenterGoal(true);
+    wait1Msec(500);
+    if (options_get[1] == 0) { auto_centerGoalToLarge(zone,options_get[2]); }
+  }
+  else if (options_get[0] == 1){
+    auto_moveDownRamp();
+  }
+  //kill everything
+  servo[BallStorage] = BallStorage_Open;
+  log_stop();
+  StopAllTasks();
 }

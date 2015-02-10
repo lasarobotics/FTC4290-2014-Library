@@ -23,13 +23,11 @@
 * Contains methods for 4290 autonomous
 **/
 const int BallStorage_Closed = 140;
-const int BallStorage_OpenSmall = 95;
+const int BallStorage_OpenSmall = 100;
 const int BallStorage_Open = 85;
 const int GoalRetainer_Open = 0;
 const int GoalRetainer_Closed = 255;
 
-const tMUXSensor touchSensorOne = msensor_S3_3;
-const tMUXSensor touchSensorTwo = msensor_S3_4;
 void auto_init()
 {
     if (log_enabled)
@@ -47,9 +45,10 @@ float getZone(float avgS2,float avgS3,bool newIR){
     else if ((avgS2 < 10) && (avgS3 > 20)) {
         zone = 3;
     }
-    nxtDisplayCenteredTextLine(3, "%i", zone);
+
+        nxtDisplayTextLine(6, "%f", avgS3);
     string strtemp;
-    StringFormat(strtemp,"Z%f %f,%f",zone,avgS2,avgS3);
+    StringFormat(strtemp,"Z%f %1.2f %1.2f",zone,avgS2,avgS3);
     log_write("IR",strtemp);
     return zone;
 }
@@ -68,12 +67,9 @@ void move_encoderortouch(float encodercount, float forward, float strafe, tMotor
     motor[Lb] = leftBack*100;
     motor[Rb] = rightBack*100;
     while (abs(nMotorEncoder[Rb]) <= encodercount){
-        if (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo)){
+        if (get_touch(1) || get_touch(2)){
             nxtDisplayCenteredTextLine(7, "PRESSED");
             break;
-        }
-        else{
-            nxtDisplayCenteredTextLine(7, "INACTIVE");
         }
     }
     //Stop
@@ -167,12 +163,12 @@ void centerIRLeft(int zone){
 float auto_placeCenterGoal(bool newIR)
 {
     servo[GoalRetainer] = GoalRetainer_Open;
-    servo[TouchSensor] = 100;
+    servo[TouchSensor] = 120;
     wait1Msec(1000);
     motor[Intake] = 30;
     wait1Msec(2000);
     motor[Intake] = 1;
-    move_encoderortouch(2100, -15, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(2100, -15, 0, Lf, Lb, Rf, Rb);
     //Wait for a little bit
     wait1Msec(1000);
     gyro_reset();
@@ -183,8 +179,8 @@ float auto_placeCenterGoal(bool newIR)
     float avgS2 = ir_getavg(2);
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
-    servo[TouchSensor] = 190;
     if (zone == 3){
+        servo[TouchSensor] = 190;
         forward_encoderMecanum(1100, 0, -90, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         move_encoderortouch(1000, -35, 0, Lf, Lb, Rf, Rb);
@@ -203,17 +199,19 @@ float auto_placeCenterGoal(bool newIR)
         servo[BallStorage] = BallStorage_OpenSmall;
     }
     if (zone == 1){
+        servo[TouchSensor] = 190;
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
         forward_encoderMecanum(2200, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(80, 35, Lf, Lb, Rf, Rb);
         wait1Msec(100);
         move_encoderortouch(1700, -15, 0, Lf, Lb, Rf, Rb);
         servo[BallStorage] = BallStorage_OpenSmall;
     }
     motor[Intake] = 0;
+    servo[TouchSensor] = 65;
     wait1Msec(250);
     return zone;
 }
