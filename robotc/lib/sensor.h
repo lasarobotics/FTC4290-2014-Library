@@ -59,14 +59,13 @@ task readSensors {
 		if (gyro_enabled){
 			updateGyro();
 		}
-		wait1Msec(20);
 		if (ir_enabled){
 			updateIR();
 		}
-		wait1Msec(20);
+		wait1Msec(10);
 		if (touch_enabled){
 		  updateTouch();
-	  }
+	  	}
 	}
 }
 
