@@ -205,7 +205,7 @@ float auto_placeCenterGoal(bool newIR)
         wait1Msec(250);
         forward_encoderMecanum(2200, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(80, 35, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
         move_encoderortouch(1700, -15, 0, Lf, Lb, Rf, Rb);
         servo[BallStorage] = BallStorage_OpenSmall;

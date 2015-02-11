@@ -34,6 +34,9 @@ float gyro_getheading() {
     return localheading;
   }
 }
+float gyro_getrawheading() {
+    return heading;
+}
 //Reset gyro heading to zero
 void gyro_reset() { heading = 0; }
 //Stop gyro calibration task

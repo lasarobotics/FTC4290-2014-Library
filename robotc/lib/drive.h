@@ -61,8 +61,6 @@ float& leftfront, float& rightfront, float& leftback, float& rightback)
     mecanum_arcade(yOut, xOut, spin,
     leftfront, rightfront, leftback, rightback);
 }
-//Range of values turnToDeg considers the target starting from deg-mechanum_tolerance and going till deg+mechanum_tolerance
-static const float mechanum_tolerance = 1;
 /**
 * Autonomous turn to a specific degree based on gyro.
 * @param Degree to turn to.
@@ -92,21 +90,30 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
     nxtDisplayCenteredTextLine(3, "%.2f", clockwise);
     nxtDisplayCenteredTextLine(4, "%.2f", counterclockwise);
     if (goclockwise) { nxtDisplayCenteredTextLine(5, "clockwise"); }
-		if (!goclockwise) { nxtDisplayCenteredTextLine(5, "NOT clockwise"); }
+    if (!goclockwise) { nxtDisplayCenteredTextLine(5, "NOT clockwise"); }
     nxtDisplayCenteredTextLine(6, "%.2f", concGyro(gyro_getheading()));
     //While we are greater than within mechanum_tolerance, drive
     /** MOVE MOTORS HERE! **/
     if (!goclockwise) { speed = -speed; }
     float localspeed = speedController(speed);
     mecanum_arcadeFOD(0, 0, localspeed, 0,
-       leftFront, rightFront, leftBack, rightBack);
+    leftFront, rightFront, leftBack, rightBack);
     motor[Lf] = leftFront*100;
     motor[Rf] = rightFront*100;
     motor[Lb] = leftBack*100;
     motor[Rb] = rightBack*100;
-    while (abs(concGyro(gyro_getheading())- deg) > mechanum_tolerance ){
-        nxtDisplayCenteredTextLine(7, "%.2f", concGyro(gyro_getheading()));
-        wait1Msec(5);
+    float offset = gyro_getrawheading();
+    if (goclockwise){
+        while (abs(gyro_getrawheading() - offset)  < clockwise ){
+            nxtDisplayCenteredTextLine(7, "%.2f", gyro_getrawheading());
+            wait1Msec(5);
+        }
+    }
+    else{
+        while (abs(gyro_getrawheading()- offset)  < counterclockwise ){
+            nxtDisplayCenteredTextLine(7, "%.2f", gyro_getrawheading());
+            wait1Msec(5);
+        }
     }
     motor[Lf] = 0;
     motor[Rf] = 0;
@@ -120,52 +127,52 @@ void turnToDeg_Mecanum(float deg, float speed, tMotor Lf, tMotor Lb, tMotor Rf, 
 * @param Directional (strafe) speed to go foward at.
 */
 void forward_Mecanum(float millis, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
-        float leftFront, leftBack, rightFront, rightBack;
-				forward = speedController(forward);
-				strafe = speedController(strafe);
-        mecanum_arcade(forward, strafe, 0,
-        	leftFront, rightFront, leftBack, rightBack);
+    float leftFront, leftBack, rightFront, rightBack;
+    forward = speedController(forward);
+    strafe = speedController(strafe);
+    mecanum_arcade(forward, strafe, 0,
+    leftFront, rightFront, leftBack, rightBack);
 
-        //Move
-        motor[Lf] = leftFront*100;
-        motor[Rf] = rightFront*100;
-        motor[Lb] = leftBack*100;
-        motor[Rb] = rightBack*100;
+    //Move
+    motor[Lf] = leftFront*100;
+    motor[Rf] = rightFront*100;
+    motor[Lb] = leftBack*100;
+    motor[Rb] = rightBack*100;
 
-        //Pause
-        wait1Msec(millis);
+    //Pause
+    wait1Msec(millis);
 
-        //Stop
-        motor[Lf] = 0;
-        motor[Rf] = 0;
-        motor[Lb] = 0;
-        motor[Rb] = 0;
+    //Stop
+    motor[Lf] = 0;
+    motor[Rf] = 0;
+    motor[Lb] = 0;
+    motor[Rb] = 0;
 }
 void forward_encoderMecanum(float encodercount, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
-        nMotorEncoder[Rb] = 0;
-        float leftFront, leftBack, rightFront, rightBack;
-				forward = speedController(forward);
-				strafe = speedController(strafe);
-        mecanum_arcade(forward, strafe, 0,
-        	leftFront, rightFront, leftBack, rightBack);
+    nMotorEncoder[Rb] = 0;
+    float leftFront, leftBack, rightFront, rightBack;
+    forward = speedController(forward);
+    strafe = speedController(strafe);
+    mecanum_arcade(forward, strafe, 0,
+    leftFront, rightFront, leftBack, rightBack);
 
-        //Move
-        motor[Lf] = leftFront*100;
-        motor[Rf] = rightFront*100;
-        motor[Lb] = leftBack*100;
-        motor[Rb] = rightBack*100;
+    //Move
+    motor[Lf] = leftFront*100;
+    motor[Rf] = rightFront*100;
+    motor[Lb] = leftBack*100;
+    motor[Rb] = rightBack*100;
 
-        //Pause
-        while (abs(nMotorEncoder[Rb]) <= encodercount){
-          nxtDisplayCenteredTextLine(7, "%.2f", nMotorEncoder[Rb]);
-        }
+    //Pause
+    while (abs(nMotorEncoder[Rb]) <= encodercount){
+        nxtDisplayCenteredTextLine(7, "%.2f", nMotorEncoder[Rb]);
+    }
 
-        //Stop
-        nMotorEncoder[Rb] = 0;
-        motor[Lf] = 0;
-        motor[Rf] = 0;
-        motor[Lb] = 0;
-        motor[Rb] = 0;
+    //Stop
+    nMotorEncoder[Rb] = 0;
+    motor[Lf] = 0;
+    motor[Rf] = 0;
+    motor[Lb] = 0;
+    motor[Rb] = 0;
 }
 /**
 * Autonomous go forward for a certain time.
