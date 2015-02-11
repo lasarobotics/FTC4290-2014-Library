@@ -46,28 +46,28 @@ const tMUXSensor touchSensorTwo = msensor_S3_4;
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
 void tele_log_init()
 {
-    if (log_enabled)
-    {
-        log_init("tele.txt",false);
-        log_write("GEN","TELE LOG: Started");
-    }
+	if (log_enabled)
+	{
+		log_init("tele.txt",false);
+		log_write("GEN","TELE LOG: Started");
+	}
 }
 void init()
 {
 
-    servo[GoalRetainer] = 255;
-    servo[Kickstand] = 155;
-    servo[BallStorage] = 85;
-    servo[TouchSensor] = 65;
-    bSmartDiagnostics = true; //true to enable smart diagnostic screen
-    bCompetitionMode = true; //true to enable competition mode
-    log_enabled = true; //Enable logging in Teleop
-    displaySplash("High PHidelity", "Teleop", true);
-    eraseDisplay();
-    gyro_init(HTGYRO);
-    wait1Msec(50);
-    nxtbarOn();
-    return;
+	servo[GoalRetainer] = 255;
+	servo[Kickstand] = 155;
+	servo[BallStorage] = 85;
+	servo[TouchSensor] = 65;
+	bSmartDiagnostics = true; //true to enable smart diagnostic screen
+	bCompetitionMode = true; //true to enable competition mode
+	log_enabled = true; //Enable logging in Teleop
+	displaySplash("High PHidelity", "Teleop", true);
+	eraseDisplay();
+	gyro_init(HTGYRO);
+	wait1Msec(50);
+	nxtbarOn();
+	return;
 }
 
 /*Control Layout:
@@ -94,196 +94,219 @@ T4:Global
 */
 task main()
 {
-    float leftFront, leftBack, rightFront, rightBack; // motors
-    float y, x, c;
-    bool touchsensorenabled = false;
-    bool blowerenabled = false;
-    bool kickstandenabled = false;
-    bool storageclosed = false;
-    bool intakeenabled = false;
-    bool estop = false;
-    int joy1Btn3last = 0;
-    int joy1Btn2last = 0;
-    int joy1Btn1last = 0;
-    //Operator
-    int joy2Btn1last = 0;
-    int joy2Btn2last = 0;
-    int joy2Btn3last = 0;
-    int joy2Btn4last = 0;
-    int power = 100; //power for drive motors
-    /***** BEGIN Mecanum Field Oriented Drive Test *****/
-    init();
-    StartTask(readSensors);
-    StartTask(displaySmartDiags);
-    if (bCompetitionMode) {waitForStart();}
-    ClearTimer(T4);
-    tele_log_init();
-    while (true)
-    {
-        /***** Proportional Motor Control *****/
-        getJoystickSettings(joystick); //get all joystick statuses
-        if (joy1Btn(8))
-        {
-            power = 25;
-        }
-        else { power = 100; }
-        //Drive Code
-        if ((deadband(k_deadband,joystick.joy1_y1) == 0 &&
-            deadband(k_deadband,joystick.joy1_x1) == 0 &&
-            deadband(k_deadband,joystick.joy1_x2) == 0) ||
-            (touchsensorenabled && (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo))) ) {
-            motor[Lf] = 0;
-            motor[Rf] = 0;
-            motor[Lb] = 0;
-            motor[Rb] = 0;
-        }
-        else {
-            //scale to -1 to 1
-            y = ((deadband(k_deadband,joystick.joy1_y1)+1)/128); //strafe
-            x = ((deadband(k_deadband,joystick.joy1_x1)+1)/128); //forward/rev
-            c = ((deadband(k_deadband,joystick.joy1_x2)+1)/128); //spin
+	float leftFront, leftBack, rightFront, rightBack; // motors
+	float y, x, c;
+	bool touchsensorenabled = false;
+	bool blowerenabled = false;
+	bool kickstandenabled = false;
+	bool storageclosed = false;
+	bool intakeenabled = false;
+	bool estop = false;
+	int joy1Btn3last = 0;
+	int joy1Btn2last = 0;
+	int joy1Btn1last = 0;
+	//Operator
+	int joy2Btn1last = 0;
+	int joy2Btn2last = 0;
+	int joy2Btn3last = 0;
+	int joy2Btn4last = 0;
+	int power = 100; //power for drive motors
+	/***** BEGIN Mecanum Field Oriented Drive Test *****/
+	init();
+	StartTask(readSensors);
+	StartTask(displaySmartDiags);
+	if (bCompetitionMode) {waitForStart();}
+	ClearTimer(T4);
+	tele_log_init();
+	while (true)
+	{
+		/***** Proportional Motor Control *****/
+		getJoystickSettings(joystick); //get all joystick statuses
+		if (joy1Btn(8))
+		{
+			power = 25;
+		}
+		else { power = 100; }
+		//Drive Code
+		if ((deadband(k_deadband,joystick.joy1_y1) == 0 &&
+			deadband(k_deadband,joystick.joy1_x1) == 0 &&
+		deadband(k_deadband,joystick.joy1_x2) == 0) ||
+		(touchsensorenabled && (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo))) ) {
+			motor[Lf] = 0;
+			motor[Rf] = 0;
+			motor[Lb] = 0;
+			motor[Rb] = 0;
+		}
+		else {
+			//scale to -1 to 1
+			y = ((deadband(k_deadband,joystick.joy1_y1)+1)/128); //strafe
+			x = ((deadband(k_deadband,joystick.joy1_x1)+1)/128); //forward/rev
+			c = ((deadband(k_deadband,joystick.joy1_x2)+1)/128); //spin
 
-            mecanum_arcadeFOD(y, x, c, gyro_getheading(),
-            leftFront, rightFront, leftBack, rightBack);
+			mecanum_arcadeFOD(y, x, c, gyro_getheading(),
+			leftFront, rightFront, leftBack, rightBack);
 
-            motor[Lf] = leftFront*power;
-            motor[Rf] = rightFront*power;
-            motor[Lb] = leftBack*power;
-            motor[Rb] = rightBack*power;
-        }
-        //Gyro Reset Code
-        if(joy1Btn(4) == 1) { gyro_reset(); }
-        if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
+			motor[Lf] = leftFront*power;
+			motor[Rf] = rightFront*power;
+			motor[Lb] = leftBack*power;
+			motor[Rb] = rightBack*power;
+		}
+		//Gyro Reset Code
+		if(joy1Btn(4) == 1) { gyro_reset(); }
+		if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
 
-        //Goal Latch Closed
-        if(joy1Btn(3)== 1 && joy1Btn3last != 1){
-            servo[GoalRetainer] = 255;
-        }
-        //Goal Latch Open
-        if(joy1Btn(1)== 1 && joy1Btn1last != 1){
-            servo[GoalRetainer] = 75;
-        }
+		//Goal Latch Closed
+		if(joy1Btn(3)== 1 && joy1Btn3last != 1){
+			servo[GoalRetainer] = 255;
+		}
+		//Goal Latch Open
+		if(joy1Btn(1)== 1 && joy1Btn1last != 1){
+			servo[GoalRetainer] = 75;
+		}
 
-        //Blower Toggle
-        if(joy2Btn(1)== 1 && joy2Btn1last != 1){
-            if (blowerenabled){
-                motor[BlowerA] = 1;
-                motor[BlowerB] = 1;
-                motor[BlowerC] = 1;
-                //Start timer for 1 sec, then set motors to 0
-                ClearTimer(T3);
-                blowerenabled = false;
-                log_write("BL","OFF");
-            }
-            else{
-                ClearTimer(T2);
-                nMotorEncoder[BlowerB] = 0;
-                motor[BlowerA] = 100;
-                motor[BlowerB] = 100;
-                motor[BlowerC] = 100;
-                blowerenabled = true;
-                log_write("BL","ON");
-            }
-        }
-        //If 5 seconds since blower shutdown-brake motors
-        if (time1[T3] > 5000 && !blowerenabled){
-            motor[BlowerA] = 0;
-            motor[BlowerB] = 0;
-            motor[BlowerC] = 0;
-        }
-        //Intake Forwards, back, slow forward
-        if (joy2Btn(2) && joy2Btn2last != 1){
-            if (intakeenabled){
-                intakeenabled = false;
-                log_write("IN","OFF");
-            }
-            else{
-                intakeenabled = true;
-                log_write("IN","ON");
-            }
-        }
-        if (joy2Btn(5) == 1){
-            motor[Intake] = 25;
-        }
-        else if (joy2Btn(6) == 1){
-            motor[Intake] = -100;
-        }
-        else if (intakeenabled){
-            motor[Intake] = 100;
-        }
-        else{
-            motor[Intake] = 0;
-        }
-        //Storage Toggle
-        if(joy2Btn(3)== 1 && joy2Btn3last != 1){
-            if (storageclosed){
-                servo[BallStorage] = 85;
-                storageclosed = false;
-            }
-            else{
-                servo[BallStorage] = 140;
-                storageclosed = true;
-            }
-        }
-        //Kickstand Toggle
-        if(joy2Btn(4)== 1 && joy2Btn4last != 1){
-            if (kickstandenabled){
-                servo[Kickstand] = 155;
-                kickstandenabled = false;
-            }
-            else{
-                servo[Kickstand] = 31;
-                kickstandenabled = true;
-            }
-        }
+		//Blower Toggle
+		if(joy2Btn(1)== 1 && joy2Btn1last != 1){
+			if (blowerenabled){
+				motor[BlowerA] = 1;
+				motor[BlowerB] = 1;
+				motor[BlowerC] = 1;
+				//Start timer for 1 sec, then set motors to 0
+				ClearTimer(T3);
+				blowerenabled = false;
+				log_write("BL","OFF");
+			}
+			else{
+				ClearTimer(T2);
+				nMotorEncoder[BlowerB] = 0;
+				motor[BlowerA] = 100;
+				motor[BlowerB] = 100;
+				motor[BlowerC] = 100;
+				blowerenabled = true;
+				log_write("BL","ON");
+			}
+		}
+		//If 5 seconds since blower shutdown-brake motors
+		if (time1[T3] > 5000 && !blowerenabled){
+			motor[BlowerA] = 0;
+			motor[BlowerB] = 0;
+			motor[BlowerC] = 0;
+		}
+		//Intake Forwards, back, slow forward
+		if (joy2Btn(2) && joy2Btn2last != 1){
+			if (intakeenabled){
+				intakeenabled = false;
+				log_write("IN","OFF");
+			}
+			else{
+				intakeenabled = true;
+				log_write("IN","ON");
+			}
+		}
+		if (joy2Btn(5) == 1){
+			motor[Intake] = 25;
+		}
+		else if (joy2Btn(6) == 1){
+			motor[Intake] = -100;
+		}
+		else if (intakeenabled){
+			motor[Intake] = 100;
+		}
+		else{
+			motor[Intake] = 0;
+		}
+		//Storage Toggle
+		if(joy2Btn(3)== 1 && joy2Btn3last != 1){
+			if (storageclosed){
+				servo[BallStorage] = 85;
+				storageclosed = false;
+			}
+			else{
+				servo[BallStorage] = 140;
+				storageclosed = true;
+			}
+		}
+		//Kickstand Toggle
+		if(joy2Btn(4)== 1 && joy2Btn4last != 1){
+			if (kickstandenabled){
+				servo[Kickstand] = 155;
+				kickstandenabled = false;
+			}
+			else{
+				servo[Kickstand] = 31;
+				kickstandenabled = true;
+			}
+		}
 
-        //Touch Sensor Toggle 
-        if(joy1Btn(2)== 1 && joy1Btn2last != 1){
-            if (touchsensorenabled){
-                servo[TouchSensor] = 65;
-                touchsensorenabled = false;
-            }
-            else{
-                servo[TouchSensor] = 190;
-                touchsensorenabled = true;
-            }
-        }
+		//Touch Sensor Toggle
+		if(joy1Btn(2)== 1 && joy1Btn2last != 1){
+			if (touchsensorenabled){
+				servo[TouchSensor] = 65;
+				touchsensorenabled = false;
+			}
+			else{
+				servo[TouchSensor] = 190;
+				touchsensorenabled = true;
+			}
+		}
 
-        //E Stop for blower
-        if (!estop && time1[T4] > 117000 && blowerenabled){
-            motor[BlowerA] = 1;
-            motor[BlowerB] = 1;
-            motor[BlowerC] = 1;
-            //Start timer for 1 sec, then set motors to 0
-            ClearTimer(T3);
-            blowerenabled = false;
-            estop = true;
-        }
-        else if (time1[T4] >117000){
-            log_stop();
-        }
-        //RPM
-        if (time100[T2] >= 20 && blowerenabled){
-            float dEncoderCount = nMotorEncoder[BlowerB];
-            float dTime = time1[T2];
-            float rpm = (4439 * (dEncoderCount))/(dTime);
-            string s = "";
-            StringFormat(s,"RPM: %1.2f",rpm);
-            nxtDisplayTextLine(5, s);
-            log_write("BL",s);
-            //Clear for next calculation
-            ClearTimer(T2);
-            nMotorEncoder[BlowerB] = 0;
-        }
-        joy1Btn1last = joy1Btn(1);
-        joy1Btn2last = joy1Btn(2);
-        joy1Btn3last = joy1Btn(3);
-        joy2Btn1last = joy2Btn(1);
-        joy2Btn2last = joy2Btn(2);
-        joy2Btn3last = joy2Btn(3);
-        joy2Btn4last = joy2Btn(4);
-        //DO NOT REMOVE THIS WAIT, See issue #11
-        nxtDisplayTextLine(4, "%i", gyro_getheading());
-        wait1Msec(5);
-    }
+		//E Stop for blower
+		if (!estop && time1[T4] > 117000 && blowerenabled){
+			motor[BlowerA] = 1;
+			motor[BlowerB] = 1;
+			motor[BlowerC] = 1;
+			//Start timer for 1 sec, then set motors to 0
+			ClearTimer(T3);
+			blowerenabled = false;
+			estop = true;
+		}
+		else if (time1[T4] >117000){
+			log_stop();
+		}
+
+		//VOLTAGE
+		if (time100[T2] >= 20) {
+			float v = (float)nAvgBatteryLevel / (float)1000;
+			string sv = "";
+			StringFormat(sv, "%1.2f", v);
+			log_write("V", sv);
+
+			if (blowerenabled) {
+				float dEncoderCount = nMotorEncoder[BlowerB];
+				float dTime = time1[T2];
+				float rpm = (4439 * (dEncoderCount))/(dTime);
+				string s = "";
+				StringFormat(s,"RPM: %1.2f",rpm);
+				nxtDisplayTextLine(5, s);
+				log_write("BL",s);
+				nMotorEncoder[BlowerB] = 0;
+			}
+
+			//Clear for next calculation
+			ClearTimer(T2);
+		}
+
+		//RPM
+		if (time100[T2] >= 20 && blowerenabled){
+			float dEncoderCount = nMotorEncoder[BlowerB];
+			float dTime = time1[T2];
+			float rpm = (4439 * (dEncoderCount))/(dTime);
+			string s = "";
+			StringFormat(s,"RPM: %1.2f",rpm);
+			nxtDisplayTextLine(5, s);
+			log_write("BL",s);
+			//Clear for next calculation
+			ClearTimer(T2);
+			nMotorEncoder[BlowerB] = 0;
+		}
+		joy1Btn1last = joy1Btn(1);
+		joy1Btn2last = joy1Btn(2);
+		joy1Btn3last = joy1Btn(3);
+		joy2Btn1last = joy2Btn(1);
+		joy2Btn2last = joy2Btn(2);
+		joy2Btn3last = joy2Btn(3);
+		joy2Btn4last = joy2Btn(4);
+		//DO NOT REMOVE THIS WAIT, See issue #11
+		nxtDisplayTextLine(4, "%i", gyro_getheading());
+		wait1Msec(5);
+	}
 }
