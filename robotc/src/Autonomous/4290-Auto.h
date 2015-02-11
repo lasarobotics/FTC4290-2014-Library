@@ -25,8 +25,8 @@
 const int BallStorage_Closed = 140;
 const int BallStorage_OpenSmall = 100;
 const int BallStorage_Open = 85;
-const int GoalRetainer_Open = 0;
-const int GoalRetainer_Closed = 255;
+const int GoalRetainer_Open = 130;
+const int GoalRetainer_Closed = 25;
 
 void auto_init()
 {
@@ -162,7 +162,7 @@ void centerIRLeft(int zone){
 // returns current zone (1,2,3)
 float auto_placeCenterGoal(bool newIR)
 {
-    servo[GoalRetainer] = GoalRetainer_Open;
+    servo[GoalRetainer] = 255;
     servo[TouchSensor] = 120;
     wait1Msec(1000);
     motor[Intake] = 30;
@@ -224,13 +224,12 @@ void auto_centerGoalToLarge(float zone,float dir){
     if (dir == 2){
         moveright = true;
     }
-    servo[GoalRetainer] = 75;
+    servo[GoalRetainer] = 130;
     if (zone == 3){
-        turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
         forward_encoderMecanum(667,15,0, Lf, Lb, Rf, Rb);
         if(!moveleft){
             forward_encoderMecanum(2667, 0, -100, Lf, Lb, Rf, Rb);
-            forward_encoderMecanum(5250, -50, 0, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6000, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(3500, -25, 0, Lf, Lb, Rf, Rb);
             forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
@@ -252,7 +251,7 @@ void auto_centerGoalToLarge(float zone,float dir){
             forward_encoderMecanum(5273, -50, 0, Lf, Lb, Rf, Rb);
             wait1Msec(250);
             turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
-            forward_encoderMecanum(6335, -50, 0, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6500, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(750, -25, 0, Lf, Lb, Rf, Rb);
             forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);

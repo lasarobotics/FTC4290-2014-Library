@@ -22,8 +22,8 @@ static int filesize = 5000; // will store our file size
 
 static bool log_failure()
 {
-	if (ioresult == SUCCESS) { return true; }
-	return false;
+  if (ioresult == SUCCESS) { return true; }
+  return false;
 }
 
 
@@ -33,17 +33,17 @@ static bool log_failure()
 */
 bool log_init(const string file, bool append)
 {
-	if (!log_enabled) { return true; }
-	//Delete Previous File
-	if (!append) {
-		Delete(file, ioresult);
-	}
-	//open the file for writing (creates the file if it does not exist)
-	OpenWrite(filehandle, ioresult, file, filesize);
+  if (!log_enabled) { return true; }
+  //Delete Previous File
+  if (!append) {
+    Delete(file, ioresult);
+  }
+  //open the file for writing (creates the file if it does not exist)
+  OpenWrite(filehandle, ioresult, file, filesize);
 
-	filename = file;
-	log_setup = true;
-	return log_failure();
+  filename = file;
+  log_setup = true;
+  return log_failure();
 }
 
 /**
@@ -51,16 +51,16 @@ bool log_init(const string file, bool append)
 **/
 bool log_write(const string tag,const string text)
 {
-	if (!log_enabled) { return true; }
-	if (!log_setup){
-	    log_init("default.txt",true);
-    }
-    float time = ((float)time1[T4]/(float)1000);
-    string s = "";
-    StringFormat(s,"%1.2f:[%s]%s",time,tag,text);
-	WriteText(filehandle, ioresult, s);
-	WriteText(filehandle, ioresult, "\r\n");
-	return log_failure();
+  if (!log_enabled) { return true; }
+  if (!log_setup){
+    log_init("default.txt",true);
+  }
+  float time = ((float)time1[T4]/(float)1000);
+  string s = "";
+  StringFormat(s,"%1.2f:[%s]%s",time,tag,text);
+  WriteText(filehandle, ioresult, s);
+  WriteText(filehandle, ioresult, "\r\n");
+  return log_failure();
 }
 
 /**
@@ -68,9 +68,9 @@ bool log_write(const string tag,const string text)
 **/
 void log_stop()
 {
-	if (!log_enabled) { return; }
-	log_enabled = false;
-    Close(filehandle, ioresult);
+  if (!log_enabled) { return; }
+  log_enabled = false;
+  Close(filehandle, ioresult);
 }
 
 #endif
