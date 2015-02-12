@@ -229,7 +229,7 @@ void auto_centerGoalToLarge(float zone,float dir){
         forward_encoderMecanum(667,15,0, Lf, Lb, Rf, Rb);
         if(!moveleft){
             forward_encoderMecanum(2667, 0, -100, Lf, Lb, Rf, Rb);
-            forward_encoderMecanum(6000, -50, 0, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6250, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(3500, -25, 0, Lf, Lb, Rf, Rb);
             forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
