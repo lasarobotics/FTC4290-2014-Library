@@ -192,7 +192,7 @@ float auto_placeCenterGoal(bool newIR)
         forward_encoderMecanum(367,0,-50, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
-        move_encoderortouch(1500, -25, 0, Lf, Lb, Rf, Rb);
+        move_encoderortouch(1000, -25, 0, Lf, Lb, Rf, Rb);
         move_encoderortouch(733, -15, 0, Lf, Lb, Rf, Rb);
         //turnToDeg_Mecanum(10,25,Lf,Lb,Rf,Rb);
         wait1Msec(1000);
