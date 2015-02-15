@@ -129,8 +129,7 @@ task main()
     //Drive Code
     if ((deadband(k_deadband,joystick.joy1_y1) == 0 &&
       deadband(k_deadband,joystick.joy1_x1) == 0 &&
-    deadband(k_deadband,joystick.joy1_x2) == 0) ||
-    (touchsensorenabled && (TSreadState(touchSensorOne) || TSreadState(touchSensorTwo))) ) {
+    deadband(k_deadband,joystick.joy1_x2) == 0)) {
       motor[Lf] = 0;
       motor[Rf] = 0;
       motor[Lb] = 0;
