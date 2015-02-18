@@ -91,7 +91,7 @@ task main()
 {
   init();
   servo[BallStorage] = 140;
-  servo[GoalRetainer] = GoalRetainer_Closed;
+  servo[GoalRetainer] = 140;
   servo[Kickstand] = 155;
   servo[TouchSensor] = 65;
   StartTask(readSensors);

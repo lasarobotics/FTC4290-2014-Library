@@ -49,7 +49,13 @@ float getZone(float avgS2,float avgS3,bool newIR){
         nxtDisplayTextLine(6, "%f", avgS3);
     string strtemp;
     StringFormat(strtemp,"Z%f %1.2f %1.2f",zone,avgS2,avgS3);
-    log_write("IR",strtemp);
+    string blah = "";
+    StringFormat(blah,"%f",zone);
+    log_write("IR",blah);
+    StringFormat(blah,"%f",avgS2);
+    log_write("IR",blah);
+    StringFormat(blah,"%f",avgS3);
+    log_write("IR",blah);
     return zone;
 }
 
@@ -203,7 +209,7 @@ float auto_placeCenterGoal(bool newIR)
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
-        forward_encoderMecanum(2200, -25, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2100, -25, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1000, -15, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
@@ -240,7 +246,20 @@ void auto_centerGoalToLarge(float zone,float dir){
             wait1Msec(500);
         }
         else{
-            //Zone 3 left
+            forward_encoderMecanum(3000, 0, 100, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6000, -50, 0, Lf, Lb, Rf, Rb);
+            wait1Msec(250);
+            turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
+            forward_encoderMecanum(6300, -50, 0, Lf, Lb, Rf, Rb);
+            turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
+            forward_encoderMecanum(750, -25, 0, Lf, Lb, Rf, Rb);
+            forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);
+            servo[GoalRetainer] = GoalRetainer_Closed;
+            wait1Msec(500);
+            forward_encoderMecanum(200, 25, 0, Lf, Lb, Rf, Rb);
+            wait1Msec(1000);
+            servo[BallStorage] = BallStorage_Open;
+            wait1Msec(500);
         }
     }
     if (zone == 2){
@@ -251,7 +270,7 @@ void auto_centerGoalToLarge(float zone,float dir){
             forward_encoderMecanum(5273, -50, 0, Lf, Lb, Rf, Rb);
             wait1Msec(250);
             turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
-            forward_encoderMecanum(6500, -50, 0, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6300, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(750, -25, 0, Lf, Lb, Rf, Rb);
             forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);
@@ -267,15 +286,15 @@ void auto_centerGoalToLarge(float zone,float dir){
         }
     }
     if (zone == 1){
+        forward_encoderMecanum(333, 15, 0, Lf, Lb, Rf, Rb);
         if(!moveright){
-            forward_encoderMecanum(333, 15, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(3000, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(75,50,Lf,Lb,Rf,Rb);
-            forward_encoderMecanum(6567, -50, 0, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(6050, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,35,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(600, -25, 0, Lf, Lb, Rf, Rb);
-            forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);
+            forward_Mecanum(2000,-25,0,Lf,Lb,Rf,Rb);
             servo[GoalRetainer] = GoalRetainer_Closed;
             forward_encoderMecanum(200, 25, 0, Lf, Lb, Rf, Rb);
             wait1Msec(1000);
