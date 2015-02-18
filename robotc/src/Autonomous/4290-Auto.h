@@ -283,6 +283,16 @@ void auto_centerGoalToLarge(float zone,float dir){
         }
         else{
             //Zone 2 right
+            forward_encoderMecanum(4000, 0, -100, Lf, Lb, Rf, Rb);
+            forward_encoderMecanum(5250, -50, 0, Lf, Lb, Rf, Rb);
+            turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
+            forward_encoderMecanum(3500, -25, 0, Lf, Lb, Rf, Rb);
+            forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
+            servo[GoalRetainer] = GoalRetainer_Closed;
+            forward_encoderMecanum(200, 25, 0, Lf, Lb, Rf, Rb);
+            wait1Msec(1000);
+            servo[BallStorage] = BallStorage_Open;
+            wait1Msec(500);
         }
     }
     if (zone == 1){
