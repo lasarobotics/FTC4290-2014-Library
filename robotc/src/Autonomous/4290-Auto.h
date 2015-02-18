@@ -269,7 +269,7 @@ void auto_centerGoalToLarge(float zone,float dir){
             forward_encoderMecanum(2133, 0, 100, Lf, Lb, Rf, Rb);
             forward_encoderMecanum(5273, -50, 0, Lf, Lb, Rf, Rb);
             wait1Msec(250);
-            turnToDeg_Mecanum(75,25,Lf,Lb,Rf,Rb);
+            turnToDeg_Mecanum(75,50,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(6300, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(750, -25, 0, Lf, Lb, Rf, Rb);
@@ -298,7 +298,7 @@ void auto_centerGoalToLarge(float zone,float dir){
     if (zone == 1){
         forward_encoderMecanum(333, 15, 0, Lf, Lb, Rf, Rb);
         if(!moveright){
-            turnToDeg_Mecanum(0,25,Lf,Lb,Rf,Rb);
+            turnToDeg_Mecanum(0,50,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(3000, -50, 0, Lf, Lb, Rf, Rb);
             turnToDeg_Mecanum(75,50,Lf,Lb,Rf,Rb);
             forward_encoderMecanum(6050, -50, 0, Lf, Lb, Rf, Rb);
