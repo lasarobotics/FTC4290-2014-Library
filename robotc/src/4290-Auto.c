@@ -62,6 +62,7 @@ void init()
 
 
   options_create(1, "MOVE");
+  options_add(1, "to Block");
   options_add(1, "to 90cm");
   options_add(1, "No");
 
@@ -106,8 +107,7 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
-    wait1Msec(500);
-    if (options_get[1] == 0) { auto_centerGoalToLarge(zone,options_get[2]); }
+    if (options_get[1] == 1) { auto_centerGoalToLarge(zone,options_get[2]); }
   }
   else if (options_get[0] == 1){
     auto_moveDownRamp();
