@@ -56,7 +56,7 @@ void init()
 {
   servo[GoalRetainer] = 25;
   servo[Kickstand] = 155;
-  servo[BallStorage] = 85;
+  servo[BallStorage] = 80;
   servo[TouchSensor] = 65;
   bSmartDiagnostics = true; //true to enable smart diagnostic screen
   bCompetitionMode = true; //true to enable competition mode
@@ -152,12 +152,14 @@ task main()
     //Gyro Reset Code
     if(joy1Btn(4) == 1) { gyro_reset(); }
     if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
-
-    //Goal Latch Closed
+    if (joy1Btn(7) == 1){
+      servo[GoalRetainer] = 255;
+    }
+    //Goal Latch Open
     if(joy1Btn(3)== 1 && joy1Btn3last != 1){
       servo[GoalRetainer] = 130;
     }
-    //Goal Latch Open
+    //Goal Latch Closed
     if(joy1Btn(1)== 1 && joy1Btn1last != 1){
       servo[GoalRetainer] = 25;
     }
@@ -215,7 +217,7 @@ task main()
     //Storage Toggle
     if(joy2Btn(3)== 1 && joy2Btn3last != 1){
       if (storageclosed){
-        servo[BallStorage] = 85;
+        servo[BallStorage] = 80;
         storageclosed = false;
       }
       else{

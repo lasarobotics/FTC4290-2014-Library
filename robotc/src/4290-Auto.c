@@ -99,11 +99,10 @@ task main()
   if (bCompetitionMode) {waitForStart();}
   ClearTimer(T4);
   auto_init();
+
   //WAIT if requested
   if (options_get[3] != 0) { wait10Msec(500 * options_get[3]); }
 
-  //auto_moveDownRamp();
-  //auto_rampToParking();
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
