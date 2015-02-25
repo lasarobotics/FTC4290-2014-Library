@@ -13,7 +13,7 @@
 #pragma config(Motor,  mtr_S1_C3_2,     BlowerA,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     BlowerB,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_2,     BlowerC,       tmotorTetrix, openLoop)
-#pragma config(Servo,  srvo_S2_C1_2,    BallStorage,              tServoStandard)
+#pragma config(Servo,  srv  m   o_S2_C1_2,    BallStorage,              tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_3,    GoalRetainer,         tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_4,    Kickstand,            tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_5,    TouchSensor,          tServoStandard)
@@ -194,34 +194,29 @@ float auto_placeCenterGoal(bool newIR)
 
     if (zone == 3){
         servo[TouchSensor] = 190;
-        forward_encoderMecanum(1100, 0, -100, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(1600, 0, -100, Lf, Lb, Rf, Rb);
         wait1Msec(500);
         move_encoderortouch(2000, -50, 0, Lf, Lb, Rf, Rb);
         move_encoderortouch(267, -25, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(500, 0, -100, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
-        servo[TouchSensor] = 190;
-        wait1Msec(500);
+        //Nav to zone 2
+        forward_encoderMecanum(100,0,-50, Lf, Lb, Rf, Rb);
+        wait1Msec(1000);
         //Place ball sequence
-
-       //TODO:USE TOUCH BUMPER HERE
-        forward_encoderMecanum(1000, -100, 0, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(500, -25, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(45, 50, Lf, Lb, Rf, Rb);
-        forward_encoderMecanum(500, 0, 75, Lf, Lb, Rf, Rb);
-        move_encoderortouch(500, -25, 0, Lf, Lb, Rf, Rb);
+        move_encoderortouch(1000, -50, 0, Lf, Lb, Rf, Rb);
+        move_encoderortouch(733, -25, 0, Lf, Lb, Rf, Rb);
     }
     if (zone == 1){
         servo[TouchSensor] = 190;
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
-        forward_encoderMecanum(2300, -100, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2300, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
-        move_encoderortouch(1200, -100, 0, Lf, Lb, Rf, Rb);
+        move_encoderortouch(1200, -50, 0, Lf, Lb, Rf, Rb);
         move_encoderortouch(500, -25, 0, Lf, Lb, Rf, Rb);
     }
     wait1Msec(500);
