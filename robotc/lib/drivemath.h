@@ -43,9 +43,9 @@ float ramp_accel(float power, float& lastpower, float time, const float maxAccel
 * @param error Last received error value... just keep passing the last value in
 * @param integral Last integral value... just keep passing the last value in
 */
-float ramp_pid(float power, float measuredpower, float dt, float& error, float& integral)
+float ramp_pid(float setpoint, float encoder, float dt, float& error, float& integral)
 {
-	float curerror = power - measuredpower;
+	float curerror = setpoint - encoder;
 	integral += curerror*dt;
 	float derivative = (curerror - error)/dt;
 	float output = curerror + integral + derivative;

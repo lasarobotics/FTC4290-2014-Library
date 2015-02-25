@@ -13,7 +13,7 @@
 #pragma config(Motor,  mtr_S1_C3_2,     BlowerA,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_1,     BlowerB,       tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S1_C4_2,     BlowerC,       tmotorTetrix, openLoop)
-#pragma config(Servo,  srv  m   o_S2_C1_2,    BallStorage,              tServoStandard)
+#pragma config(Servo,  srvo_S2_C1_2,    BallStorage,              tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_3,    GoalRetainer,         tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_4,    Kickstand,            tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_5,    TouchSensor,          tServoStandard)
@@ -162,9 +162,6 @@ void centerIRLeft(int zone){
     //~1200 for low bat
     forward_encoderMecanum(950, 25, 0, Lf, Lb, Rf, Rb);
 }
-//TODO enum irAction
-
-const float kwait = 1.00;
 
 /***** PLACE IN CENTER GOAL *****/
 // returns current zone (1,2,3)
@@ -201,7 +198,7 @@ float auto_placeCenterGoal(bool newIR)
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(100,0,-50, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(100,0,-100, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
         move_encoderortouch(1000, -50, 0, Lf, Lb, Rf, Rb);

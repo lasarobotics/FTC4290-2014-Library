@@ -101,7 +101,8 @@ task main()
   bool storageclosed = false;
   bool intakeenabled = false;
   bool estop = false;
-  int intakelastchecked = -10000;
+  bool intakestartup = false;
+  long intakelastchecked = -10000;
   int joy1Btn3last = 0;
   int joy1Btn2last = 0;
   int joy1Btn1last = 0;
@@ -196,36 +197,39 @@ task main()
     if (joy2Btn(2) && joy2Btn2last != 1){
       if (intakeenabled){
         intakeenabled = false;
-        nMotorEncoder[Intake] = 100000;
-        intakelastchecked = -10000;
         log_write("IN","OFF");
       }
       else{
+        intakelastchecked = -10000;
+        nMotorEncoder[Rf] = 4000;
         intakeenabled = true;
+        intakestartup = true;
         log_write("IN","ON");
       }
     }
-    int nIntakeHealthyVal = 10000;
+    int nIntakeHealthyVal = 400;
 
-    nxtDisplayTextLine(5, "%i", nMotorEncoder[Intake]);
-    nxtDisplayTextLine(6, "%i", time1[T4]);
     if (joy2Btn(5) == 1){
       motor[Intake] = 25;
     }
     else if (joy2Btn(6) == 1){
       motor[Intake] = -100;
     }
+    else if (joy2Btn(7) == 1){
+      motor[Intake] = 100;
+    }
     else if (!intakeenabled){
       motor[Intake] = 0;
     }
-    else if (intakeenabled && time1[T4] > intakelastchecked+2000){
-      if (abs(nMotorEncoder[Intake]) > nIntakeHealthyVal){
+    else if (intakeenabled && time1[T4] > intakelastchecked+500){
+      if (abs(nMotorEncoder[Rf]) > nIntakeHealthyVal || intakestartup){
         motor[Intake] = 100;
+        intakestartup = false;
       }
       else {
         motor[Intake] = -100;
       }
-      nMotorEncoder[Intake] = 0;
+      nMotorEncoder[Rf] = 0;
       intakelastchecked = time1[T4];
     }
     //Storage Toggle
