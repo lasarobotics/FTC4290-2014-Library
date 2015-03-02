@@ -17,6 +17,7 @@
 #pragma config(Motor,  mtr_S1_C4_2,     BlowerC,       tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S2_C1_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S2_C1_2,    BallStorage,          tServoStandard)
+#pragma config(Servo,  srvo_S2_C1_3,    TubeWinch,            tServoContinuousRotation)
 #pragma config(Servo,  srvo_S2_C1_4,    Kickstand,            tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_5,    TouchSensor,          tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_6,    GoalRetainer,         tServoStandard)
@@ -54,6 +55,8 @@ void tele_log_init()
 }
 void init()
 {
+
+  servo[TubeWinch] = 136;
   servo[GoalRetainer] = 25;
   servo[Kickstand] = 155;
   servo[BallStorage] = 80;
@@ -301,6 +304,13 @@ task main()
 
       //Clear for next calculation
       ClearTimer(T2);
+    }
+    //Winch
+    if (deadband(k_deadband,joystick.joy2_y2) == 0){
+      servo[TubeWinch] = 136;
+    }
+    else{
+      servo[TubeWinch] = (deadband(k_deadband,joystick.joy2_y2))+127;
     }
     joy1Btn1last = joy1Btn(1);
     joy1Btn2last = joy1Btn(2);

@@ -17,6 +17,7 @@
 #pragma config(Motor,  mtr_S1_C4_2,     BlowerC,       tmotorTetrix, openLoop)
 #pragma config(Servo,  srvo_S2_C1_1,    servo1,               tServoNone)
 #pragma config(Servo,  srvo_S2_C1_2,    BallStorage,          tServoStandard)
+#pragma config(Servo,  srvo_S2_C1_3,    TubeWinch,            tServoContinuousRotation)
 #pragma config(Servo,  srvo_S2_C1_4,    Kickstand,            tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_5,    TouchSensor,          tServoStandard)
 #pragma config(Servo,  srvo_S2_C1_6,    GoalRetainer,         tServoStandard)
@@ -91,6 +92,7 @@ void init()
 task main()
 {
   init();
+  servo[TubeWinch] = 137;
   servo[BallStorage] = 140;
   servo[GoalRetainer] = 140;
   servo[Kickstand] = 155;
@@ -108,6 +110,7 @@ task main()
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
     if (options_get[1] == 1) { auto_centerGoalToLarge(zone,options_get[2]); }
+    if (options_get[1] == 0){ auto_centerGoalToBlock(zone);}
   }
   else if (options_get[0] == 1){
     auto_moveDownRamp();
