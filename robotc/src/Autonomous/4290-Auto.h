@@ -183,7 +183,7 @@ float auto_placeCenterGoal(bool newIR)
     float zone = getZone(avgS2,avgS3,newIR);
     if (zone == 3){
         servo[TouchSensor] = 190;
-        forward_encoderMecanum(1100, 0, -100, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(1250, 0, -100, Lf, Lb, Rf, Rb);
         wait1Msec(500);
         move_encoderortouch(2200, -50, 0, Lf, Lb, Rf, Rb);
         move_encoderortouch(267, -25, 0, Lf, Lb, Rf, Rb);

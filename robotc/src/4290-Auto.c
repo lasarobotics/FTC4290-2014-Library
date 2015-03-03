@@ -91,8 +91,8 @@ void init()
 
 task main()
 {
-  init();
   servo[TubeWinch] = 137;
+  init();
   servo[BallStorage] = 140;
   servo[GoalRetainer] = 140;
   servo[Kickstand] = 155;
