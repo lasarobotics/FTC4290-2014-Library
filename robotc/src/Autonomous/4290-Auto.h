@@ -39,7 +39,7 @@ void auto_init()
 
 float getZone(float avgS2,float avgS3,bool newIR){
     float zone = 1;
-    if ((avgS2 > 10) && (avgS3>10)) {
+    if ((avgS2 > 2) && (avgS3>2)) {
         zone = 2;
     }
     else if ((avgS2 < 10) && (avgS3 > 20)) {
@@ -181,6 +181,7 @@ float auto_placeCenterGoal(bool newIR)
     float avgS2 = ir_getavg(2);
     float avgS3 = ir_getavg(3);
     float zone = getZone(avgS2,avgS3,newIR);
+    wait1Msec(1000);
     if (zone == 3){
         servo[TouchSensor] = 190;
         forward_encoderMecanum(1250, 0, -100, Lf, Lb, Rf, Rb);
@@ -190,7 +191,7 @@ float auto_placeCenterGoal(bool newIR)
     }
     if (zone == 2){
         //Nav to zone 2
-        forward_encoderMecanum(200,0,-100, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(200,0,-75, Lf, Lb, Rf, Rb);
         wait1Msec(1000);
         //Place ball sequence
         move_encoderortouch(1200, -50, 0, Lf, Lb, Rf, Rb);
@@ -201,7 +202,7 @@ float auto_placeCenterGoal(bool newIR)
         //Nav to zone 1 (farthest)
         forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
-        forward_encoderMecanum(2000, -50, 0, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(2100, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(950, -15, 0, Lf, Lb, Rf, Rb);
         turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
         wait1Msec(100);
@@ -217,7 +218,7 @@ float auto_placeCenterGoal(bool newIR)
     }
     motor[Intake] = 0;
     servo[TouchSensor] = 65;
-    wait1Msec(250);
+    wait1Msec(750);
     return zone;
 }
 void auto_centerGoalToLarge(float zone,float dir){
@@ -304,13 +305,12 @@ void auto_centerGoalToLarge(float zone,float dir){
 
 void auto_centerGoalToBlock(float zone){
     if (zone == 3){
-
         forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(4000, 0, 100, Lf, Lb, Rf, Rb);
         wait1Msec(250);
         forward_encoderMecanum(2300, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(180, 50, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(176, 50, Lf, Lb, Rf, Rb);
     }
     if (zone == 2){
         forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
@@ -318,11 +318,11 @@ void auto_centerGoalToBlock(float zone){
         wait1Msec(250);
         forward_encoderMecanum(2300, -50, 0, Lf, Lb, Rf, Rb);
         forward_encoderMecanum(1100, -25, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(180, 50, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(176, 50, Lf, Lb, Rf, Rb);
     }
     if (zone == 1){
         forward_encoderMecanum(1000, 15, 0, Lf, Lb, Rf, Rb);
-        turnToDeg_Mecanum(180, 50, Lf, Lb, Rf, Rb);
+        turnToDeg_Mecanum(176, 50, Lf, Lb, Rf, Rb);
     }
 }
 /**** PLACE IN KICKSTAND

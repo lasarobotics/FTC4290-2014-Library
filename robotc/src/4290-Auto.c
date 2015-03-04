@@ -47,7 +47,7 @@ void init()
 {
   bSmartDiagnostics = true; //true to enable smart diagnostic screen
   bCompetitionMode = true; //true to enable competition mode
-  displaySplash("GiraPHPHe", "Autonomous", true);
+  //displaySplash("GiraPHPHe", "Autonomous", true);
   eraseDisplay();
   gyro_init(HTGYRO);
   ir_init(irSensor);
@@ -91,12 +91,14 @@ void init()
 
 task main()
 {
-  servo[TubeWinch] = 137;
   init();
+  servo[TubeWinch] = 255;
   servo[BallStorage] = 140;
   servo[GoalRetainer] = 140;
   servo[Kickstand] = 155;
   servo[TouchSensor] = 65;
+  wait1Msec(1500);
+  servo[TubeWinch] = 137;
   StartTask(readSensors);
   StartTask(displaySmartDiags);
   if (bCompetitionMode) {waitForStart();}
