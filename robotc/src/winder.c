@@ -32,6 +32,9 @@
 task main()
 {
     servo[TubeWinch] = 137;
+    servo[GoalRetainer] = 25;
+    servo[TouchSensor] = 190;
+    servo[BallStorage] = 140;
     nxtDisplayCenteredTextLine(2, "Winding Program");
     nxtDisplayCenteredTextLine(3, "Left - Back");
     nxtDisplayCenteredTextLine(4, "Right - Forward");
