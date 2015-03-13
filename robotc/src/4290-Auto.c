@@ -92,12 +92,10 @@ void init()
 task main()
 {
   init();
-  servo[TubeWinch] = 255;
   servo[BallStorage] = 140;
-  servo[GoalRetainer] = 140;
+  servo[GoalRetainer] = 25;
   servo[Kickstand] = 155;
   servo[TouchSensor] = 65;
-  wait1Msec(1500);
   servo[TubeWinch] = 137;
   StartTask(readSensors);
   StartTask(displaySmartDiags);

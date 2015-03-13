@@ -198,16 +198,20 @@ float auto_placeCenterGoal(bool newIR)
     move_encoderortouch(733, -25, 0, Lf, Lb, Rf, Rb);
   }
   if (zone == 1){
+    gyro_reset();
     servo[TouchSensor] = 190;
     //Nav to zone 1 (farthest)
-    forward_encoderMecanum(2500, 0, 100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
+    wait1Msec(250);
+    forward_encoderMecanum(1500, 50, 0, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(0, 25, Lf, Lb, Rf, Rb);
     wait1Msec(250);
     forward_encoderMecanum(2200, -50, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(950, -15, 0, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(75, 50, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
     wait1Msec(100);
-    move_encoderortouch(1200, -30, 0, Lf, Lb, Rf, Rb);
-    move_encoderortouch(500, -25, 0, Lf, Lb, Rf, Rb);
+    move_encoderortouch(1500, -30, 0, Lf, Lb, Rf, Rb);
+    move_encoderortouch(900, -25, 0, Lf, Lb, Rf, Rb);
   }
   wait1Msec(500);
   if (!options_get[1] == 1){
