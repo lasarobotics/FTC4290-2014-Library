@@ -201,13 +201,9 @@ float auto_placeCenterGoal(bool newIR)
     gyro_reset();
     servo[TouchSensor] = 190;
     //Nav to zone 1 (farthest)
-    turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(340, 25, Lf, Lb, Rf, Rb);
     wait1Msec(250);
-    forward_encoderMecanum(1500, 50, 0, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(0, 25, Lf, Lb, Rf, Rb);
-    wait1Msec(250);
-    forward_encoderMecanum(2200, -50, 0, Lf, Lb, Rf, Rb);
-    forward_encoderMecanum(950, -15, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(3250, -50, 0, Lf, Lb, Rf, Rb);
     turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
     wait1Msec(100);
     move_encoderortouch(1500, -30, 0, Lf, Lb, Rf, Rb);
