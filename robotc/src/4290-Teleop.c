@@ -156,6 +156,24 @@ task main()
     }
     //Gyro Reset Code
     if(joy1Btn(4) == 1) { gyro_reset(); }
+    if(joy1_TopHat == 0) {
+		gyro_reset();
+	}
+	//90 Deg
+	if(joy1_TopHat == 2) {
+		gyro_reset();
+		gyro_set(90);
+	}
+	//180 Deg
+	if(joy1_TopHat == 4) {
+		gyro_reset();
+		gyro_set(180);
+	}
+	//270 Deg
+	if(joy1_TopHat == 6) {
+		gyro_reset();
+		gyro_set(270);
+	}
     if(nNxtButtonPressed == kEnterButton) { gyro_reset(); }
     if (joy1Btn(7) == 1){
       servo[GoalRetainer] = 255;

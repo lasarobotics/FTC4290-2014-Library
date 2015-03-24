@@ -209,6 +209,8 @@ float auto_placeCenterGoal(bool newIR)
     move_encoderortouch(1500, -30, 0, Lf, Lb, Rf, Rb);
     move_encoderortouch(900, -25, 0, Lf, Lb, Rf, Rb);
   }
+  servo[TouchSensor] = 65;
+  forward_encoderMecanum(250, -25, 0, Lf, Lb, Rf, Rb);
   wait1Msec(500);
   if (!options_get[1] == 1){
     servo[BallStorage] = BallStorage_Open;
@@ -339,13 +341,26 @@ void auto_centerGoalToBlock(float zone){
 (from already placing a ball in center goal) ****/
 void auto_kickstandFromCenterGoal(int zone)
 {
-  //hook the goal
-  wait1Msec(250);
-  forward_encoderMecanum(1300, 0, 100, Lf, Lb, Rf, Rb);
-  wait1Msec(250);
-  forward_encoderMecanum(600, 100, 0, Lf, Lb, Rf, Rb);
-  wait1Msec(250);
-  forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb); //hit the goal
-  wait1Msec(250);
-  forward_encoderMecanum(2200, 100, 0, Lf, Lb, Rf, Rb); //continue moving
+   //RESET GYRO
+   gyro_reset();
+
+   if (zone == 3){
+    forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180, 25, Lf, Lb, Rf, Rb);
+    forward_Mecanum(3000,50,0,Lf,Lb,Rf,Rb);
+    turnToDeg_Mecanum(1000, 50, Lf, Lb, Rf, Rb);
+  }
+
+  if (zone == 2){
+
+  }
+
+  if (zone == 1){
+    forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180, 25, Lf, Lb, Rf, Rb);
+    forward_Mecanum(3000,50,0,Lf,Lb,Rf,Rb);
+    turnToDeg_Mecanum(1000, 50, Lf, Lb, Rf, Rb);
+  }
 }

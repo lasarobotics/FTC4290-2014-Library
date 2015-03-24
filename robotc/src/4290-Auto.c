@@ -1,4 +1,4 @@
-0#pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
+#pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTMotor,  HTMotor)
 #pragma config(Hubs,  S2, HTServo,  none,     none,     none)
 #pragma config(Sensor, S1,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S2,     ,               sensorI2CMuxController)
@@ -65,6 +65,7 @@ void init()
   options_create(1, "MOVE");
   options_add(1, "to Block");
   options_add(1, "to 90cm");
+  options_add(1, "to Kick");
   options_add(1, "No");
 
   options_create(2, "90 DIR");
@@ -109,6 +110,7 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
+    if (options_get[1] == 2){ auto_kickstandFromCenterGoal(zone);}
     if (options_get[1] == 1) { auto_centerGoalToLarge(zone,options_get[2]); }
     if (options_get[1] == 0){ auto_centerGoalToBlock(zone);}
   }
