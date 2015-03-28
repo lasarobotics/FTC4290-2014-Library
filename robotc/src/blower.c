@@ -27,21 +27,27 @@
 
 task main()
 {
-    bool toggleblower = false;
+    bool toggleinfeed = false;
+    bool infeedforward = true;
     nxtDisplayCenteredTextLine(2, "Blower Program");
-    nxtDisplayCenteredTextLine(3, "Center-ToggleBl");
+    nxtDisplayCenteredTextLine(3, "Center-Bl");
     nxtDisplayCenteredTextLine(4, "Left-InBack");
     nxtDisplayCenteredTextLine(4, "Right-InForward");
     while (true)
     {
-        if (nNxtButtonPressed == kEnterButton){
-            toggleblower = true;
+
+        if (nNxtButtonPressed == 2){
+            toggleinfeed = !toggleinfeed;
+            if(toggleinfeed)
+                infeedforward = true;
         }
-        else{
-            toggleblower = false;
+        if (nNxtButtonPressed == 2){
+            toggleinfeed = !toggleinfeed;
+            if(toggleinfeed)
+                infeedforward = false;
         }
         /***** Blower Control *****/
-        if (toggleblower){
+        if (nNxtButtonPressed == kEnterButton){
             motor[BlowerA] = 100;
             motor[BlowerB] = 100;
             motor[BlowerC] = 100;
@@ -52,11 +58,11 @@ task main()
             motor[BlowerC] = 1;
         }
         /***** Intake Control *****/
-        if (nNxtButtonPressed == 2){
-            motor[Intake] = -100;
-        }
-        else if (nNxtButtonPressed == 1){
-            motor[Intake] = 100;
+        if (toggleinfeed){
+            if(infeedforward)
+               motor[Intake] = 100;
+            else
+               motor[Intake] = -100;
         }
         else{
             motor[Intake] = 0;
