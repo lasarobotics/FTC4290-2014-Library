@@ -29,19 +29,19 @@ task main()
 {
     bool toggleinfeed = false;
     bool infeedforward = true;
+    TNxtButtons lastnNxtButtonPressed = nNxtButtonPressed;
     nxtDisplayCenteredTextLine(2, "Blower Program");
     nxtDisplayCenteredTextLine(3, "Center-Bl");
     nxtDisplayCenteredTextLine(4, "Left-InBack");
     nxtDisplayCenteredTextLine(4, "Right-InForward");
     while (true)
     {
-
-        if (nNxtButtonPressed == 2){
+        if (nNxtButtonPressed == kRightButton && lastnNxtButtonPressed != kRightButton){
             toggleinfeed = !toggleinfeed;
             if(toggleinfeed)
                 infeedforward = true;
         }
-        if (nNxtButtonPressed == 2){
+        if (nNxtButtonPressed == kLeftButton && lastnNxtButtonPressed != kLeftButton ){
             toggleinfeed = !toggleinfeed;
             if(toggleinfeed)
                 infeedforward = false;
@@ -67,5 +67,6 @@ task main()
         else{
             motor[Intake] = 0;
         }
+        lastnNxtButtonPressed = nNxtButtonPressed;
     }
 }
