@@ -58,7 +58,13 @@ float getZone(float avgS2,float avgS3,bool newIR){
   log_write("IR",blah);
   return zone;
 }
-
+void wiggle (int count,tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
+    for (int i = 0; i < count; i++){
+        forward_encoderMecanum(200, 0, 50, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(300, 0, -50, Lf, Lb, Rf, Rb);
+        forward_encoderMecanum(100, 0, 50, Lf, Lb, Rf, Rb);
+    }
+}
 void move_encoderortouch(float encodercount, float forward, float strafe, tMotor Lf, tMotor Lb, tMotor Rf, tMotor Rb){
   nMotorEncoder[Rb] = 0;
   float leftFront, leftBack, rightFront, rightBack;
@@ -218,6 +224,7 @@ float auto_placeCenterGoal(bool newIR)
   else{
     servo[BallStorage] = BallStorage_OpenSmall;
   }
+  wiggle(5,Lf,Lb,Rf,Rb);
   motor[Intake] = 0;
   servo[TouchSensor] = 65;
   wait1Msec(750);
