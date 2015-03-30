@@ -41,7 +41,7 @@ float gyro_getrawheading() {
 void gyro_reset() { heading = 0; }
 //Stop gyro calibration task
 void gyro_kill() { go = false; }
-
+void gyro_set(float h){heading = h;}
 /***** METHODS *****/
 
 /**

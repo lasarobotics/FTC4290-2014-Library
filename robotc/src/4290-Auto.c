@@ -110,7 +110,10 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
-    if (options_get[1] == 2){ auto_kickstandFromCenterGoal(zone);}
+    if (options_get[1] == 2){
+      servo[BallStorage] = BallStorage_Open;
+      auto_kickstandFromCenterGoal(zone);
+    }
     if (options_get[1] == 1) { auto_centerGoalToLarge(zone,options_get[2]); }
     if (options_get[1] == 0){ auto_centerGoalToBlock(zone);}
   }
