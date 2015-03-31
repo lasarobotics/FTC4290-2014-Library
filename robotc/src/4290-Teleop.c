@@ -156,21 +156,21 @@ task main()
     }
     //Gyro Reset Code
     if(joy1Btn(4) == 1) { gyro_reset(); }
-  if(joy1_TopHat == 0) {
+  if(joystick.joy1_TopHat == 0) {
 		gyro_reset();
 	}
 	//90 Deg
-	if(joy1_TopHat == 2) {
+	if(joystick.joy1_TopHat == 2) {
 		gyro_reset();
 		gyro_set(90);
 	}
 	//180 Deg
-	if(joy1_TopHat == 4) {
+	if(joystick.joy1_TopHat == 4) {
 		gyro_reset();
 		gyro_set(180);
 	}
 	//270 Deg
-	if(joy1_TopHat == 6) {
+	if(joystick.joy1_TopHat == 6) {
 		gyro_reset();
 		gyro_set(270);
 	}
