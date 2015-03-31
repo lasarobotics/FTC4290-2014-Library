@@ -98,6 +98,9 @@ task main()
 {
   float leftFront, leftBack, rightFront, rightBack; // motors
   float y, x, c;
+  //testing
+  bool swap = false;
+  float lastmod = 0;
   bool touchsensorenabled = false;
   bool blowerenabled = false;
   bool kickstandenabled = false;
@@ -301,6 +304,10 @@ task main()
     else if (time1[T4] >117000){
       log_stop();
     }
+    if(time1[T4] >= lastmod + 20000) {
+    		lastmod = time1[T4];
+    		swap = !swap;
+  	}
 
     //VOLTAGE
     if (time100[T2] >= 20) {
