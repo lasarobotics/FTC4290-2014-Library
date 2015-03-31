@@ -156,7 +156,7 @@ task main()
     }
     //Gyro Reset Code
     if(joy1Btn(4) == 1) { gyro_reset(); }
-    if(joy1_TopHat == 0) {
+  if(joy1_TopHat == 0) {
 		gyro_reset();
 	}
 	//90 Deg

@@ -190,7 +190,7 @@ float auto_placeCenterGoal(bool newIR)
   wait1Msec(1000);
   if (zone == 3){
     servo[TouchSensor] = 190;
-    forward_encoderMecanum(1250, 0, -100, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
     wait1Msec(500);
     move_encoderortouch(2200, -50, 0, Lf, Lb, Rf, Rb);
     move_encoderortouch(267, -25, 0, Lf, Lb, Rf, Rb);
@@ -199,7 +199,7 @@ float auto_placeCenterGoal(bool newIR)
     servo[TouchSensor] = 190;
     turnToDeg_Mecanum(345, 25, Lf, Lb, Rf, Rb);
     //Nav to zone 2
-    forward_encoderMecanum(1650,-50,0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1550,-50,0, Lf, Lb, Rf, Rb);
     wait1Msec(1000);
     turnToDeg_Mecanum(40, 25, Lf, Lb, Rf, Rb);
     //Place ball sequence
@@ -212,16 +212,16 @@ float auto_placeCenterGoal(bool newIR)
     //Nav to zone 1 (farthest)
     turnToDeg_Mecanum(340, 25, Lf, Lb, Rf, Rb);
     wait1Msec(250);
-    forward_encoderMecanum(3250, -50, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(3150, -50, 0, Lf, Lb, Rf, Rb);
     turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
     wait1Msec(100);
     move_encoderortouch(1500, -30, 0, Lf, Lb, Rf, Rb);
     move_encoderortouch(900, -25, 0, Lf, Lb, Rf, Rb);
   }
-  forward_encoderMecanum(100, 25, 0, Lf, Lb, Rf, Rb);
+  forward_encoderMecanum(100, 50, 0, Lf, Lb, Rf, Rb);
   servo[TouchSensor] = 65;
-  forward_encoderMecanum(250, -25, 0, Lf, Lb, Rf, Rb);
-  wait1Msec(500);
+  forward_encoderMecanum(350, -50, 0, Lf, Lb, Rf, Rb);
+  wait1Msec(1000);
   if (options_get[1] == 1){
     servo[BallStorage] = BallStorage_OpenSmall;
   }
@@ -358,24 +358,27 @@ void auto_kickstandFromCenterGoal(int zone)
    if (zone == 3){
     forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(180, 25, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
+    servo[Kickstand] = 155;
+    forward_encoderMecanum(300, 0, 100, Lf, Lb, Rf, Rb);
     forward_Mecanum(3000,50,0,Lf,Lb,Rf,Rb);
-    turnToDeg_Mecanum(359, 50, Lf, Lb, Rf, Rb);
   }
 
   if (zone == 2){
     forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
-    forward_encoderMecanum(700, 0, -100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(180, 25, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
+    servo[Kickstand] = 155;
+    forward_encoderMecanum(300, 0, 100, Lf, Lb, Rf, Rb);
     forward_Mecanum(3000,50,0,Lf,Lb,Rf,Rb);
-    turnToDeg_Mecanum(359, 50, Lf, Lb, Rf, Rb);
   }
 
   if (zone == 1){
     forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
     forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
-    turnToDeg_Mecanum(180, 25, Lf, Lb, Rf, Rb);
+    turnToDeg_Mecanum(180,25,Lf,Lb,Rf,Rb);
+    servo[Kickstand] = 155;
+    forward_encoderMecanum(300, 0, 100, Lf, Lb, Rf, Rb);
     forward_Mecanum(3000,50,0,Lf,Lb,Rf,Rb);
-    turnToDeg_Mecanum(359, 50, Lf, Lb, Rf, Rb);
   }
 }
