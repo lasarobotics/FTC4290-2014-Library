@@ -10,10 +10,16 @@ static const int maxoptions = 6; //maximum options count
 
 static int startline = 7 - maxoptions; //line of origin for options
 static string options[maxoptions][maxoptions]; //[option index][choice index]
-static char* optionnames[maxoptions]; //names of each option
 static int optionscount = 0; //count of options (0-6)
 static int choicecount[maxoptions]; //count of choices given to user
-int options_get[maxoptions]; //indices of selected choices (PUBLIC!)
+
+int    options_get[maxoptions];             //indices of selected choices (PUBLIC!)
+char*  options_getname[maxoptions];         //names of each option (PUBLIC!)
+char* options_getselectedname(int option)  //get name of selected option (PUBLIC!)
+{
+	if ((option < 0) || (option > maxoptions - 1)) { return ""; }
+	return options[option][options_get[option]];
+}
 
 void options_reset()
 {
@@ -24,7 +30,7 @@ void options_reset()
 			options[i][j] = "";
 		}
 		choicecount[i] = 0;
-		optionnames[i] = "";
+		options_getname[i] = "";
 		options_get[i] = 0;
 	}
 	 optionscount = 0;
@@ -34,7 +40,7 @@ void options_create(int option, char* name)
 {
   if (option > maxoptions - 1) { return; }
   if (option < 0) { return; }
-  optionnames[option] = name;
+  options_getname[option] = name;
   optionscount++;
   return;
 }
@@ -71,7 +77,7 @@ void options_select(int old, int new)
 void options_redisplay(int option, int choice)
 {
 	nxtEraseLine(0, display_y(option+startline), 99, display_y(option+startline+1)-1);
-	nxtDisplayTextLine(option+startline, optionnames[option]);
+	nxtDisplayTextLine(option+startline, options_getname[option]);
 	string c = options[option][choice];
   nxtDisplayStringAt(display_xright(strlen(c)), display_y(option+startline), c);
 	options_select(-1, option);
@@ -99,7 +105,7 @@ void options_display(char* title, char* confirmation)
   //Loop display default options
   for (int i=0; i<optionscount; i++)
   {
-    nxtDisplayTextLine(i+startline, optionnames[i]);
+    nxtDisplayTextLine(i+startline, options_getname[i]);
     string d;
     StringFromChars(d, options[i][0]);
     nxtDisplayStringAt(display_xright(strlen(d)), display_y(i+startline), d);
