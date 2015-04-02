@@ -361,7 +361,6 @@ void auto_kickstandFromCenterGoal(int zone)
    wait1Msec(1000);
    servo[Kickstand] = 31;
    forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
-   turnToDeg_Mecanum(180,35,Lf,Lb,Rf,Rb);
    wait1Msec(1000);
    forward_Mecanum(1850,100,0,Lf,Lb,Rf,Rb);
 }
