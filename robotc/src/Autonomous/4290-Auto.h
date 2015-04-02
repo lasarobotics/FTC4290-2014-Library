@@ -32,8 +32,11 @@ void auto_init()
 {
   if (log_enabled)
   {
-    log_init("auto.txt",false);
+    string s;
+    StringFormat(s,"%s",options_getselectedname(5));
+    log_init("match.txt",false);
     log_write("GEN","AUTO LOG: Started");
+    log_write("GEN",s);
   }
 }
 

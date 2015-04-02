@@ -18,7 +18,7 @@ static string filename = "";
 static TFileHandle filehandle= NULL;
 static TFileIOResult ioresult = SUCCESS;
 
-static int filesize = 5000; // will store our file size
+static int filesize = 6000; // will store our file size
 
 static bool log_failure()
 {

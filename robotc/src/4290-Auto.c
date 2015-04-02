@@ -82,6 +82,13 @@ void init()
   options_add(4, "On");
   options_add(4, "Off");
 
+  options_create(5, "BATTERY");
+  options_add(5, "Unknown");
+  options_add(5, "Bat L");
+  options_add(5, "Bat M");
+  options_add(5, "Bat N");
+  options_add(5, "Bat O");
+
   options_display("LASA 4290","READY!");
   wait10Msec(100);
 

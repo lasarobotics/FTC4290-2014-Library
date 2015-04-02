@@ -49,7 +49,7 @@ void tele_log_init()
 {
   if (log_enabled)
   {
-    log_init("tele.txt",false);
+    log_init("match.txt",true);
     log_write("GEN","TELE LOG: Started");
   }
 }
