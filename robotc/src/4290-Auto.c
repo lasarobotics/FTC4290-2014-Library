@@ -63,6 +63,7 @@ void init()
 
 
   options_create(1, "MOVE");
+  options_add(1, "to Kick");
   options_add(1, "to Block");
   options_add(1, "to 90cm");
   options_add(1, "to Kick");
@@ -120,12 +121,12 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
-    if (options_get[1] == 2){
+    if (options_get[1] == 0){
       servo[BallStorage] = BallStorage_Open;
       auto_kickstandFromCenterGoal(zone);
     }
-    if (options_get[1] == 1) { auto_centerGoalToLarge(zone,options_get[2]); }
-    if (options_get[1] == 0){ auto_centerGoalToBlock(zone);}
+    if (options_get[1] == 2) { auto_centerGoalToLarge(zone,options_get[2]); }
+    if (options_get[1] == 1){ auto_centerGoalToBlock(zone);}
   }
   else if (options_get[0] == 1){
     auto_moveDownRamp();

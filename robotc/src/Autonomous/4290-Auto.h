@@ -358,9 +358,11 @@ void auto_kickstandFromCenterGoal(int zone)
    //RESET GYRO
    gyro_reset();
    forward_encoderMecanum(500, 15, 0, Lf, Lb, Rf, Rb);
-   forward_encoderMecanum(1800, 0, -100, Lf, Lb, Rf, Rb);
+   forward_encoderMecanum(2300, 0, -100, Lf, Lb, Rf, Rb);
+   wait1Msec(1000);
    turnToDeg_Mecanum(180,35,Lf,Lb,Rf,Rb);
-   forward_encoderMecanum(2000,50,0,Lf,Lb,Rf,Rb);
+   wait1Msec(1000);
+   forward_encoderMecanum(1550,50,0,Lf,Lb,Rf,Rb);
    wait1Msec(1000);
    servo[Kickstand] = 31;
    forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
