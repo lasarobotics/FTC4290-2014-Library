@@ -7,15 +7,16 @@ Allows use of custom menu GUIs.
 #include "display.h"
 
 static const int maxoptions = 6; //maximum options count
+static const int maxchoices = 12; //maximum choices count
 
 static int startline = 7 - maxoptions; //line of origin for options
-static string options[maxoptions][maxoptions]; //[option index][choice index]
+static string options[maxoptions][maxchoices]; //[option index][choice index]
 static int optionscount = 0; //count of options (0-6)
 static int choicecount[maxoptions]; //count of choices given to user
 
 int    options_get[maxoptions];             //indices of selected choices (PUBLIC!)
 char*  options_getname[maxoptions];         //names of each option (PUBLIC!)
-char* options_getselectedname(int option)  //get name of selected option (PUBLIC!)
+char* options_getselectedname(int option)   //get name of selected option (PUBLIC!)
 {
 	if ((option < 0) || (option > maxoptions - 1)) { return ""; }
 	return options[option][options_get[option]];
@@ -25,7 +26,7 @@ void options_reset()
 {
 	for (int i=0;	i<maxoptions; i++)
 	{
-		for (int j=0; j<maxoptions; j++)
+		for (int j=0; j<maxchoices; j++)
 		{
 			options[i][j] = "";
 		}
@@ -50,7 +51,7 @@ void options_add(int option, char* choice)
 {
 	if (option > maxoptions - 1) { return; }
 	if (option < 0) { return; }
-	if (choicecount[option] >= maxoptions) { return; }
+	if (choicecount[option] >= maxchoices) { return; }
 
 	int c = choicecount[option];
 	options[option][c] = choice;
@@ -126,7 +127,7 @@ void options_display(char* title, char* confirmation)
     {
         // If we're selecting the "OK" button
         if (selected == enter) {
-          for (int i=0; i<maxoptions; i++)
+          for (int i=0; i<maxchoices; i++)
           {
             options_get[i] = selchoices[i];
           }
