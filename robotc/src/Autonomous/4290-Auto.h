@@ -34,9 +34,8 @@ void auto_init()
   {
     string s;
     StringFormat(s,"%s",options_getselectedname(5));
-    log_init("match.txt",false);
-    log_write("GEN","AUTO LOG: Started");
-    log_write("GEN",s);
+    log_init("battery.txt",100);
+    log_write("",s);
   }
 }
 

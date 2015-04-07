@@ -45,12 +45,48 @@ const tMUXSensor touchSensorOne = msensor_S3_3;
 const tMUXSensor touchSensorTwo = msensor_S3_4;
 /***** VARIABLES *****/
 //TJoystick controller; //--declared in JoystickDriver.c, imported by drive.h--
+
+/**
+* Loads current bat number
+*/
+void getBat(string &battery)
+{
+    TFileHandle hFileHandle; // will keep track of our file
+    TFileIOResult nIOResult; // will store our IO results
+    string sFileName = "battery.txt"; // the name of our file
+    int nFileSize = 100; // will store our file size
+    char CR = (char)13; // define CR (carriage return)
+    char LF = (char)10; // define LF (line feed)
+    char SPACE = (char)32; // define SPACE (space)
+    char incommingChar; // this will store each char as we read back in from the file
+    OpenRead(hFileHandle, nIOResult, sFileName, nFileSize); // open our file 'sFileName' for reading
+    string astring = ""; // String to hold results
+    //Read revision ID
+    for(int m = 0; m < nFileSize; m++) // iterate through the file until we've hit the end:
+    {
+        ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
+        if(incommingChar == CR || incommingChar == LF || incommingChar == SPACE)
+        {
+            // if the incomming byte is a carriage return or a line feed (or space) do nothing
+        }
+        else
+        {
+            astring = astring + incommingChar;
+            // append that byte (char) to the end of our final string, at the right index
+        }
+    }
+    Close(hFileHandle, nIOResult); // close our file
+    battery = astring; //set output
+}
 void tele_log_init()
 {
   if (log_enabled)
   {
-    log_init("match.txt",true);
+    string s = "";
+    getBat(s);
+    log_init("tele.txt");
     log_write("GEN","TELE LOG: Started");
+    log_write("GEN",s);
   }
 }
 void init()

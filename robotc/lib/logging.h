@@ -26,18 +26,34 @@ static bool log_failure()
   return false;
 }
 
+/**
+* File Setup
+* Setup File Handles for Logging
+*/
+bool log_init(const string file,int size)
+{
+  filesize = size;
+  if (!log_enabled) { return true; }
+  //Delete Previous File
+   Delete(file, ioresult);
+  //open the file for writing (creates the file if it does not exist)
+  OpenWrite(filehandle, ioresult, file, filesize);
+
+  filename = file;
+  log_setup = true;
+  return log_failure();
+}
+
 
 /**
 * File Setup
 * Setup File Handles for Logging
 */
-bool log_init(const string file, bool append)
+bool log_init(const string file)
 {
   if (!log_enabled) { return true; }
   //Delete Previous File
-  if (!append) {
-    Delete(file, ioresult);
-  }
+   Delete(file, ioresult);
   //open the file for writing (creates the file if it does not exist)
   OpenWrite(filehandle, ioresult, file, filesize);
 
@@ -53,7 +69,7 @@ bool log_write(const string tag,const string text)
 {
   if (!log_enabled) { return true; }
   if (!log_setup){
-    log_init("default.txt",true);
+    log_init("default.txt");
   }
   float time = ((float)time1[T4]/(float)1000);
   string s = "";
