@@ -66,7 +66,6 @@ void init()
   options_add(1, "to Kick");
   options_add(1, "to Block");
   options_add(1, "to 90cm");
-  options_add(1, "to Kick");
   options_add(1, "No");
 
   options_create(2, "90 DIR");
