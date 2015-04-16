@@ -107,7 +107,7 @@ task main()
   servo[GoalRetainer] = 25;
   servo[Kickstand] = 155;
   servo[TouchSensor] = 65;
-  servo[TubeWinch] = 137;
+  servo[TubeWinch] = 133;
   StartTask(readSensors);
   StartTask(displaySmartDiags);
   if (bCompetitionMode) {waitForStart();}
@@ -120,6 +120,7 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
+    servo[TubeWinch] = 127;
     if (options_get[1] == 0){
       servo[BallStorage] = BallStorage_Open;
       auto_kickstandFromCenterGoal(zone);

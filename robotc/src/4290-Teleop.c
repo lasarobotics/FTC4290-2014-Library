@@ -364,7 +364,7 @@ task main()
     }
     //Winch
     if (deadband(k_deadband,joystick.joy2_y2) == 0){
-      servo[TubeWinch] = 133;
+      servo[TubeWinch] = 127;
     }
     else{
       servo[TubeWinch] = (deadband(k_deadband,joystick.joy2_y2))+127;
