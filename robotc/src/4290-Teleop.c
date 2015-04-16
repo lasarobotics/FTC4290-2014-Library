@@ -275,6 +275,9 @@ task main()
     else if (joy2Btn(7) == 1){
       motor[Intake] = 100;
     }
+    else if (joy2Btn(8) == 1){
+      motor[Intake] = -50;
+    }
     else if (!intakeenabled){
       motor[Intake] = 0;
     }
@@ -361,7 +364,7 @@ task main()
     }
     //Winch
     if (deadband(k_deadband,joystick.joy2_y2) == 0){
-      servo[TubeWinch] = 136;
+      servo[TubeWinch] = 133;
     }
     else{
       servo[TubeWinch] = (deadband(k_deadband,joystick.joy2_y2))+127;
