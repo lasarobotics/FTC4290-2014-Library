@@ -65,7 +65,7 @@ void getBat(string &battery)
     for(int m = 0; m < nFileSize; m++) // iterate through the file until we've hit the end:
     {
         ReadByte(hFileHandle, nIOResult, incommingChar); // read in a single byte
-        if(incommingChar == CR || incommingChar == LF || incommingChar == SPACE)
+        if(incommingChar == CR || incommingChar == LF)
         {
             // if the incomming byte is a carriage return or a line feed (or space) do nothing
         }
@@ -93,7 +93,7 @@ void init()
 {
 
   servo[TubeWinch] = 136;
-  servo[GoalRetainer] = 25;
+  servo[GoalRetainer] = 5;
   servo[Kickstand] = 155;
   servo[BallStorage] = 80;
   servo[TouchSensor] = 65;
@@ -220,7 +220,7 @@ task main()
     }
     //Goal Latch Closed
     if(joy1Btn(1)== 1 && joy1Btn1last != 1){
-      servo[GoalRetainer] = 25;
+      servo[GoalRetainer] = 5;
     }
 
     //Blower Toggle

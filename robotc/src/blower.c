@@ -37,12 +37,18 @@ task main()
     while (true)
     {
         if (nNxtButtonPressed == kRightButton && lastnNxtButtonPressed != kRightButton){
-            toggleinfeed = !toggleinfeed;
+            if(toggleinfeed == true)
+               toggleinfeed = false;
+            else if(toggleinfeed == false)
+               toggleinfeed = true;
             if(toggleinfeed)
                 infeedforward = true;
         }
         if (nNxtButtonPressed == kLeftButton && lastnNxtButtonPressed != kLeftButton ){
-            toggleinfeed = !toggleinfeed;
+            if(toggleinfeed == true)
+               toggleinfeed = false;
+            else if(toggleinfeed == false)
+               toggleinfeed = true;
             if(toggleinfeed)
                 infeedforward = false;
         }
@@ -58,8 +64,8 @@ task main()
             motor[BlowerC] = 1;
         }
         /***** Intake Control *****/
-        if (toggleinfeed){
-            if(infeedforward)
+        if (toggleinfeed == true){
+            if(infeedforward == true)
                motor[Intake] = 100;
             else
                motor[Intake] = -100;
@@ -68,5 +74,6 @@ task main()
             motor[Intake] = 0;
         }
         lastnNxtButtonPressed = nNxtButtonPressed;
+        wait1Msec(100);
     }
 }
