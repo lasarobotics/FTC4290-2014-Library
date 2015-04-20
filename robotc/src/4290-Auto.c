@@ -120,7 +120,6 @@ task main()
   if (options_get[0] == 0){
     //True for new IR, false for old
     float zone = auto_placeCenterGoal(true);
-    servo[TubeWinch] = 127;
     if (options_get[1] == 0){
       servo[BallStorage] = BallStorage_Open;
       auto_kickstandFromCenterGoal(zone);
@@ -133,6 +132,8 @@ task main()
   }
   //kill everything
   servo[BallStorage] = BallStorage_Open;
+  servo[TubeWinch] = 50;
+  wait1Msec(1500);
   log_stop();
   StopAllTasks();
 }
