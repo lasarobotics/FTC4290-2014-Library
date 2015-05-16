@@ -107,7 +107,7 @@ task main()
   servo[GoalRetainer] = 25;
   servo[Kickstand] = 155;
   servo[TouchSensor] = 65;
-  servo[TubeWinch] = 137;
+  servo[TubeWinch] = 133;
   StartTask(readSensors);
   StartTask(displaySmartDiags);
   if (bCompetitionMode) {waitForStart();}
@@ -132,6 +132,8 @@ task main()
   }
   //kill everything
   servo[BallStorage] = BallStorage_Open;
+  servo[TubeWinch] = 50;
+  wait1Msec(1500);
   log_stop();
   StopAllTasks();
 }

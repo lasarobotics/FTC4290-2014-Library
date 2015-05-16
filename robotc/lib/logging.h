@@ -73,11 +73,7 @@ bool log_write(const string tag,const string text)
   }
   float time = ((float)time1[T4]/(float)1000);
   string s = "";
-  StringFormat(s,"%1.2f:",time);
-  WriteText(filehandle, ioresult, s);
-  StringFormat(s,"[%s]",time,tag,text);
-  WriteText(filehandle, ioresult, s);
-  StringFormat(s,"%s",time,tag,text);
+  StringFormat(s,"%1.2f:[%s]%s",time,tag,text);
   WriteText(filehandle, ioresult, s);
   WriteText(filehandle, ioresult, "\r\n");
   return log_failure();

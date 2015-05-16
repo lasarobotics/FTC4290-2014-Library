@@ -41,7 +41,7 @@ void auto_init()
 
 float getZone(float avgS2,float avgS3,bool newIR){
   float zone = 1;
-  if ((avgS2 > 2) && (avgS3>2)) {
+  if ((avgS2 > 5) && (avgS3>5)) {
     zone = 2;
   }
   else if ((avgS2 < 10) && (avgS3 > 20)) {
@@ -192,7 +192,7 @@ float auto_placeCenterGoal(bool newIR)
   wait1Msec(1000);
   if (zone == 3){
     servo[TouchSensor] = 190;
-    forward_encoderMecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1200, 0, -100, Lf, Lb, Rf, Rb);
     wait1Msec(500);
     move_encoderortouch(2200, -40, 0, Lf, Lb, Rf, Rb);
     move_encoderortouch(267, -25, 0, Lf, Lb, Rf, Rb);
@@ -201,7 +201,7 @@ float auto_placeCenterGoal(bool newIR)
     servo[TouchSensor] = 190;
     turnToDeg_Mecanum(345, 25, Lf, Lb, Rf, Rb);
     //Nav to zone 2
-    forward_encoderMecanum(1550,-50,0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(1300,-50,0, Lf, Lb, Rf, Rb);
     wait1Msec(1000);
     turnToDeg_Mecanum(40, 25, Lf, Lb, Rf, Rb);
     //Place ball sequence
@@ -214,7 +214,8 @@ float auto_placeCenterGoal(bool newIR)
     //Nav to zone 1 (farthest)
     turnToDeg_Mecanum(340, 25, Lf, Lb, Rf, Rb);
     wait1Msec(250);
-    forward_encoderMecanum(3150, -50, 0, Lf, Lb, Rf, Rb);
+    forward_encoderMecanum(3050, -50, 0, Lf, Lb, Rf, Rb);
+    wait1Msec(100);
     turnToDeg_Mecanum(90, 25, Lf, Lb, Rf, Rb);
     wait1Msec(100);
     move_encoderortouch(1500, -30, 0, Lf, Lb, Rf, Rb);
@@ -224,7 +225,7 @@ float auto_placeCenterGoal(bool newIR)
   servo[TouchSensor] = 65;
   forward_encoderMecanum(600, -50, 0, Lf, Lb, Rf, Rb);
   wait1Msec(1000);
-  if (options_get[1] == 1){
+  if (options_get[1] == 2){
     servo[BallStorage] = BallStorage_OpenSmall;
   }
   else{
@@ -253,8 +254,8 @@ void auto_centerGoalToLarge(float zone,float dir){
       wait1Msec(10);
       forward_encoderMecanum(6250, -50, 0, Lf, Lb, Rf, Rb);
       turnToDeg_Mecanum(42,25,Lf,Lb,Rf,Rb);
-      forward_encoderMecanum(3500, -25, 0, Lf, Lb, Rf, Rb);
-      forward_Mecanum(1000,-50,0,Lf,Lb,Rf,Rb);
+      forward_encoderMecanum(1000, -50, 0, Lf, Lb, Rf, Rb);
+      forward_Mecanum(1000,-25,0,Lf,Lb,Rf,Rb);
       servo[GoalRetainer] = GoalRetainer_Closed;
       forward_encoderMecanum(200, 25, 0, Lf, Lb, Rf, Rb);
     }
@@ -361,10 +362,10 @@ void auto_kickstandFromCenterGoal(int zone)
    wait1Msec(1000);
    turnToDeg_Mecanum(180,35,Lf,Lb,Rf,Rb);
    wait1Msec(1000);
-   forward_encoderMecanum(1550,50,0,Lf,Lb,Rf,Rb);
+   forward_encoderMecanum(1750,50,0,Lf,Lb,Rf,Rb);
    wait1Msec(1000);
    servo[Kickstand] = 31;
    forward_Mecanum(1000, 0, -100, Lf, Lb, Rf, Rb);
    wait1Msec(1000);
-   forward_Mecanum(1850,100,0,Lf,Lb,Rf,Rb);
+   forward_Mecanum(1300,100,0,Lf,Lb,Rf,Rb);
 }
