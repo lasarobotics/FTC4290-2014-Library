@@ -36,8 +36,6 @@ task main()
 
     // This is the struct that holds all the info on all buttons and joypads/sticks
     tPSP controller;
-    float left, right;
-
     StartTask(displaySmartDiags, 255);
     if (bCompetitionMode) {waitForStart();}
 
@@ -49,6 +47,6 @@ task main()
         //y-axis is inverted
         motor[drive_left] = -controller.joystickLeft_y;
         motor[drive_right] = -controller.joystickRight_y;
-
+        wait1Msec(5);
     }
 }
